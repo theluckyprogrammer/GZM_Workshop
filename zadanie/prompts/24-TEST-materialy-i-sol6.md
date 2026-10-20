@@ -8,7 +8,8 @@ Przeczytaj `zadanie/prompts/00-KONTEKST-wspolny.md` (Stos – część AI, Zasad
 ## Zadanie
 1. **Materiały:**
    - ściąga prowadzącego ma wartości identyczne z `checkpoints.md` (test spójności dla 15 scenariuszy),
-   - karty uczniów nie zawierają wartości oczekiwanych,
+   - karty uczniów i `scenarios/*/prompty.md` nie zawierają wartości oczekiwanych (`dotnet run --project tools/Cards -- check`),
+   - każda decyzja w `prompty.md` ma co najmniej 2 warianty, a wariant A zgadza się z `mapping.json` (ten sam `check`),
    - `print/*.html` nie ma pustych pól wartości ani placeholderów,
    - ścieżki i polecenia z `docs/PROWADZACY.md` istnieją w repo.
 2. **Atrybucja:** stopka aplikacji ma tekst CC BY 4.0 dla każdego scenariusza (test HTTP na gałęzi `ratunek/etap-3`).

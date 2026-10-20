@@ -2,7 +2,7 @@ using Expect;
 
 namespace Cards;
 
-// SQL shown to students: the table for stage 1 and the statistic query for stage 3.
+// SQL shown to students: the table for step 1 and the statistic queries for step 3.
 public static class SqlText
 {
     public static string CreateTable(ScenarioMapping mapping)
@@ -21,32 +21,35 @@ public static class SqlText
         return $"IF OBJECT_ID(N'dbo.{mapping.Table}') IS NULL\nCREATE TABLE dbo.[{mapping.Table}] (\n{string.Join("\n", lines)}\n);";
     }
 
-    public static string Statistic(ScenarioMapping mapping)
+    public static string Statistic(string kind, string field, string table)
     {
-        ArgumentNullException.ThrowIfNull(mapping);
+        ArgumentException.ThrowIfNullOrWhiteSpace(kind);
+        ArgumentException.ThrowIfNullOrWhiteSpace(field);
+        ArgumentException.ThrowIfNullOrWhiteSpace(table);
 
-        var field = $"[{mapping.Statistic.Field}]";
-        var table = $"dbo.[{mapping.Table}]";
-        return mapping.Statistic.Kind switch
+        var column = $"[{field}]";
+        var from = $"dbo.[{table}]";
+        return kind switch
         {
-            "sum" => $"SELECT SUM({field}) FROM {table}",
-            "avg" => $"SELECT ROUND(AVG(CAST({field} AS decimal(18,2))), 2) FROM {table}",
-            "top5" => $"SELECT TOP 5 {field} AS Value, COUNT(*) AS Count FROM {table} WHERE {field} IS NOT NULL GROUP BY {field} ORDER BY COUNT(*) DESC, {field}",
-            _ => $"SELECT {field} AS Value, COUNT(*) AS Count FROM {table} WHERE {field} IS NOT NULL GROUP BY {field} ORDER BY COUNT(*) DESC, {field}",
+            "sum" => $"SELECT SUM({column}) FROM {from}",
+            "avg" => $"SELECT ROUND(AVG(CAST({column} AS decimal(18,2))), 2) FROM {from}",
+            "top5" => $"SELECT TOP 5 {column} AS Value, COUNT(*) AS Count FROM {from} WHERE {column} IS NOT NULL GROUP BY {column} ORDER BY COUNT(*) DESC, {column}",
+            _ => $"SELECT {column} AS Value, COUNT(*) AS Count FROM {from} WHERE {column} IS NOT NULL GROUP BY {column} ORDER BY COUNT(*) DESC, {column}",
         };
     }
 
-    public static string Description(ScenarioMapping mapping)
+    public static string Description(string kind, string field)
     {
-        ArgumentNullException.ThrowIfNull(mapping);
+        ArgumentException.ThrowIfNullOrWhiteSpace(kind);
+        ArgumentException.ThrowIfNullOrWhiteSpace(field);
 
-        var field = $"`{mapping.Statistic.Field}`";
-        return mapping.Statistic.Kind switch
+        var name = $"`{field}`";
+        return kind switch
         {
-            "sum" => $"suma pola {field}.",
-            "avg" => $"średnia pola {field} z 2 miejscami po przecinku (puste wartości pomijamy).",
-            "top5" => $"5 najczęstszych wartości pola {field} z liczbą rekordów (puste pomijamy; przy równej liczbie – alfabetycznie).",
-            _ => $"liczba rekordów dla każdej wartości pola {field} (puste pomijamy; od największej liczby).",
+            "sum" => $"suma pola {name}.",
+            "avg" => $"średnia pola {name} z 2 miejscami po przecinku (puste pomijamy).",
+            "top5" => $"5 najczęstszych wartości pola {name} z liczbą rekordów (puste pomijamy).",
+            _ => $"liczba rekordów dla każdej wartości pola {name}, od największej (puste pomijamy).",
         };
     }
 

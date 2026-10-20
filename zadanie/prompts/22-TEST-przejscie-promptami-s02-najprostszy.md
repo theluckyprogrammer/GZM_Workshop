@@ -8,7 +8,7 @@ Przeczytaj `zadanie/prompts/00-KONTEKST-wspolny.md` (Projekt, Stos, Oszczędzani
 ## Zadanie
 1. Wykonaj DOKŁADNIE procedurę z `zadanie/prompts/20-TEST-przejscie-promptami-s06-najtrudniejszy.md`, zastępując `s06` przez `s02` (worktree `../walk-s02`).
 2. Po zakończeniu przejrzyj poprawki promptów z kroków 20–22.
-   - Jeśli poprawka jest wspólna dla wszystkich scenariuszy (np. dopisek o `hx-headers:inherited`), wprowadź ją skryptem do promptów pozostałych 12 scenariuszy. NIE uruchamiaj dla nich pełnego przejścia.
+   - Jeśli poprawka jest wspólna dla wszystkich scenariuszy (np. dopisek o `hx-headers:inherited`), wprowadź ją w szablonie `tools/Cards/templates/prompty.md` (albo w `tools/Cards/scenarios.json`) i wygeneruj materiały ponownie: `dotnet run --project tools/Cards`. NIE uruchamiaj dla pozostałych scenariuszy pełnego przejścia.
    - Każdą zmianę zapisz w `docs/WALIDACJA.md`.
 
 ## Kryterium ukończenia

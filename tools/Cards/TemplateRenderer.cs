@@ -47,6 +47,6 @@ public sealed partial class TemplateRenderer(IReadOnlyDictionary<string, string>
 
     private static InvalidDataException Unknown(string name) => new($"Nieznane pole szablonu: {name}");
 
-    [GeneratedRegex(@"\{\{(?<kind>[A-Za-z]+)(:(?<arg>[^}]+))?\}\}")]
+    [GeneratedRegex(@"\{\{(?<kind>[A-Za-z][A-Za-z0-9]*)(:(?<arg>[^}]+))?\}\}")]
     private static partial Regex Placeholder();
 }

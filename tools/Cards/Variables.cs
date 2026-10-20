@@ -11,22 +11,30 @@ public static class Variables
         ArgumentNullException.ThrowIfNull(checkpoints);
         ArgumentNullException.ThrowIfNull(text);
 
-        return new Dictionary<string, string>
+        var variables = Basic(mapping, checkpoints, text);
+        foreach (var (variants, index) in Decisions.For(mapping, text).Select((v, i) => (v, i + 1)))
+        {
+            variables[$"decision{index}"] = string.Join("\n\n", variants.Select(v => $"**{v.Letter} – {v.Label}**\n\n~~~text\n{v.Line}\n~~~"));
+            variables[$"default{index}"] = variants[0].Line;
+        }
+        return variables;
+    }
+
+    private static Dictionary<string, string> Basic(ScenarioMapping mapping, IReadOnlyList<Checkpoint> checkpoints, ScenarioText text) =>
+        new()
         {
             ["code"] = mapping.Scenario, ["app"] = text.App, ["idea"] = text.Idea, ["favorites"] = text.Favorites,
             ["starTask"] = text.StarTask, ["dataset"] = mapping.Dataset, ["attribution"] = mapping.Attribution,
             ["sourceUrl"] = mapping.SourceUrl, ["file"] = mapping.Source.File, ["encoding"] = mapping.Source.Encoding,
             ["separatorText"] = SeparatorText(mapping.Source.Separator), ["headerText"] = HeaderText(mapping.Source.HeaderLine),
-            ["table"] = mapping.Table, ["columnsTable"] = ColumnsTable(mapping), ["ignoredColumns"] = IgnoredColumns(mapping),
+            ["table"] = mapping.Table, ["columnsTable"] = ColumnsTable(mapping),
             ["dataNotes"] = DataNotes(mapping, checkpoints), ["createTable"] = SqlText.CreateTable(mapping),
             ["checkField"] = mapping.CheckField, ["checkCsv"] = CsvName(mapping, mapping.CheckField),
             ["filterField"] = mapping.Filter.Field, ["filterCsv"] = CsvName(mapping, mapping.Filter.Field),
             ["titleField"] = mapping.TitleField, ["phrase"] = checkpoints.Value("E2.phrase"),
-            ["statDescription"] = SqlText.Description(mapping), ["statSql"] = SqlText.Statistic(mapping),
-            ["statNote"] = mapping.Statistic.Kind == "avg" ? " (w kafelku może być przecinek zamiast kropki)" : "",
+            ["statDescription"] = SqlText.Description(mapping.Statistic.Kind, mapping.Statistic.Field),
             ["starFields"] = string.Join(", ", mapping.Imported.Select(c => $"`{c.Field}`")),
         };
-    }
 
     private static string SeparatorText(string separator) => separator switch
     {
@@ -51,12 +59,6 @@ public static class Variables
         { SqlType: "bit" } => $"„{column.Format.Split('|')[0]}” = 1, „{column.Format.Split('|')[1]}” = 0",
         _ => string.Join(" albo ", column.Format.Split('|').Select(f => $"`{f}`")),
     };
-
-    private static string IgnoredColumns(ScenarioMapping mapping)
-    {
-        var ignored = mapping.Columns.Where(c => !c.Import).Select(c => c.Csv.Length == 0 ? "(kolumna bez nazwy)" : $"`{c.Csv}`").ToList();
-        return ignored.Count == 0 ? "brak" : string.Join(", ", ignored);
-    }
 
     private static string DataNotes(ScenarioMapping mapping, IReadOnlyList<Checkpoint> checkpoints)
     {

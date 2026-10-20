@@ -28,7 +28,7 @@ public static class ImportTraps
         if (source.HeaderLine > 1)
             yield return new(1, $"Nagłówek dopiero w linii {source.HeaderLine}", "Linie tytułu zostaną wzięte za nagłówek i nazwy kolumn się nie zgodzą.", $"{Watch} na nazwach kolumn");
         if (source.SkipRowsWhenEmpty is not null)
-            yield return new(1, $"Notatki pod tabelą (wiersze {checkpoints.Value("E1.skipped")})", $"Bez pomijania w tabeli będzie {checkpoints.Value("E1.fileRows")} zamiast {checkpoints.Value("E1.rows")} wierszy.", "rozszerzenie mssql: `SELECT COUNT(*)` i karta (E1.rows)");
+            yield return new(1, $"Notatki pod tabelą (wiersze {checkpoints.Value("E1.skipped")})", $"Bez pomijania w tabeli będzie {checkpoints.Value("E1.fileRows")} zamiast {checkpoints.Value("E1.rows")} wierszy.", "rozszerzenie mssql: `SELECT COUNT(*)` i wartość E1.rows");
         if (checkpoints.Value("E1.duplicates") != "brak")
             yield return new(1, $"Identyczne wiersze w pliku (drugie z par: {checkpoints.Value("E1.duplicates")})", "Drugi taki sam wiersz łamie unikalny `RowHash` i import przerywa się błędem.", "komunikat błędu w terminalu + log SQL");
         if (mapping.Columns.Any(c => !c.Import))
@@ -41,11 +41,11 @@ public static class ImportTraps
         if (column.Culture == "invariant" && column.SqlType!.StartsWith("decimal", StringComparison.Ordinal))
             yield return new(1, $"Kropka dziesiętna w {name}", "Z kulturą pl-PL (przecinek) liczba się nie odczyta albo straci kropkę.", $"{Watch} na wartości po odczycie");
         if (column.Format == "unix-ms")
-            yield return new(1, $"Daty w {name} jako milisekundy od 1970 r.", "Bez przeliczenia w bazie będzie liczba albo błąd typu. Przeliczaj w UTC, inaczej data przesunie się o dzień.", "rozszerzenie mssql: wiersz 7 i karta (E1)");
+            yield return new(1, $"Daty w {name} jako milisekundy od 1970 r.", "Bez przeliczenia w bazie będzie liczba albo błąd typu. Przeliczaj w UTC, inaczej data przesunie się o dzień.", "rozszerzenie mssql: wiersz 7 i wartość E1.row7.value");
         if (column.Format?.Contains("'Z'", StringComparison.Ordinal) == true)
-            yield return new(1, $"Czas w {name} jest w UTC (litera Z)", "Godziny są o 1–2 h wcześniejsze niż czas polski. Nie przeliczaj – porównuj z kartą.", $"{Watch} na wartości `DateTime`");
+            yield return new(1, $"Czas w {name} jest w UTC (litera Z)", "Godziny są o 1–2 h wcześniejsze niż czas polski. Nie przeliczaj – tak jest w danych.", $"{Watch} na wartości `DateTime`");
         if (column.Format?.Contains('|') == true && column.SqlType != "bit")
-            yield return new(1, $"Dwa zapisy w {name}: `{column.Format.Replace("|", "` i `")}`", "Jeden wzorzec odrzuci część wartości – wzrośnie liczba „dziwnych” rekordów.", "log importu: liczba „dziwnych” vs karta (E1.weird)");
+            yield return new(1, $"Dwa zapisy w {name}: `{column.Format.Replace("|", "` i `")}`", "Jeden wzorzec odrzuci część wartości – wzrośnie liczba „dziwnych” rekordów.", "log importu: liczba „dziwnych” vs wartość E1.weird");
         if (column.SqlType == "bit" && column.Format != "true|false")
             yield return new(1, $"{name} zawiera słowa „{column.Format!.Replace("|", "”/„")}”", "`bool.Parse` ich nie przyjmie – zna tylko true/false.", $"{Watch} na wartości kolumny");
     }

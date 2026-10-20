@@ -37,7 +37,7 @@ public static class Traps
         var nulls = checkpoints.Value("E3.nulls");
         yield return new(3, "Statystyka liczona z listy wyników", "Lista pokazuje najwyżej 20 rekordów. Statystyka ma objąć całą tabelę – licz ją w SQL.", "log SQL: zapytanie statystyki bez `TOP 20`");
         if (mapping.Statistic.Kind == "avg")
-            yield return new(3, "AVG na kolumnie liczb całkowitych", "SQL liczy wtedy średnią jako liczbę całkowitą i gubi część po przecinku. Rzutuj na `decimal`.", "log SQL + porównanie z kartą (E3)");
+            yield return new(3, "AVG na kolumnie liczb całkowitych", "SQL liczy wtedy średnią jako liczbę całkowitą i gubi część po przecinku. Rzutuj na `decimal`.", "log SQL + wartość E3");
         if (mapping.Statistic.Kind is "top5" or "count-by")
             yield return new(3, "Wielkość liter i spacje w grupach", "SQL (collation bez wielkości liter) łączy „Abc” i „abc” w jedną grupę, a `GroupBy` w C# nie. Licz w SQL.", "Watch na liście grup + log SQL");
         if (nulls != "0")
