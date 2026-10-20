@@ -12,6 +12,10 @@ Dozwolone: MIT, Apache-2.0, MS-PL, BSD (w tym 0BSD).
 | Microsoft.AspNetCore.Identity.EntityFrameworkCore | 10.0.13 | MIT |
 | Microsoft.AspNetCore.Identity.UI | 10.0.13 | MIT |
 | System.Security.Cryptography.Pkcs | 10.0.13 | MIT |
+| CsvHelper | 33.1.0 | MS-PL OR Apache-2.0 |
+| OpenAI | 2.14.0 | MIT |
+| Microsoft.Extensions.AI.OpenAI | 10.11.0 | MIT |
+| Azure.AI.OpenAI | 2.1.0 | MIT |
 
 ## Pakiety NuGet (`tools/Fetch`)
 
@@ -24,6 +28,10 @@ Dozwolone: MIT, Apache-2.0, MS-PL, BSD (w tym 0BSD).
 | Pakiet | Wersja | Licencja |
 |---|---|---|
 | CsvHelper | 33.1.0 | MS-PL OR Apache-2.0 |
+
+## `tools/Cards`
+
+Bez pakietów NuGet (referencja do projektu `tools/Expect`).
 
 ## Dane
 
