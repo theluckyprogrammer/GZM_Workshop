@@ -13,6 +13,16 @@ Dozwolone: MIT, Apache-2.0, MS-PL, BSD (w tym 0BSD).
 | Microsoft.AspNetCore.Identity.UI | 10.0.13 | MIT |
 | System.Security.Cryptography.Pkcs | 10.0.13 | MIT |
 
+## Pakiety NuGet (`tools/Fetch`)
+
+| Pakiet | Wersja | Licencja |
+|---|---|---|
+| CsvHelper | 33.1.0 | MS-PL OR Apache-2.0 |
+
+## Dane
+
+Zbiory z otwartedane.metropoliagzm.pl: licencja i wymagana atrybucja każdego zbioru są w `data/metadata.json` (pole `license`).
+
 ## Biblioteki front-end (`wwwroot/lib`)
 
 | Biblioteka | Wersja | Licencja |
