@@ -82,9 +82,9 @@ public static partial class Checks
         return best.Phrase is null ? throw new InvalidDataException($"Pole {field}: brak frazy dającej 2–10 wyników.") : best;
     }
 
-    // Like SQL LIKE '%phrase%' with a case-insensitive collation.
+    // Like SQL LIKE '%phrase%' with a collation that ignores case and accents (CI_AI).
     public static bool Contains(ParsedValue value, string phrase) =>
-        value.State == ValueState.Ok && Polish.CompareInfo.IndexOf(value.Display, phrase, CompareOptions.IgnoreCase) >= 0;
+        value.State == ValueState.Ok && Polish.CompareInfo.IndexOf(value.Display, phrase, CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace) >= 0;
 
     private const string PolishLetters = "ąćęłńóśźż";
 
