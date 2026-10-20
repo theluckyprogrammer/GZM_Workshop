@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text.Json;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -60,6 +61,61 @@ public sealed class SqlRunner
         Log(sql, param);
         await using var connection = new SqlConnection(ConnectionString);
         return await connection.ExecuteAsync(new CommandDefinition(sql, param, cancellationToken: ct));
+    }
+
+    // One connection and one transaction. Without CommitAsync (exception) the transaction is rolled back.
+    public async Task<T> InTransactionAsync<T>(Func<SqlTransaction, Task<T>> work, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(work);
+
+        await using var connection = new SqlConnection(ConnectionString);
+        await connection.OpenAsync(ct);
+        await using var transaction = (SqlTransaction)await connection.BeginTransactionAsync(ct);
+        var result = await work(transaction);
+        await transaction.CommitAsync(ct);
+        return result;
+    }
+
+    public async Task<T?> ExecuteScalarAsync<T>(SqlTransaction transaction, string sql, object? param = null, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(transaction);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sql);
+
+        Log(sql, param);
+        return await transaction.Connection.ExecuteScalarAsync<T>(new CommandDefinition(sql, param, transaction, cancellationToken: ct));
+    }
+
+    public async Task<int> ExecuteAsync(SqlTransaction transaction, string sql, object? param = null, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(transaction);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sql);
+
+        Log(sql, param);
+        return await transaction.Connection.ExecuteAsync(new CommandDefinition(sql, param, transaction, cancellationToken: ct));
+    }
+
+    // The same statement for every parameter set (Dapper runs it once per row). Only the number of rows is logged.
+    public async Task<int> ExecuteManyAsync(SqlTransaction transaction, string sql, IReadOnlyCollection<object> rows, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(transaction);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sql);
+        ArgumentNullException.ThrowIfNull(rows);
+
+        _logger.LogInformation("{Sql} | parametry: {Count} wierszy", sql.Trim(), rows.Count);
+        return await transaction.Connection.ExecuteAsync(new CommandDefinition(sql, rows, transaction, cancellationToken: ct));
+    }
+
+    public async Task BulkCopyAsync(SqlTransaction transaction, string destination, DataTable rows, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(transaction);
+        ArgumentException.ThrowIfNullOrWhiteSpace(destination);
+        ArgumentNullException.ThrowIfNull(rows);
+
+        _logger.LogInformation("SqlBulkCopy → {Destination} | {Count} wierszy", destination, rows.Rows.Count);
+        using var bulk = new SqlBulkCopy(transaction.Connection, SqlBulkCopyOptions.Default, transaction) { DestinationTableName = destination };
+        foreach (DataColumn column in rows.Columns)
+            bulk.ColumnMappings.Add(column.ColumnName, column.ColumnName);
+        await bulk.WriteToServerAsync(rows, ct);
     }
 
     private void Log(string sql, object? param) =>
