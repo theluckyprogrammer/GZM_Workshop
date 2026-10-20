@@ -1,0 +1,72 @@
+{
+  "scenario": "s03",
+  "dataset": "Dzienna dostępność rowerów w gminach",
+  "source": {
+    "file": "data/raw/s03_rowery-dostepnosc-gminy.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "BikeAvailability",
+  "columns": [
+    {
+      "csv": "Dzień",
+      "field": "Day",
+      "sqlType": "date",
+      "culture": "pl-PL",
+      "format": "yyyy-MM-dd",
+      "nullable": false
+    },
+    {
+      "csv": "Gmina",
+      "field": "Commune",
+      "sqlType": "nvarchar(40)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Liczba dostępnych rowerów",
+      "field": "AvailableBikes",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Wymagana liczba dostępnych rowerów",
+      "field": "RequiredBikes",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Przekroczono",
+      "field": "Exceeded",
+      "sqlType": "bit",
+      "culture": "pl-PL",
+      "format": "Tak|Nie",
+      "nullable": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Day",
+      "Commune"
+    ]
+  },
+  "filter": {
+    "field": "Commune"
+  },
+  "statistic": {
+    "kind": "sum",
+    "field": "AvailableBikes"
+  },
+  "titleField": "Commune",
+  "checkField": "AvailableBikes",
+  "attribution": "Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/4e4f0a8bdce9bb2857c6ef27eceb7a8308127b738dfd7c51decc88287d4b9084"
+}

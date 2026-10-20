@@ -1,0 +1,91 @@
+{
+  "scenario": "s10",
+  "dataset": "Gliwice: boiska i stadiony",
+  "source": {
+    "file": "data/raw/s10_gliwice-boiska-stadiony.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "SportsFields",
+  "columns": [
+    {
+      "csv": "FID",
+      "field": "Fid",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "FID_1",
+      "import": false
+    },
+    {
+      "csv": "RODZAJ",
+      "field": "Kind",
+      "sqlType": "nvarchar(80)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "NAZWA",
+      "field": "Name",
+      "sqlType": "nvarchar(80)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "uwagi",
+      "import": false
+    },
+    {
+      "csv": "ADRES",
+      "field": "Address",
+      "sqlType": "nvarchar(50)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "TYP",
+      "import": false
+    },
+    {
+      "csv": "x",
+      "field": "X",
+      "sqlType": "decimal(20,10)",
+      "culture": "invariant",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "y",
+      "field": "Y",
+      "sqlType": "decimal(20,10)",
+      "culture": "invariant",
+      "format": null,
+      "nullable": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Fid"
+    ]
+  },
+  "filter": {
+    "field": "Name"
+  },
+  "statistic": {
+    "kind": "top5",
+    "field": "Kind"
+  },
+  "titleField": "Name",
+  "checkField": "X",
+  "attribution": "Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/05bc52c0eed46e917739a13ee88cc94f45a672c3ffaa9ef5bc88f4ad6bdb660b"
+}

@@ -1,0 +1,99 @@
+{
+  "scenario": "s02",
+  "dataset": "Metrorower: stacje aktualne",
+  "source": {
+    "file": "data/raw/s02_metrorower-stacje.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "BikeStations",
+  "columns": [
+    {
+      "csv": "Nazwa",
+      "field": "Name",
+      "sqlType": "nvarchar(20)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Numer",
+      "field": "Number",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Obszar",
+      "field": "Area",
+      "sqlType": "nvarchar(50)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Typ",
+      "import": false
+    },
+    {
+      "csv": "# bazowa",
+      "field": "BaseBikes",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "# stojaków",
+      "field": "Racks",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Dostępna",
+      "field": "Available",
+      "sqlType": "bit",
+      "culture": "pl-PL",
+      "format": "Tak|Nie",
+      "nullable": false
+    },
+    {
+      "csv": "Lat",
+      "field": "Lat",
+      "sqlType": "decimal(12,9)",
+      "culture": "invariant",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "Lng",
+      "field": "Lng",
+      "sqlType": "decimal(12,9)",
+      "culture": "invariant",
+      "format": null,
+      "nullable": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Number"
+    ]
+  },
+  "filter": {
+    "field": "Area"
+  },
+  "statistic": {
+    "kind": "sum",
+    "field": "Racks"
+  },
+  "titleField": "Name",
+  "checkField": "Lat",
+  "attribution": "Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/b161e77ded1548e6044a0f52796df030fe96755c3e1470e49d8524084682d464"
+}

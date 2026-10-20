@@ -1,0 +1,171 @@
+{
+  "scenario": "s12",
+  "dataset": "Bytom: zabytki",
+  "source": {
+    "file": "data/raw/s12_bytom-zabytki.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "HistoricBuildings",
+  "columns": [
+    {
+      "csv": "additionalInfo",
+      "import": false
+    },
+    {
+      "csv": "addressadditionalInformation",
+      "import": false
+    },
+    {
+      "csv": "addressbuildingNumber",
+      "field": "BuildingNumber",
+      "sqlType": "nvarchar(10)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "addresscity",
+      "import": false
+    },
+    {
+      "csv": "addressflatNumber",
+      "import": false
+    },
+    {
+      "csv": "addresspostalCode",
+      "import": false
+    },
+    {
+      "csv": "addressstreetName",
+      "field": "Street",
+      "sqlType": "nvarchar(100)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "addressstreetPrefix",
+      "import": false
+    },
+    {
+      "csv": "area",
+      "import": false
+    },
+    {
+      "csv": "author",
+      "import": false
+    },
+    {
+      "csv": "comment",
+      "import": false
+    },
+    {
+      "csv": "condition",
+      "import": false
+    },
+    {
+      "csv": "coordinates",
+      "import": false
+    },
+    {
+      "csv": "currentFunction",
+      "import": false
+    },
+    {
+      "csv": "expungeDate",
+      "import": false
+    },
+    {
+      "csv": "expungeDecisionNumber",
+      "import": false
+    },
+    {
+      "csv": "historicSiteId",
+      "import": false
+    },
+    {
+      "csv": "id",
+      "field": "Id",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "material",
+      "import": false
+    },
+    {
+      "csv": "name",
+      "field": "Name",
+      "sqlType": "nvarchar(1000)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "originalFunction",
+      "import": false
+    },
+    {
+      "csv": "originatedPeriod",
+      "import": false
+    },
+    {
+      "csv": "originatedYear",
+      "import": false
+    },
+    {
+      "csv": "owner",
+      "import": false
+    },
+    {
+      "csv": "protectionForm",
+      "import": false
+    },
+    {
+      "csv": "registrationDate",
+      "import": false
+    },
+    {
+      "csv": "registryNumber",
+      "import": false
+    },
+    {
+      "csv": "style",
+      "field": "Style",
+      "sqlType": "nvarchar(80)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "type",
+      "import": false
+    },
+    {
+      "csv": "unescoId",
+      "import": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Id"
+    ]
+  },
+  "filter": {
+    "field": "Name"
+  },
+  "statistic": {
+    "kind": "top5",
+    "field": "Style"
+  },
+  "titleField": "Name",
+  "checkField": "Style",
+  "attribution": "Źródło: Bytom, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/77714e3bb8cad342bc54cfe6d77c478c4d2141b97aefc1cb6df6cc0719ce52a3"
+}

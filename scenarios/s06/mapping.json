@@ -1,0 +1,87 @@
+{
+  "scenario": "s06",
+  "dataset": "Dąbrowa Górnicza: pomniki przyrody",
+  "source": {
+    "file": "data/raw/s06_dabrowa-pomniki-przyrody.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "NatureMonuments",
+  "columns": [
+    {
+      "csv": "cadastralDistrict",
+      "field": "CadastralDistrict",
+      "sqlType": "nvarchar(50)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "cadastralPlotNumber",
+      "import": false
+    },
+    {
+      "csv": "circumference",
+      "field": "Circumference",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "comments",
+      "import": false
+    },
+    {
+      "csv": "coordinateData",
+      "field": "Coordinates",
+      "sqlType": "nvarchar(50)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "description",
+      "field": "Description",
+      "sqlType": "nvarchar(600)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "id",
+      "field": "Id",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "name",
+      "field": "Name",
+      "sqlType": "nvarchar(80)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Id"
+    ]
+  },
+  "filter": {
+    "field": "Name"
+  },
+  "statistic": {
+    "kind": "avg",
+    "field": "Circumference"
+  },
+  "titleField": "Name",
+  "checkField": "Circumference",
+  "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/498f49f43a2b0c7b39c26ee824eae5bcdb95c1001277727318ffe297ba02f7d1"
+}
