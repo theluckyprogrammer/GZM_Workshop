@@ -31,5 +31,8 @@ public static class DatasetCatalog
         new("R3", "73ad234d3f98dc1c34a87474bb54446510ac7c104fbb9e6e02e6a63fe3b1f945", "gliwice-biblioteki", "Gliwice: biblioteki", true),
         new("R4", "f310c9b971378c90071de753fc47e60d0b7b7fa52a9a0408bc5937c9373f6bd3", "gliwice-obiekty-sportowe", "Gliwice: obiekty sportowe", true),
         new("R5", "27d74bc7362cbcb3aeaf9b41b3635cc331c227cf122431be9a6aab11e29ac975", "metrorower-rezerwacje", "Metrorower: rezerwacje", true),
+        // R6, R7: added by the workshop lead after R1-R5 ran out (see docs/ZAMIANY.md).
+        new("R6", "60616698d4c313601e766da27640196b633b7c33b5d16f3c1b568bf977dec292", "dabrowa-zabytki-archeologiczne", "Dąbrowa Górnicza: zabytki archeologiczne", true),
+        new("R7", "a6605135dbc0c36162fb4bc135a8c82db2b244d74cabb433237cd3c0a051cf60", "katowice-uczniowskie-kluby-sportowe", "Katowice: uczniowskie kluby sportowe", true),
     ];
 }

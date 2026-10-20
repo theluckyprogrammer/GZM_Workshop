@@ -11,7 +11,7 @@ public static class ReplacementReport
         ArgumentNullException.ThrowIfNull(slots);
 
         var text = new StringBuilder("# Zamiany zbiorów danych\n\n");
-        text.AppendLine("Generuje `tools/Fetch`. Reguły odrzucenia: prompt 02.\n");
+        text.AppendLine("Generuje `tools/Fetch`. Reguły odrzucenia: prompt 02. Rezerwy R6 i R7 dodał prowadzący, gdy R1–R5 się wyczerpały.\n");
         var replaced = slots.Where(s => s.Replaced is not null).ToList();
         text.AppendLine(replaced.Count == 0 ? "Zamian nie było: wszystkie 15 zbiorów głównych spełnia reguły." : "## Zamiany\n");
         foreach (var slot in replaced)

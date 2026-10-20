@@ -20,8 +20,8 @@ public static class ColumnProfiler
 
     private static readonly Regex Integer = new(@"^-?\d+$", RegexOptions.Compiled);
     private static readonly Regex CommaDecimal = new(@"^-?\d+,\d+$", RegexOptions.Compiled);
-    private static readonly Regex UnixMilliseconds = new(@"^\d{13}$", RegexOptions.Compiled);
-    private static readonly long MinUnixMs = new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero).ToUnixTimeMilliseconds();
+    private static readonly Regex UnixMilliseconds = new(@"^\d{12,13}$", RegexOptions.Compiled);
+    private static readonly long MinUnixMs = new DateTimeOffset(1990, 1, 1, 0, 0, 0, TimeSpan.Zero).ToUnixTimeMilliseconds();
     private static readonly long MaxUnixMs = new DateTimeOffset(2036, 1, 1, 0, 0, 0, TimeSpan.Zero).ToUnixTimeMilliseconds();
     private static readonly Regex DotDecimal = new(@"^-?\d+\.\d+$", RegexOptions.Compiled);
 
