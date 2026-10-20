@@ -10,4 +10,4 @@
 
 Środowisko Claude Code w chmurze pozwala pushować tylko na gałąź sesji.
 
-- `main`: prompty 01–02 są już w `main` (PR #2). Zmerguj (fast-forward) `claude/admiring-franklin-wpdxux` po commicie „03: mapowania i wartości kontrolne”.
+- `main`: prompty 01–02 są już w `main` (PR #2). Zmerguj PR #3 (`claude/admiring-franklin-wpdxux`, commit „03: mapowania i wartości kontrolne”).
