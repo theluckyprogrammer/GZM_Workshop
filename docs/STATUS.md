@@ -10,6 +10,7 @@
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
-Środowisko Claude Code w chmurze pozwala pushować tylko na gałąź sesji.
+Środowisko Claude Code w chmurze pushuje na gałąź sesji i na `ratunek/*`; `main` aktualizuje się przez PR.
 
-- `main`: prompty 01–03 są już w `main` (PR #3). Zmerguj `claude/admiring-franklin-wpdxux` po commicie „04: karty i prompty uczniów” (nowy PR).
+- `ratunek/etap-1`: wypchnięta (commit „05: ratunek etap-1: generyczny import”), nic do zrobienia.
+- `main`: zmerguj `claude/admiring-franklin-wpdxux` (nowy PR) – zawiera tylko ten plik `docs/STATUS.md` z wierszem 05.
