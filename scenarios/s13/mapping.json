@@ -1,0 +1,111 @@
+{
+  "scenario": "s13",
+  "dataset": "SCK Siemianowice: zajęcia sekcyjne",
+  "source": {
+    "file": "data/raw/s13_sck-zajecia-sekcyjne.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "CultureClasses",
+  "columns": [
+    {
+      "csv": "additionalInfo",
+      "import": false
+    },
+    {
+      "csv": "additionalInfoAboutParticipants",
+      "import": false
+    },
+    {
+      "csv": "classType",
+      "field": "ClassType",
+      "sqlType": "nvarchar(40)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "day",
+      "field": "Day",
+      "sqlType": "nvarchar(40)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "endHour",
+      "import": false
+    },
+    {
+      "csv": "id",
+      "field": "Id",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "maximalAge",
+      "import": false
+    },
+    {
+      "csv": "minimalAge",
+      "field": "MinAge",
+      "sqlType": "decimal(4,1)",
+      "culture": "invariant",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "room",
+      "field": "Room",
+      "sqlType": "nvarchar(60)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "section",
+      "field": "Section",
+      "sqlType": "nvarchar(80)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "startHour",
+      "field": "StartHour",
+      "sqlType": "time(0)",
+      "culture": "pl-PL",
+      "format": "HH:mm|HH.mm",
+      "nullable": true
+    },
+    {
+      "csv": "unit",
+      "field": "Unit",
+      "sqlType": "nvarchar(30)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Id"
+    ]
+  },
+  "filter": {
+    "field": "Section"
+  },
+  "statistic": {
+    "kind": "count-by",
+    "field": "ClassType"
+  },
+  "titleField": "Section",
+  "checkField": "MinAge",
+  "attribution": "Źródło: Siemianowickie Centrum Kultury, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/1ea36ecce32f5766c78654f9cd1358a75830a7799d8a002fc251bec6b7359f47"
+}
