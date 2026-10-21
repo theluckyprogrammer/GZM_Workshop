@@ -74,6 +74,23 @@ Decyzje: 1–2 = A, **3 = B** (TOP 5 gmin), 4 = A.
 
 Wariant B decyzji 3 działa.
 
+## s06 – drugie przejście na poprawionych promptach
+
+Nowy worktree ze stanem po wszystkich zmianach z tabeli niżej. Decyzje: 1–3 = A, **4 = B**.
+
+| Krok | Model (s) | Pauza (s) | Wynik wobec `checkpoints.md` |
+|---|---|---|---|
+| 1 – import | 51 | 9 | OK: 31 wierszy, wiersz 7 = 290; przy drugim starcie log „Import pominięty – w tabeli jest 31 wierszy” |
+| 2 – endpoint | 21 | 12 | OK: „wyniosły” → „Wyników: 3” (Nr 5, 14, 28); pusta fraza → licznik 31, lista 20; 101 znaków → 400 |
+| 3 – widok HTMX | 29 | 10 | OK: kafelek 311,40 cm, fragment bez `<html>`, zwykłe wejście na `?handler=Szukaj&q=…` → cała strona |
+| 4 – ulubione (B) | 51 | 30 | OK: ★ na Nr 7, „dodano 21.10.2026 23:42” (w bazie 21:42 UTC); 400 / 401 / przekierowanie; lista HTMX zalogowanego pokazuje ★ jako dodaną; POST/DELETE 2× → ten sam stan |
+
+Żaden krok nie potrzebował pliku spoza listy. Model wykonał każdy prompt za pierwszym razem, bez zgadywania.
+
+Uwagi z tego przejścia:
+- Przykład encji w pauzie 2 zmieniono na `&#x142;` („ł”) – zmiana 14 w tabeli niżej.
+- Bez zmiany: `Add` z nieistniejącym `RecordId` (np. `id=0`) zapisuje w `Favorites` wiersz, którego lista nie pokazuje. Wiersz jest niewidoczny dla ucznia, a poprawka wymagałaby dodatkowego warunku w prompcie i w kodzie ratunkowym.
+
 ## Zmiany w promptach (szablon `tools/Cards/templates/prompty.md`, wszystkie 15 scenariuszy)
 
 Wszystkie poprawki są wspólne dla scenariuszy, więc naniesiono je w szablonie (oraz w `Decisions.cs` i `Variables.cs`) i wygenerowano materiały ponownie: `prompty.md`, `prowadzacy.md`, `print/`. `Cards check` nie zgłosił błędów. Pozostałych scenariuszy nie przechodzono w całości, zgodnie z promptem 22.
@@ -93,6 +110,7 @@ Wszystkie poprawki są wspólne dla scenariuszy, więc naniesiono je w szablonie
 | 11 | 4 | Widoczność linku „Moje ulubione” (s06, s04) | Widoczny zawsze; niezalogowanego strona przekieruje do logowania |
 | 12 | 4 (4B) | Strefa czasowa i format `CreatedAt` (s06) | „w bazie UTC – pokaż czas polski jako `dd.MM.yyyy HH:mm`” (`Decisions.cs`) |
 | 13 | 4 | Oba stany przycisku miały ten sam znak (s06) | „☆” = dodaj (`hx-post`), „★” = usuń (`hx-delete`) |
+| 14 | 2 | Przykład encji `&#x144;` nie pasował do „wyniosły” (s06, 2. przejście) | Przykład `&#x142;` („ł”) |
 
 Czego nie zmieniono:
 - Razor koduje polskie litery jako encje. Naprawa (`WebEncoderOptions` z `UnicodeRanges.All`) wymaga zmiany `Program.cs`, a ten plik jest na liście deny promptów. Zostaje decyzja prowadzącego: zmiana w gałęzi startowej albo tylko uwaga w pauzie 2, którą już dodano.
