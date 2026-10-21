@@ -73,7 +73,7 @@
   <p><strong>Zobaczcie, co powstało:</strong></p>
   <ul>
     <li>Uruchomcie aplikację i otw&#243;rzcie adres <code>http://localhost:5080/?handler=Szukaj&amp;q=</code> z dopisanym słowem z wybranej kolumny (dla wariantu A np. <code>bieruń</code>). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.</li>
-    <li>F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie <code>?handler=Szukaj</code>: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać jak <code>&amp;#x144;</code> – to ten sam znak, zapisany kodem HTML.</li>
+    <li>F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie <code>?handler=Szukaj</code>: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać np. jak <code>&amp;#x142;</code> (to „ł”) – to ten sam znak, zapisany kodem HTML.</li>
     <li>W terminalu (log SQL) widać zapytanie z parametrem <code>q</code> – to Wasza fraza.</li>
   </ul>
   <div class="decyzja">
