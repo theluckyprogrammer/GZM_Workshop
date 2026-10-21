@@ -85,6 +85,10 @@
     "field": "Kind"
   },
   "titleField": "Name",
+  "listFields": [
+    "Kind",
+    "Address"
+  ],
   "checkField": "X",
   "attribution": "Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/05bc52c0eed46e917739a13ee88cc94f45a672c3ffaa9ef5bc88f4ad6bdb660b"

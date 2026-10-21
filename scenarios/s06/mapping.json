@@ -81,6 +81,10 @@
     "field": "Circumference"
   },
   "titleField": "Name",
+  "listFields": [
+    "Circumference",
+    "CadastralDistrict"
+  ],
   "checkField": "Circumference",
   "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/498f49f43a2b0c7b39c26ee824eae5bcdb95c1001277727318ffe297ba02f7d1"

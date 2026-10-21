@@ -101,6 +101,10 @@
     "field": "Status"
   },
   "titleField": "ItemName",
+  "listFields": [
+    "EntryDate",
+    "Status"
+  ],
   "checkField": "EntryDate",
   "attribution": "Źródło: Bytom, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/dea28113f214eb0fb3fc9fcc9ec149f6cd5f61b7382e422645bd2fb52a60c67b"

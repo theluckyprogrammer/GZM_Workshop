@@ -129,6 +129,10 @@
     "field": "Status"
   },
   "titleField": "Name",
+  "listFields": [
+    "Street",
+    "Status"
+  ],
   "checkField": "RegisteredOn",
   "attribution": "Źródło: Katowice, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/a6605135dbc0c36162fb4bc135a8c82db2b244d74cabb433237cd3c0a051cf60"

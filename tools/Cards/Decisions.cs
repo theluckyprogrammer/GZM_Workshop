@@ -52,6 +52,7 @@ public static class Decisions
         Ensure(mapping, text.Search.Count >= 2 && text.ListFields.Count >= 2 && text.Stats.Count >= 2, "każda decyzja potrzebuje co najmniej 2 wariantów");
         Ensure(mapping, text.Search[0] is { Match: "contains" } first && first.Field == mapping.Filter.Field, "wariant A wyszukiwania ≠ filter z mapping.json");
         Ensure(mapping, text.Stats[0].Kind == mapping.Statistic.Kind && text.Stats[0].Field == mapping.Statistic.Field, "wariant A statystyki ≠ statistic z mapping.json");
+        Ensure(mapping, mapping.ListFields is { } list && text.ListFields[0].Fields.SequenceEqual(list), "wariant A listy ≠ listFields z mapping.json");
         Ensure(mapping, text.Stats.Where(o => o.Kind is "sum" or "avg").All(o => NumericTypes.Any(columns[o.Field].StartsWith)), "sum/avg na polu nieliczbowym");
     }
 

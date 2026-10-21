@@ -101,6 +101,10 @@
     "field": "ItemName"
   },
   "titleField": "ItemName",
+  "listFields": [
+    "FoundDate",
+    "CollectionDate"
+  ],
   "checkField": "FoundDate",
   "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/565dc7a79264b260f100cd7e07e40a06e5bd073b5d0721e8ea6619e721178b8c"

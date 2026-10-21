@@ -125,6 +125,9 @@
     "field": "AzpArea"
   },
   "titleField": "LocalName",
+  "listFields": [
+    "Chronology"
+  ],
   "checkField": "Chronology",
   "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/60616698d4c313601e766da27640196b633b7c33b5d16f3c1b568bf977dec292"

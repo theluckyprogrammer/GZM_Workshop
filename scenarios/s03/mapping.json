@@ -66,6 +66,10 @@
     "field": "AvailableBikes"
   },
   "titleField": "Commune",
+  "listFields": [
+    "AvailableBikes",
+    "RequiredBikes"
+  ],
   "checkField": "AvailableBikes",
   "attribution": "Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/4e4f0a8bdce9bb2857c6ef27eceb7a8308127b738dfd7c51decc88287d4b9084"
