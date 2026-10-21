@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Przełącza stanowisko na gotowy etap warsztatu (gałąź ratunek/etap-N) i importuje dane scenariusza.
 
