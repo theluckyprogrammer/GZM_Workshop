@@ -22,7 +22,7 @@ DANE
 | `Wymagana liczba dostępnych rowerów` | `RequiredBikes` | `int` | pl-PL | – | nie |
 | `Przekroczono` | `Exceeded` | `bit` | pl-PL | „Tak” = 1, „Nie” = 0 | nie |
 
-- Klucz naturalny (unikalny): `Day` + `Commune`.
+- Klucz naturalny (unikalny): `Day` + `Commune`. Wiersze zapisuj przez `MERGE` po kluczu: powtórzony klucz nadpisuje wcześniejszy wiersz, bez wyjątku.
 - Utwórz plik `db/s03_create.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync`) przed importem. W działającej aplikacji czytaj go z `Path.Combine(AppContext.BaseDirectory, "db", "s03_create.sql")` (tak jak `DatabaseBootstrapper`):
 
 ```sql
@@ -179,6 +179,7 @@ Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/In
 1. Otwórzcie `http://localhost:5080` i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.
 2. F12 → Network: przy pisaniu pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Tylko lista wraca z serwera, reszta strony zostaje.
 3. Nad listą jest kafelek ze statystyką, a w stopce – źródło danych.
+4. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
 
 ### ⏸ Pauza – decyzja 4: co pokazać w „Moich ulubionych”?
 

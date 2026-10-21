@@ -25,7 +25,7 @@ DANE
 | `Nr stanowiska` | `Platform` | `nvarchar(10)` | pl-PL | – | tak |
 | `Współrzędne geograficzne` | `Coordinates` | `nvarchar(60)` | pl-PL | – | tak |
 
-- Klucz naturalny (unikalny): `MachineCode`.
+- Klucz naturalny (unikalny): `MachineCode`. Wiersze zapisuj przez `MERGE` po kluczu: powtórzony klucz nadpisuje wcześniejszy wiersz, bez wyjątku.
 - Windows-1250 wymaga na początku `AddAppServices` wywołania `Encoding.RegisterProvider(CodePagesEncodingProvider.Instance)`.
 - Pomiń wiersze, w których kolumna `L.p.` jest pusta: to legenda i suma pod tabelą (wiersze 267, 268, 269, 270, 271, 272).
 - Utwórz plik `db/s14_create.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync`) przed importem. W działającej aplikacji czytaj go z `Path.Combine(AppContext.BaseDirectory, "db", "s14_create.sql")` (tak jak `DatabaseBootstrapper`):
@@ -187,6 +187,7 @@ Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/In
 1. Otwórzcie `http://localhost:5080` i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.
 2. F12 → Network: przy pisaniu pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Tylko lista wraca z serwera, reszta strony zostaje.
 3. Nad listą jest kafelek ze statystyką, a w stopce – źródło danych.
+4. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
 
 ### ⏸ Pauza – decyzja 4: co pokazać w „Moich ulubionych”?
 

@@ -25,7 +25,7 @@ DANE
 | `startHour` | `StartHour` | `time(0)` | pl-PL | `HH:mm` albo `HH.mm` | tak |
 | `unit` | `Unit` | `nvarchar(30)` | pl-PL | – | nie |
 
-- Klucz naturalny (unikalny): `Id`.
+- Klucz naturalny (unikalny): `Id`. Wiersze zapisuj przez `MERGE` po kluczu: powtórzony klucz nadpisuje wcześniejszy wiersz, bez wyjątku.
 - Utwórz plik `db/s13_create.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync`) przed importem. W działającej aplikacji czytaj go z `Path.Combine(AppContext.BaseDirectory, "db", "s13_create.sql")` (tak jak `DatabaseBootstrapper`):
 
 ```sql
@@ -191,6 +191,7 @@ Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/In
 1. Otwórzcie `http://localhost:5080` i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.
 2. F12 → Network: przy pisaniu pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Tylko lista wraca z serwera, reszta strony zostaje.
 3. Nad listą jest kafelek ze statystyką, a w stopce – źródło danych.
+4. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
 
 ### ⏸ Pauza – decyzja 4: co pokazać w „Moich ulubionych”?
 

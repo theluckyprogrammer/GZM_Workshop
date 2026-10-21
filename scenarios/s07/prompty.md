@@ -20,7 +20,7 @@ DANE
 | `ADRES___ZARZĄDZAJĄCY` | `AddressManager` | `nvarchar(150)` | pl-PL | – | nie |
 | `ObjectId` | `ObjectId` | `int` | pl-PL | – | nie |
 
-- Klucz naturalny (unikalny): `ObjectId`.
+- Klucz naturalny (unikalny): `ObjectId`. Wiersze zapisuj przez `MERGE` po kluczu: powtórzony klucz nadpisuje wcześniejszy wiersz, bez wyjątku.
 - Utwórz plik `db/s07_create.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync`) przed importem. W działającej aplikacji czytaj go z `Path.Combine(AppContext.BaseDirectory, "db", "s07_create.sql")` (tak jak `DatabaseBootstrapper`):
 
 ```sql
@@ -163,6 +163,7 @@ Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/In
 1. Otwórzcie `http://localhost:5080` i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.
 2. F12 → Network: przy pisaniu pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Tylko lista wraca z serwera, reszta strony zostaje.
 3. Nad listą jest kafelek ze statystyką, a w stopce – źródło danych.
+4. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
 
 ### ⏸ Pauza – decyzja 4: co pokazać w „Moich ulubionych”?
 
