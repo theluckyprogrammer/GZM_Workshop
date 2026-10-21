@@ -81,3 +81,5 @@
 - [18] Playwright 1.64 uruchamia Chromium z `/opt/pw-browsers` (zmienna `GZM_CHROMIUM` albo automatyczne wyszukanie), bez pobierania przeglądarek. Na Windows bez tych ścieżek Playwright użyje przeglądarki z `playwright.ps1 install chromium` (wymaga internetu raz).
 - [18] Testy UI uruchamiają aplikację na prawdziwym porcie przez `WebApplicationFactory.UseKestrel(0)` (.NET 10) z osobną bazą `GzmTest_{scenariusz}_ui`. UI-05: przy zablokowanych wszystkich żądaniach poza aplikację strona nie próbowała pobrać niczego z zewnątrz (lista zablokowanych pusta), wyszukiwarka działa.
 - [18] Licencja Microsoft.Playwright to MIT (prompt podawał Apache-2.0).
+- [19] `dotnet test --filter "Poziom<=N"` nie działa (filtr VSTest zna tylko `=`, `!=`, `~`); poziomy podane jawnie: `Poziom=0|Poziom=1|…`.
+- [19] `ratunek.ps1 -Etap 3 -Scenariusz s06` uruchomiony dwa razy na klonie z niezacommitowaną zmianą ucznia (zmieniony plik + nowy plik): 1 schowek z obiema zmianami, oba przebiegi importują 31 wierszy, zmiany odzyskane przez `git stash apply`.
