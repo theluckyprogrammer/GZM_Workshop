@@ -63,6 +63,8 @@ public static class Variables
     private static string DataNotes(ScenarioMapping mapping, IReadOnlyList<Checkpoint> checkpoints)
     {
         var notes = new List<string> { KeyNote(mapping) };
+        if (mapping.Source.Encoding == "Windows-1250")
+            notes.Add("- Windows-1250 wymaga na początku `AddAppServices` wywołania `Encoding.RegisterProvider(CodePagesEncodingProvider.Instance)`.");
         if (mapping.Source.SkipRowsWhenEmpty is { } column)
             notes.Add($"- Pomiń wiersze, w których kolumna `{column}` jest pusta: to legenda i suma pod tabelą (wiersze {checkpoints.Value("E1.skipped")}).");
         if (checkpoints.Value("E1.duplicates") != "brak")
