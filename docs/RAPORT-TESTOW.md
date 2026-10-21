@@ -1,6 +1,6 @@
 # Raport testów – warsztat „AI + otwarte dane GZM” (stan 21.10.2026)
 
-Pełny zestaw na `ratunek/etap-4` (bez Playwright, bez prawdziwego SOL-6): __WYNIK__.
+Pełny zestaw na `ratunek/etap-4` (bez Playwright, bez prawdziwego SOL-6): 509 testów, 508 zielonych, 0 czerwonych, 1 pominięty (AI-04 – brak klucza SOL-6), 38 s.
 
 | Poziom | Zakres | Status |
 |---|---|---|
