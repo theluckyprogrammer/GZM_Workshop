@@ -23,7 +23,12 @@ public sealed partial class TemplateRenderer(IReadOnlyDictionary<string, string>
         _ => variables.TryGetValue(kind, out var value) ? value : throw Unknown(kind),
     };
 
-    public static string Reference(Checkpoint checkpoint) => $"**{checkpoint.Value}** ({checkpoint.Id})";
+    public static string Reference(Checkpoint checkpoint)
+    {
+        ArgumentNullException.ThrowIfNull(checkpoint);
+
+        return $"**{checkpoint.Value}** ({checkpoint.Id})";
+    }
 
     private static string List(IEnumerable<Checkpoint> items)
     {
