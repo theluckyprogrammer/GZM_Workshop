@@ -83,8 +83,13 @@ public static partial class Checks
     }
 
     // Like SQL LIKE '%phrase%' with a collation that ignores case and accents (CI_AI).
-    public static bool Contains(ParsedValue value, string phrase) =>
-        value.State == ValueState.Ok && Polish.CompareInfo.IndexOf(value.Display, phrase, CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace) >= 0;
+    public static bool Contains(ParsedValue value, string phrase)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(phrase);
+
+        return value.State == ValueState.Ok && Polish.CompareInfo.IndexOf(value.Display, phrase, CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace) >= 0;
+    }
 
     private const string PolishLetters = "ąćęłńóśźż";
 

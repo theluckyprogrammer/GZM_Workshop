@@ -17,16 +17,20 @@ public static class ReplacementReport
         foreach (var slot in replaced)
             text.AppendLine(Line(slot));
 
-        var unfilled = slots.Where(s => !s.IsFilled).ToList();
-        text.AppendLine(unfilled.Count == 0 ? string.Empty : "\n## Brak zbioru rezerwowego (DO DECYZJI)\n");
-        foreach (var slot in unfilled)
-            text.AppendLine($"- {slot.Code}: {slot.Dataset.Definition.Label} (`{slot.Dataset.Definition.Id}`) odrzucony – {string.Join("; ", slot.Dataset.Rejections)}. Rezerwy R1–R5 wyczerpane.");
-
+        AppendUnfilled(text, slots);
         var rejectedReserves = datasets.Where(d => d.Definition.IsReserve && d.IsRejected).ToList();
         text.AppendLine(rejectedReserves.Count == 0 ? string.Empty : "\n## Odrzucone zbiory rezerwowe\n");
         foreach (var reserve in rejectedReserves)
             text.AppendLine($"- {reserve.Definition.Code} {reserve.Definition.Label}: {string.Join("; ", reserve.Rejections)}");
         return text.ToString().TrimEnd() + "\n";
+    }
+
+    private static void AppendUnfilled(StringBuilder text, IReadOnlyList<Slot> slots)
+    {
+        var unfilled = slots.Where(s => !s.IsFilled).ToList();
+        text.AppendLine(unfilled.Count == 0 ? string.Empty : "\n## Brak zbioru rezerwowego (DO DECYZJI)\n");
+        foreach (var slot in unfilled)
+            text.AppendLine($"- {slot.Code}: {slot.Dataset.Definition.Label} (`{slot.Dataset.Definition.Id}`) odrzucony – {string.Join("; ", slot.Dataset.Rejections)}. Rezerwy R1–R5 wyczerpane.");
     }
 
     private static string Line(Slot slot)
