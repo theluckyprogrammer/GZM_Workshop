@@ -55,6 +55,10 @@ public static class CheckpointWriter
     private static string KeyText(KeyMapping key) =>
         key.IsRowHash ? "`RowHash` (skrót wszystkich importowanych pól)" : string.Join(" + ", key.Fields.Select(f => $"`{f}`"));
 
-    public static string Escape(string value) =>
-        value.Replace("|", "\\|").ReplaceLineEndings("\\n");
+    public static string Escape(string value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+
+        return value.Replace("|", "\\|").ReplaceLineEndings("\\n");
+    }
 }

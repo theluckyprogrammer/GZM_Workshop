@@ -53,6 +53,11 @@ public static class Traps
     }
 
     // E1.weird.<Field> = "empty / unparsable".
-    public static IEnumerable<int> EmptyCount(IReadOnlyList<Checkpoint> checkpoints, string field) =>
-        checkpoints.Where(c => c.Id == $"E1.weird.{field}").Select(c => int.Parse(c.Value.Split(" / ")[0]));
+    public static IEnumerable<int> EmptyCount(IReadOnlyList<Checkpoint> checkpoints, string field)
+    {
+        ArgumentNullException.ThrowIfNull(checkpoints);
+        ArgumentException.ThrowIfNullOrWhiteSpace(field);
+
+        return checkpoints.Where(c => c.Id == $"E1.weird.{field}").Select(c => int.Parse(c.Value.Split(" / ")[0]));
+    }
 }
