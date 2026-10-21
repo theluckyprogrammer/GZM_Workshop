@@ -17,6 +17,7 @@
 | 13 | środowisko i infrastruktura testów | OK | 2026-10-21 | tests/GzmApp.Tests (xUnit, Mvc.Testing, AngleSharp): DbFixture/AppFactory/ScenarioData/helpery, test dymny D-00 + INF-01 zielone na wszystkich gałęziach; docs/SPEC-TESTY.md i TEST-STATUS.md; build całego rozwiązania bez ostrzeżeń. |
 | 14 | dane i wartości kontrolne | OK | 2026-10-21 | Poziom 1: 61 testów zielonych (D-01–D-05); drugi parser bez CsvHelpera daje te same E1–E4 co tools/Expect – 0 rozbieżności; kontrola testu: celowo zmieniona wartość i format są wyłapane. |
 | 15 | testy importu | OK | 2026-10-21 | Poziom 2 na ratunek/etap-1: 106 testów zielonych (E1-01–E1-08, 15 scenariuszy; wartości decimal i dat porównane we wszystkich wierszach); zmergowane w górę, zielone też na etap-4. |
+| 16 | testy endpointu z filtrowaniem | OK | 2026-10-21 | Poziom 3 na ratunek/etap-2: 90 testów zielonych (E2-01–E2-06, 15 scenariuszy, HTTP przez WebApplicationFactory, log SQL przechwycony); zmergowane w górę. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
