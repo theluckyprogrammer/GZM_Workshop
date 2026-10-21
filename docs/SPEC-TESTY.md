@@ -12,14 +12,14 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | D-03 | Licencja i atrybucja każdego zbioru są niepuste | `DataTests.License_and_attribution_are_filled_in` (15) | OK |
 | D-04 | Niezależny parser (inny kod niż `tools/Expect`) daje te same E1–E4 co `checkpoints.md` | `DataTests.Second_parser_gives_the_values_of_checkpoints` (15) | OK |
 | D-05 | Kontrola danych osobowych (PESEL, telefony, e-maile, „Imię Nazwisko”) – trafienia opisane w `findings.md` | `DataTests.No_PESEL_or_email_and_phone_numbers_only_where_reviewed` | OK |
-| E1-01 | Po imporcie `COUNT(*)` = E1.rows | — | — |
-| E1-02 | Wartość pola kontrolnego w wierszu 7 (`SourceRow`) = E1.row7.value | — | — |
-| E1-03 | Polskie znaki zachowane (rekord z ogonkami = surowy plik) | — | — |
-| E1-04 | Liczby z kropką lub przecinkiem dziesiętnym trafiają jako `decimal` z poprawną wartością | — | — |
-| E1-05 | Daty sparsowane według formatu z `mapping.json` | — | — |
-| E1-06 | Puste pola → `NULL`, bez wyjątku | — | — |
-| E1-07 | Idempotencja: drugi import daje tę samą liczbę wierszy | — | — |
-| E1-08 | Atomowość: import przerwany w połowie nie zostawia częściowych danych | — | — |
+| E1-01 | Po imporcie `COUNT(*)` = E1.rows | `ImportTests.Row_count_after_import_equals_E1` (15) | OK |
+| E1-02 | Wartość pola kontrolnego w wierszu 7 (`SourceRow`) = E1.row7.value | `ImportTests.Check_field_in_row_7_equals_checkpoint` (15) | OK |
+| E1-03 | Polskie znaki zachowane (rekord z ogonkami = surowy plik) | `ImportTests.Polish_letters_are_kept` (15; s08 bez polskich liter) | OK |
+| E1-04 | Liczby z kropką lub przecinkiem dziesiętnym trafiają jako `decimal` z poprawną wartością | `ImportTests.Decimal_values_equal_the_file` (15, wszystkie wiersze) | OK |
+| E1-05 | Daty sparsowane według formatu z `mapping.json` | `ImportTests.Dates_follow_the_format_from_mapping` (15, wszystkie wiersze) | OK |
+| E1-06 | Puste pola → `NULL`, bez wyjątku | `ImportTests.Empty_or_unreadable_fields_are_NULL` (15) | OK |
+| E1-07 | Idempotencja: drugi import daje tę samą liczbę wierszy | `ImportTests.Second_import_keeps_the_row_count` (15) | OK |
+| E1-08 | Atomowość: import przerwany w połowie nie zostawia częściowych danych | `ImportTests.Import_interrupted_halfway_leaves_no_partial_data` (s06, trigger testowy) | OK |
 | E2-01 | Filtr dla frazy z checkpointu = E2 (liczba i tytuły) | — | — |
 | E2-02 | Wielkość liter nie ma znaczenia | — | — |
 | E2-03 | Fraza z ogonkami działa; zachowanie bez ogonków opisane w `findings.md` | — | — |
