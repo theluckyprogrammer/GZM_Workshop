@@ -23,8 +23,11 @@ public interface IAiSummarizer
     Task<string> DescribeAsync(string task, IReadOnlyList<RecordField> fields, CancellationToken ct = default);
 }
 
+// Creates the chat client from Sol6:*; tests register their own (a fake IChatClient).
+public delegate IChatClient ChatClientFactory(Sol6Options options);
+
 // One IChatClient call per click. Missing key or a model error give a message, never an exception.
-public sealed class AiSummarizer(IOptions<Sol6Options> options, ILogger<AiSummarizer> logger) : IAiSummarizer
+public sealed class AiSummarizer(IOptions<Sol6Options> options, ILogger<AiSummarizer> logger, ChatClientFactory? clientFactory = null) : IAiSummarizer
 {
     public const string MissingKey = "Brak klucza SOL-6 – poproś prowadzącego";
     public const string MissingConfig = "Brak konfiguracji SOL-6 (Sol6:Endpoint, Sol6:Model) – poproś prowadzącego";
@@ -49,7 +52,7 @@ public sealed class AiSummarizer(IOptions<Sol6Options> options, ILogger<AiSummar
         try
         {
             var messages = new List<ChatMessage> { new(ChatRole.System, SystemPrompt), new(ChatRole.User, UserPrompt(task, fields)) };
-            var response = await CreateClient(config).GetResponseAsync(messages, cancellationToken: ct);
+            var response = await (clientFactory ?? CreateClient)(config).GetResponseAsync(messages, cancellationToken: ct);
             return string.IsNullOrWhiteSpace(response.Text) ? ModelError : response.Text.Trim();
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
