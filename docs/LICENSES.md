@@ -19,6 +19,12 @@ Dozwolone: MIT, Apache-2.0, MS-PL, BSD (w tym 0BSD).
 |---|---|---|
 | CsvHelper | 33.1.0 | MS-PL OR Apache-2.0 |
 
+## Pakiety NuGet (`tools/Expect`)
+
+| Pakiet | Wersja | Licencja |
+|---|---|---|
+| CsvHelper | 33.1.0 | MS-PL OR Apache-2.0 |
+
 ## Dane
 
 Zbiory z otwartedane.metropoliagzm.pl: licencja i wymagana atrybucja każdego zbioru są w `data/metadata.json` (pole `license`).
