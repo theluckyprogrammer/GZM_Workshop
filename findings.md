@@ -76,3 +76,5 @@
 - [16] E2-03: frazy z ogonkami i te same frazy bez ogonków (np. „bieruń”/„bierun”, „wyniosły”/„wyniosly”, „garaż”/„garaz”) dają w SQL Server (`Latin1_General_CI_AI`) identyczne liczby wyników we wszystkich 14 scenariuszach z polską frazą (s08 ma frazę z cyfr). Uczeń może pisać bez polskich liter.
 - [16] E2-05: log kategorii `SQL` przechwytywany w testach (`LogCapture`): zapytanie ma `@q`, a tekst `' OR 1=1 --` jest tylko w parametrach.
 - [16] Testy poziomu 3 wysyłają `HX-Request: true`, więc działają na etap-2 (zawsze fragment) i na wyższych gałęziach (fragment tylko dla HTMX).
+- [17] E3-07: błąd serwera wywołany w teście przez chwilowe przemianowanie tabeli scenariusza (`sp_rename`); żądanie HTMX dostaje 500 z krótkim fragmentem `alert`, nie stronę błędu.
+- [17] E4: każdy test rejestruje własnego użytkownika przez strony Identity (token z formularza), token dla ★ bierze z `<body hx-headers:inherited>` – tak jak przeglądarka z HTMX.
