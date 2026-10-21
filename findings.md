@@ -57,3 +57,6 @@
 - [09] Adres Kilo do testu HTTPS to założenie (`https://api.kilo.ai`); jeśli szkoła używa innego, ustaw `KILO_ENDPOINT` albo parametr `-KiloEndpoint`.
 - [09] Skrypty `.ps1` są zapisane jako UTF-8 z BOM: Windows PowerShell 5.1 czyta plik bez BOM jako Windows-1250 i psuje polskie napisy.
 - [09] `main` dostał pustą sekcję `Sol6` w `appsettings.json` (adres i model wpisuje prowadzący); `check.ps1` czyta też `SOL6__ENDPOINT`, `SOL6__MODEL`, `SOL6__KIND`, `SOL6__APIKEY`.
+- [10] Karty par (`print/karta-pary-sNN.html`) i ściągę (`print/sciaga-prowadzacego.html`) generuje `tools/Cards` (folder `Print/`) z `prompty.md`, `scenarios.json` i `checkpoints.md` – ten sam przebieg co materiały z 04. Sprawdzenie: `dotnet run --project tools/Cards -- check` (ściąga = `checkpoints.md` przez `data-cp`, karty bez wartości oczekiwanych i pustych pól).
+- [10] Wydruk w Chromium (headless, PDF): każda karta i ściąga mają 2 strony A4. Klawisze na karcie: tylko F5, Shift+F5, F12, Ctrl+Shift+P – F9/F10/F11 i Watch usunięto razem z „detektywem”.
+- [10] Na karcie są ścieżka przez kroki, punkty „zobaczcie, co powstało” i decyzje do zaznaczenia (☐ A/B/C); prompty uczniowie kopiują z `prompty.md` w VS Code, nie z papieru.

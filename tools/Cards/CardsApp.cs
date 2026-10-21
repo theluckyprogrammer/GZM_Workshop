@@ -3,7 +3,7 @@ using Expect;
 namespace Cards;
 
 // Usage: dotnet run --project tools/Cards [-- check]
-// Without arguments: generates the student materials in scenarios/sNN/. "check": verifies them, exit code 1 on errors.
+// Without arguments: generates the materials in scenarios/sNN/ and print/. "check": verifies them, exit code 1 on errors.
 public static class CardsApp
 {
     public static int Main(string[] args)
@@ -14,6 +14,9 @@ public static class CardsApp
         var directories = Directory.GetDirectories(Path.Combine(root, "scenarios"), "s*").Order(StringComparer.Ordinal).ToList();
         var check = args.Contains("check");
         var errors = directories.SelectMany(d => check ? Check(d) : Generate(tool, d, texts)).ToList();
+        if (!check)
+            Print.PrintMaterials.Write(root, texts);
+        errors.AddRange(Print.PrintMaterials.Check(root, texts));
         errors.ForEach(e => Console.WriteLine($"BŁĄD {e}"));
         Console.WriteLine($"Cards {(check ? "check" : "generate")}: {directories.Count} scenariuszy, błędów: {errors.Count}");
         return errors.Count == 0 ? 0 : 1;
