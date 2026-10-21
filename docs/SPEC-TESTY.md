@@ -53,10 +53,10 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | P-02 | s04 przechodzi kroki 1–4 samymi promptami | — | — |
 | P-03 | s02 przechodzi kroki 1–4 samymi promptami | — | — |
 | P-04 | Wspólne poprawki promptów naniesione na 15 scenariuszy (szablony `tools/Cards`) | — | — |
-| Q-01 | `kilo.jsonc` to poprawny JSONC z blokadami plików i `bash "*": "deny"` | — | — |
-| Q-02 | Kod w `src/` i `tools/`: bez zagnieżdżonych if-ów i pętli, metody ≤ 20 linii, klasy ≤ 150, guard clauses | — | — |
-| Q-03 | Brak sekretów we wszystkich gałęziach i w historii | — | — |
-| Q-04 | Każdy pakiet ma licencję MIT, Apache, MS-PL albo BSD i jest w `docs/LICENSES.md` | — | — |
+| Q-01 | `kilo.jsonc` to poprawny JSONC z blokadami plików i `bash "*": "deny"` | `StaticTests.Kilo_config_is_valid_JSONC_and_denies_protected_files_and_shell` | OK |
+| Q-02 | Kod w `src/` i `tools/`: bez zagnieżdżonych if-ów i pętli, metody ≤ 20 linii, klasy ≤ 150, guard clauses | `tools/CodeRules` (Roslyn) na `src/` i `tools/` gałęzi `ratunek/etap-4`: 0 naruszeń (po 9 poprawkach) | OK |
+| Q-03 | Brak sekretów we wszystkich gałęziach i w historii | skan `git log -p --all` (sk-…, api_key, ApiKey":"…", Password=, długi base64): 0 trafień | OK |
+| Q-04 | Każdy pakiet ma licencję MIT, Apache, MS-PL albo BSD i jest w `docs/LICENSES.md` | `StaticTests.Every_direct_package_is_in_LICENSES_md`, `StaticTests.Every_package_including_transitive_ones_has_an_allowed_license` (2 wyjątki opisane) | OK |
 | M-01 | Ściąga prowadzącego = `checkpoints.md` dla 15 scenariuszy | — | — |
 | M-02 | Karty uczniów i `prompty.md` nie zawierają wartości oczekiwanych; decyzje mają ≥ 2 warianty, wariant A = `mapping.json` | — | — |
 | M-03 | `print/*.html` bez pustych pól i placeholderów | — | — |
