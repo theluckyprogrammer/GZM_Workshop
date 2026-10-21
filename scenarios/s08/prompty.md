@@ -10,7 +10,7 @@ CEL
 Wczytaj plik CSV „Metrorower: rezerwacje” do nowej tabeli `BikeReservations` w SQL Server przez Dapper. Import uruchamia się przy starcie aplikacji, gdy tabela jest pusta.
 
 DANE
-- Plik: `data/raw/s08_metrorower-rezerwacje.csv` w katalogu głównym repozytorium. Ścieżka z aplikacji: `Path.Combine(builder.Environment.ContentRootPath, "..", "..", "data/raw/s08_metrorower-rezerwacje.csv")`.
+- Plik: `data/raw/s08_metrorower-rezerwacje.csv` w katalogu głównym repozytorium. Ścieżka z aplikacji: `Path.Combine(environment.ContentRootPath, "..", "..", "data/raw/s08_metrorower-rezerwacje.csv")` (`environment` to `IWebHostEnvironment`).
 - Kodowanie: UTF-8. Separator: przecinek `,`. Nagłówek w pierwszej linii.
 - Kolumny do importu (pozostałych kolumn pliku nie importuj):
 
@@ -28,7 +28,7 @@ DANE
 
 - Klucz: `RowHash` = SHA-256 z wartości wszystkich importowanych pól (po `Trim`) połączonych znakiem `\u001F`, zapisany jako `binary(32)`.
 - W pliku są identyczne wiersze (drugie z par: 63, 74). Wstaw tylko pierwszy z nich – pomiń wiersz, którego `RowHash` już jest w tabeli.
-- Utwórz plik `db/s08_create.sql` z tym skryptem i uruchamiaj go przy starcie przed importem:
+- Utwórz plik `db/s08_create.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync`) przed importem:
 
 ```sql
 IF OBJECT_ID(N'dbo.BikeReservations') IS NULL
@@ -56,10 +56,11 @@ ZASADY
 - `SourceRow` = numer wiersza danych w pliku, od 1, bez nagłówka. Tekst przytnij (`Trim`).
 - Zapytania wysyłaj przez istniejącą klasę `SqlRunner`, parametry przez Dappera.
 - Po imporcie zapisz w logu liczbę wierszy w tabeli i czas importu.
-- Klasa `CsvImporter` z interfejsem `ICsvImporter`, zarejestrowana w `Program.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
+- Klasa `CsvImporter` z interfejsem `ICsvImporter`. Rejestracja w metodzie `AddAppServices`, a skrypt tabeli i import w `RunAtStartupAsync` – obie w `src/GzmApp/AppServices.cs`. `Program.cs` już je wywołuje, nie zmieniaj go.
+- Krótkie metody, bez zagnieżdżonych if-ów.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
-Nie zmieniaj plików poza: `db/s08_create.sql`, `src/GzmApp/Data/CsvImporter.cs`, `src/GzmApp/Program.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
+Nie zmieniaj plików poza: `db/s08_create.sql`, `src/GzmApp/Data/CsvImporter.cs`, `src/GzmApp/AppServices.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
 ~~~~
 
 ### ⏸ Pauza – zobaczcie, co powstało
@@ -109,10 +110,10 @@ ZASADY
 - Pusta fraza: pierwsze 20 rekordów według `SourceRow`. Fraza dłuższa niż 100 znaków: odpowiedź 400.
 - Handler `OnGetSzukaj(string? q)` w `src/GzmApp/Pages/Index.cshtml.cs` zwraca `Partial("_Lista", wyniki)`.
 - Widok częściowy `src/GzmApp/Pages/Shared/_Lista.cshtml`: `<p id="licznik">Wyników: N</p>` i `<ul>` z jednym `<li>` na rekord. Bez `<html>` i bez layoutu.
-- Rejestracja repozytorium w `Program.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
+- Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
-Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Program.cs`. Nie dodawaj pakietów.
+Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
 ### ⏸ Pauza – zobaczcie, co powstało
@@ -226,7 +227,7 @@ DECYZJA 4: [DECYZJA 4]
 (Jeśli wyżej nadal jest napis w nawiasie kwadratowym, użyj: Na stronie „Moje ulubione” pokaż listę tytułów (`StationName`) ulubionych rekordów.)
 
 DANE
-- Utwórz plik `db/900_favorites.sql` z tym skryptem i uruchamiaj go przy starcie:
+- Utwórz plik `db/900_favorites.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync` w `src/GzmApp/AppServices.cs`):
 
 ```sql
 IF OBJECT_ID(N'dbo.Favorites') IS NULL
@@ -248,10 +249,10 @@ ZASADY
 - Handlery `OnPostUlubione(int id)` i `OnDeleteUlubione(int id)` w `Index.cshtml.cs` zwracają nowy przycisk. Niezalogowany: status 401 i fragment „Zaloguj się, aby dodać do ulubionych”.
 - Token antiforgery wysyła już `<body hx-headers:inherited='{"RequestVerificationToken":"..."}'>` w `_Layout.cshtml`. Nie wyłączaj walidacji antiforgery.
 - Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według decyzji 4. Link „Moje ulubione” w menu w `_Layout.cshtml`.
-- Rejestracja repozytorium w `Program.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
+- Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
-Nie zmieniaj plików poza: `db/900_favorites.sql`, `src/GzmApp/Data/FavoritesRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml.cs`, `src/GzmApp/Pages/Shared/_Layout.cshtml`, `src/GzmApp/Program.cs`. Nie dodawaj pakietów.
+Nie zmieniaj plików poza: `db/900_favorites.sql`, `src/GzmApp/Data/FavoritesRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml.cs`, `src/GzmApp/Pages/Shared/_Layout.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
 ### ⏸ Pauza – zobaczcie, co powstało
@@ -283,6 +284,7 @@ ZASADY
 - Jedno wywołanie modelu na kliknięcie. Prompt systemowy: „Odpowiadaj tylko na podstawie przekazanych rekordów, nie wymyślaj faktów.”
 - Handler `OnGetPodsumuj(int id)` w `Index.cshtml.cs` zwraca fragment `<p>` z opisem. Przycisk w `_Lista.cshtml`: `hx-get="?handler=Podsumuj&id=@r.RecordId" hx-target="#opis-@r.RecordId"`.
 - Brak klucza: fragment „Brak klucza SOL-6 – poproś prowadzącego”, bez wyjątku.
+- Rejestracja i konfiguracja `Sol6` w `AddAppServices` w `src/GzmApp/AppServices.cs`.
 
-Nie zmieniaj plików poza: `src/GzmApp/Ai/AiSummarizer.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Program.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
+Nie zmieniaj plików poza: `src/GzmApp/Ai/AiSummarizer.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/AppServices.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
 ~~~~

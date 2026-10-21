@@ -8,6 +8,8 @@
 | 04 | karty i prompty uczniów | OK | 2026-10-21 | karta.md + prompty.md (4 kroki, pauzy, decyzje A/B/C, „Co dalej?”) + prowadzacy.md z tools/Cards, `-- check` bez błędów; do GzmApp dodano CsvHelper i pakiety AI. |
 | 05 | ratunek etap-1: generyczny import | OK | 2026-10-21 | 15/15 scenariuszy: liczba wierszy = E1.rows i „dziwnych” = E1.weird, drugi import bez zmian; db/sNN_create.sql = CREATE TABLE z prompty.md (15/15). |
 | 06 | ratunek etap-2 i etap-3: endpoint i widok | OK | 2026-10-21 | 15/15 scenariuszy przez HTTP: E2 i E3 = checkpoints.md, fragment HTMX bez `<html>`, `' OR 1=1 --` → 0, fraza > 100 znaków → 400, błąd 500 w HTMX → fragment. |
+| 07 | ratunek etap-4: ulubione, SOL-6, ratunek.ps1 | OK | 2026-10-21 | 15/15 przez HTTP: /Ulubione bez logowania → logowanie, bez tokenu 400, z tokenem 200, 2× dodanie = 1 wpis, 2× usunięcie bez błędu, B nie widzi A, SOL-6 bez klucza → komunikat; ratunek.ps1 s02 etapy 1–4 OK. |
+| 08 | reguły Kilo | OK | 2026-10-21 | kilo.jsonc (poprawny JSONC), .kilo/rules/stack.md i htmx4.md, kopie w .kilocode/rules i AGENTS.md, docs/KILO-TEST.md; prompty uczniów zmieniają AppServices.cs zamiast Program.cs. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
@@ -16,3 +18,4 @@
 - `main`: reset jest już w `main` (PR #6). Zmerguj `claude/admiring-franklin-wpdxux` (nowy PR) z commitami od „01: repo startowe”.
 - `ratunek/etap-1`: zbudowana od nowa w kroku 05 na stanie po „04: karty i prompty uczniów” i wypchnięta (fast-forward starej gałęzi).
 - `ratunek/etap-2`, `ratunek/etap-3`: utworzone w kroku 06 i wypchnięte.
+- `ratunek/etap-4`: utworzona w kroku 07 i wypchnięta; `tools/ratunek.ps1` jest na wszystkich gałęziach.

@@ -1,0 +1,33 @@
+// Kilo Code: reguły projektu i uprawnienia na warsztat (prompt 08).
+// Składnia według https://kilo.ai/docs (Custom Rules: "instructions"; How Tools Work / Agent Permissions: "permission").
+// W mapach wzorców wygrywa OSTATNIA pasująca reguła, dlatego "*" jest na początku.
+{
+  "instructions": [".kilo/rules/*.md"],
+  "permission": {
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "edit": {
+      "*": "allow",
+      "**/*.csproj": "deny",
+      "**/launch.json": "deny",
+      "**/tasks.json": "deny",
+      "**/launchSettings.json": "deny",
+      "**/Program.cs": "deny",
+      "src/GzmApp/Identity/**": "deny",
+      "global.json": "deny",
+      "kilo.jsonc": "deny",
+      ".kilo/**": "deny",
+      ".kilocode/**": "deny",
+      "AGENTS.md": "deny",
+      "data/**": "deny",
+      "scenarios/**": "deny"
+    },
+    "bash": {
+      "*": "deny",
+      "dotnet build*": "allow"
+    },
+    "webfetch": "deny",
+    "websearch": "deny"
+  }
+}
