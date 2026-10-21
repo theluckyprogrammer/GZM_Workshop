@@ -7,11 +7,11 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 |---|---|---|---|
 | INF-01 | AppFactory uruchamia aplikację na własnej bazie testowej `GzmTest_{scenariusz}` i usuwa ją po testach | `InfrastructureTests.AppFactory_starts_the_app_on_its_own_test_database` | OK |
 | D-00 | `ScenarioData` znajduje 15 scenariuszy, każdy ma niepuste wartości E1–E4 | `SmokeTests.ScenarioData_finds_15_scenarios_with_values_E1_to_E4` | OK |
-| D-01 | Plik w `data/raw` ma SHA-256 i liczbę wierszy z `data/metadata.json` | — | — |
-| D-02 | Nagłówki w pliku = nagłówki w metadanych = kolumny w `mapping.json` | — | — |
-| D-03 | Licencja i atrybucja każdego zbioru są niepuste | — | — |
-| D-04 | Niezależny parser (inny kod niż `tools/Expect`) daje te same E1–E4 co `checkpoints.md` | — | — |
-| D-05 | Kontrola danych osobowych (PESEL, telefony, e-maile, „Imię Nazwisko”) – trafienia opisane w `findings.md` | — | — |
+| D-01 | Plik w `data/raw` ma SHA-256 i liczbę wierszy z `data/metadata.json` | `DataTests.File_has_SHA256_and_row_count_from_metadata` (15) | OK |
+| D-02 | Nagłówki w pliku = nagłówki w metadanych = kolumny w `mapping.json` | `DataTests.Headers_in_file_metadata_and_mapping_are_the_same` (15) | OK |
+| D-03 | Licencja i atrybucja każdego zbioru są niepuste | `DataTests.License_and_attribution_are_filled_in` (15) | OK |
+| D-04 | Niezależny parser (inny kod niż `tools/Expect`) daje te same E1–E4 co `checkpoints.md` | `DataTests.Second_parser_gives_the_values_of_checkpoints` (15) | OK |
+| D-05 | Kontrola danych osobowych (PESEL, telefony, e-maile, „Imię Nazwisko”) – trafienia opisane w `findings.md` | `DataTests.No_PESEL_or_email_and_phone_numbers_only_where_reviewed` | OK |
 | E1-01 | Po imporcie `COUNT(*)` = E1.rows | — | — |
 | E1-02 | Wartość pola kontrolnego w wierszu 7 (`SourceRow`) = E1.row7.value | — | — |
 | E1-03 | Polskie znaki zachowane (rekord z ogonkami = surowy plik) | — | — |

@@ -15,6 +15,7 @@
 | 11 | instrukcja prowadzącego | OK | 2026-10-21 | docs/PROWADZACY.md: przygotowanie, checklista 15 stanowisk, przebieg 30 min, teksty, problemy, klucze, atrybucja; ścieżki i polecenia sprawdzone skryptem. |
 | 12 | smoke test | OK | 2026-10-21 | s02 w czystym klonie: main → ratunek etap 1 (E1) → etap 3 (fragment, E3) → etap 4 (★ → 1 wiersz w Favorites) → main z czystym git status; ratunek.ps1 podaje teraz drogę powrotu. |
 | 13 | środowisko i infrastruktura testów | OK | 2026-10-21 | tests/GzmApp.Tests (xUnit, Mvc.Testing, AngleSharp): DbFixture/AppFactory/ScenarioData/helpery, test dymny D-00 + INF-01 zielone na wszystkich gałęziach; docs/SPEC-TESTY.md i TEST-STATUS.md; build całego rozwiązania bez ostrzeżeń. |
+| 14 | dane i wartości kontrolne | OK | 2026-10-21 | Poziom 1: 61 testów zielonych (D-01–D-05); drugi parser bez CsvHelpera daje te same E1–E4 co tools/Expect – 0 rozbieżności; kontrola testu: celowo zmieniona wartość i format są wyłapane. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
