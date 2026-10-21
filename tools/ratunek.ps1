@@ -5,7 +5,7 @@
 .DESCRIPTION
     1. Odkłada zmiany pary do schowka (git stash, także nowe pliki) z datą w opisie.
     2. Przełącza na gałąź ratunek/etap-N.
-    3. Ustawia "Scenario" w src/GzmApp/appsettings.Development.json.
+    3. Ustawia "Scenario" w src/GzmApp/appsettings.Development.json (na gałęzi ratunek/* ta zmiana nie trafia do schowka).
     4. Uruchamia import danych (dotnet run -- import).
     5. Wypisuje, co się stało i jak odzyskać zmiany pary.
     Nie wymaga uprawnień administratora.
@@ -40,6 +40,10 @@ function Set-Scenario([string]$Path, [string]$Code) {
 
 Push-Location $repo
 try {
+    # On a rescue branch the Scenario line was written by this script, not by the pair: drop it before the stash.
+    if ((git branch --show-current) -like 'ratunek/*') {
+        git checkout -- $settings
+    }
     $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
     $before = (git stash list | Measure-Object).Count
     Invoke-Step "Odkładam Wasze zmiany do schowka (git stash)" { git stash push --include-untracked -m "ratunek $stamp przed $branch ($Scenariusz)" }
@@ -58,7 +62,7 @@ try {
     if ($saved) {
         Write-Host "Wasze wcześniejsze zmiany są w schowku: 'ratunek $stamp ...'."
         Write-Host 'Podgląd schowka:   git stash list'
-        Write-Host 'Powrót do zmian:   git switch <Wasza gałąź>, potem git stash pop'
+        Write-Host 'Powrót do zmian:   git switch <Wasza gałąź>, potem git stash apply stash@{N} (N z listy, opis zaczyna się od "ratunek")'
     }
     else {
         Write-Host 'Nie było zmian do odłożenia (schowek bez zmian).'
