@@ -45,10 +45,10 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | UI-03 | Po zalogowaniu klik ★ → gwiazdka aktywna i rekord w bazie | `BrowserTests.Signed_in_user_clicks_the_star_and_the_record_is_saved` (s06, s04, s02) | OK |
 | UI-04 | Wymuszony błąd 500 → komunikat w `#wyniki`, nie cała strona błędu | `BrowserTests.Server_error_shows_a_message_in_the_results_not_an_error_page` (s06, s04, s02) | OK |
 | UI-05 | Strona działa offline: blokada żądań do CDN nic nie psuje | `BrowserTests.Page_works_with_requests_outside_the_app_blocked` (s06, s04, s02) | OK |
-| R-01 | Każda gałąź `ratunek/etap-N` buduje się i przechodzi testy poziomów ≤ N+1 | — | — |
-| R-02 | `ratunek.ps1` odkłada niezacommitowane zmiany do schowka i da się je odzyskać | — | — |
-| R-03 | `ratunek.ps1 -Etap 3 -Scenariusz s06` ustawia scenariusz i importuje dane; powtórka jest bezpieczna | — | — |
-| R-04 | Gałęzie są spójne: wyższa zawiera wszystkie commity niższej | — | — |
+| R-01 | Każda gałąź `ratunek/etap-N` buduje się i przechodzi testy poziomów ≤ N+1 | przebieg `dotnet test` na każdej gałęzi (krok 19): etap-1 169, etap-2 259, etap-3 350, etap-4 470 testów | OK |
+| R-02 | `ratunek.ps1` odkłada niezacommitowane zmiany do schowka i da się je odzyskać | `tools/ratunek.ps1` na klonie repo z niezacommitowaną zmianą (krok 19) | OK |
+| R-03 | `ratunek.ps1 -Etap 3 -Scenariusz s06` ustawia scenariusz i importuje dane; powtórka jest bezpieczna | `tools/ratunek.ps1 -Etap 3 -Scenariusz s06` ×2 (krok 19) | OK |
+| R-04 | Gałęzie są spójne: wyższa zawiera wszystkie commity niższej | `git merge-base --is-ancestor` main → etap-1 → … → etap-4 (krok 19) | OK |
 | P-01 | s06 przechodzi kroki 1–4 samymi promptami z `prompty.md` (warianty A, jeden wariant B) | — | — |
 | P-02 | s04 przechodzi kroki 1–4 samymi promptami | — | — |
 | P-03 | s02 przechodzi kroki 1–4 samymi promptami | — | — |

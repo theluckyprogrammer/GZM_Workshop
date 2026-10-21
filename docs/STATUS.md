@@ -20,6 +20,7 @@
 | 16 | testy endpointu z filtrowaniem | OK | 2026-10-21 | Poziom 3 na ratunek/etap-2: 90 testów zielonych (E2-01–E2-06, 15 scenariuszy, HTTP przez WebApplicationFactory, log SQL przechwycony); zmergowane w górę. |
 | 17 | testy widoku HTMX i ulubionych | OK | 2026-10-21 | Poziom 4: E3-01–E3-07 na ratunek/etap-3 (91 testów), E4-01–E4-07 na ratunek/etap-4 (razem 196 testów poziomu 4), 15 scenariuszy, HTTP + AngleSharp. |
 | 18 | testy w przeglądarce (Playwright) | OK | 2026-10-21 | Poziom 5 na ratunek/etap-4: 15 testów zielonych (UI-01–UI-05 × s06, s04, s02), Chromium headless z /opt/pw-browsers, aplikacja na Kestrelu z bazą GzmTest_{scenariusz}_ui. |
+| 19 | testy gałęzi ratunkowych | OK | 2026-10-21 | 4 przebiegi (etap-1: 169, etap-2: 259, etap-3: 350, etap-4: 470 testów) zielone; ratunek.ps1: schowek odzyskiwalny, -Etap 3 s06 importuje i jest idempotentny; gałęzie spójne (is-ancestor). |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
