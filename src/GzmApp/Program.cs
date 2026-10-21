@@ -1,4 +1,5 @@
 using System.Text;
+using GzmApp;
 using GzmApp.Data;
 using GzmApp.Data.Import;
 using GzmApp.Identity;
@@ -20,10 +21,12 @@ builder.Services.AddSingleton(_ => ImportPaths.Resolve(builder.Environment.Conte
 builder.Services.AddSingleton(sp => MappingLoader.Load(sp.GetRequiredService<ImportPaths>().MappingFile));
 builder.Services.AddSingleton<ICsvImporter, CsvImporter>();
 builder.Services.AddRazorPages();
+builder.Services.AddAppServices(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
 await app.Services.GetRequiredService<DatabaseBootstrapper>().RunAsync();
+await AppServices.RunAtStartupAsync(app.Services);
 
 // "dotnet run -- import": import only (again, idempotent) and exit. Normal start: import when the table is empty.
 var importer = app.Services.GetRequiredService<ICsvImporter>();
