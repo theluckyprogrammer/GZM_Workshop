@@ -73,7 +73,7 @@
   <p><strong>Zobaczcie, co powstało:</strong></p>
   <ul>
     <li>Uruchomcie aplikację i otw&#243;rzcie adres <code>http://localhost:5080/?handler=Szukaj&amp;q=</code> z dopisanym słowem z wybranej kolumny (dla wariantu A np. <code>bieruń</code>). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.</li>
-    <li>F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie <code>?handler=Szukaj</code>: status 200, a w „Response” jest tylko lista.</li>
+    <li>F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie <code>?handler=Szukaj</code>: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać jak <code>&amp;#x144;</code> – to ten sam znak, zapisany kodem HTML.</li>
     <li>W terminalu (log SQL) widać zapytanie z parametrem <code>q</code> – to Wasza fraza.</li>
   </ul>
   <div class="decyzja">
@@ -108,8 +108,8 @@
   <h3>Krok 4 – logowanie i ulubione</h3>
   <p><strong>Zobaczcie, co powstało:</strong></p>
   <ul>
-    <li>Kliknijcie ★ bez logowania: pojawia się „Zaloguj się, aby dodać do ulubionych”.</li>
-    <li>Zarejestrujcie się (Register) i zalogujcie. Kliknijcie ★ przy kilku rekordach.</li>
+    <li>Kliknijcie ☆ bez logowania: pojawia się „Zaloguj się, aby dodać do ulubionych”.</li>
+    <li>Zarejestrujcie się (Register) i zalogujcie. Kliknijcie ☆ przy kilku rekordach – zmienią się w ★.</li>
     <li>F12 → Network: żądanie POST <code>?handler=Ulubione</code> ma nagł&#243;wek <code>RequestVerificationToken</code> – to ochrona przed podszywaniem się pod formularz.</li>
     <li>Otw&#243;rzcie „Moje ulubione”. W mssql zajrzyjcie do tabeli <code>Favorites</code> – tam są Wasze gwiazdki.</li>
   </ul>

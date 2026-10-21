@@ -34,7 +34,7 @@ public static class Decisions
     private static IEnumerable<(string, string)> FavoriteViews(ScenarioMapping mapping) =>
     [
         ("lista tytułów", $"Na stronie „Moje ulubione” pokaż listę tytułów (`{mapping.TitleField}`) ulubionych rekordów."),
-        ("tytuły z datą dodania", $"Na stronie „Moje ulubione” pokaż tytuł (`{mapping.TitleField}`) i datę dodania (`CreatedAt`), od najnowszych."),
+        ("tytuły z datą dodania", $"Na stronie „Moje ulubione” pokaż tytuł (`{mapping.TitleField}`) i datę dodania (`CreatedAt`, w bazie UTC – pokaż czas polski jako `dd.MM.yyyy HH:mm`), od najnowszych."),
         ("tytuły z przyciskiem „Usuń”", $"Na stronie „Moje ulubione” pokaż tytuł (`{mapping.TitleField}`) i przycisk „Usuń” (`hx-delete`), który usuwa wiersz z listy bez przeładowania strony."),
     ];
 
