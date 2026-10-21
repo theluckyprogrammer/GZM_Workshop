@@ -11,6 +11,7 @@
 | 07 | ratunek etap-4: ulubione, SOL-6, ratunek.ps1 | OK | 2026-10-21 | 15/15 przez HTTP: /Ulubione bez logowania → logowanie, bez tokenu 400, z tokenem 200, 2× dodanie = 1 wpis, 2× usunięcie bez błędu, B nie widzi A, SOL-6 bez klucza → komunikat; ratunek.ps1 s02 etapy 1–4 OK. |
 | 08 | reguły Kilo | OK | 2026-10-21 | kilo.jsonc (poprawny JSONC), .kilo/rules/stack.md i htmx4.md, kopie w .kilocode/rules i AGENTS.md, docs/KILO-TEST.md; prompty uczniów zmieniają AppServices.cs zamiast Program.cs. |
 | 09 | check.ps1 | OK | 2026-10-21 | tools/check.ps1 + check.cmd: składnia OK, przebieg pwsh 7 na Linuksie (LocalDB pominięte, brak VS Code w kontenerze); pełny test na komputerze szkolnym (Windows PowerShell 5.1). |
+| 10 | materiały do druku | OK | 2026-10-21 | 15 kart par + ściąga prowadzącego z tools/Cards; ściąga = checkpoints.md (skrypt), karty bez wartości oczekiwanych, HTML poprawny, wydruk w Chromium: 2 strony A4. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
