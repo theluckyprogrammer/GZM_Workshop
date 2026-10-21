@@ -15,10 +15,11 @@ public sealed partial record SqlType(SqlKind Kind, int Length, int Precision, in
         if (!match.Success)
             throw new InvalidDataException($"Nieznany typ SQL: {text}");
 
-        var name = match.Groups["name"].Value;
-        var first = match.Groups["a"].Value;
-        var second = match.Groups["b"].Value;
-        return name switch
+        return Create(match.Groups["name"].Value, match.Groups["a"].Value, match.Groups["b"].Value, text);
+    }
+
+    private static SqlType Create(string name, string first, string second, string text) =>
+        name switch
         {
             "nvarchar" => new SqlType(SqlKind.Text, first == "max" ? int.MaxValue : int.Parse(first), 0, 0),
             "decimal" => new SqlType(SqlKind.Decimal, 0, int.Parse(first), second.Length > 0 ? int.Parse(second) : 0),
@@ -30,7 +31,6 @@ public sealed partial record SqlType(SqlKind Kind, int Length, int Precision, in
             "bit" => new SqlType(SqlKind.Bit, 0, 0, 0),
             _ => throw new InvalidDataException($"Nieobsługiwany typ SQL: {text}"),
         };
-    }
 
     [GeneratedRegex(@"^(?<name>[a-z0-9]+)(\((?<a>max|\d+)(,\s*(?<b>\d+))?\))?$")]
     private static partial Regex Pattern();
