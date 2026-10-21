@@ -32,3 +32,14 @@
 - [04] Filtr: prompty używają `COLLATE Latin1_General_CI_AI`, a `tools/Expect` porównuje z `IgnoreCase | IgnoreNonSpace` (zmiana bez wpływu na wartości E2). W ICU „ł” ≠ „l” także przy ignorowaniu ogonków; jak traktuje to SQL Server, sprawdź w 06 na prawdziwej bazie.
 - [04] Nazwy aplikacji dla zamienionych zbiorów: s01 PamięćZabrze, s07 SportGliwice, s08 RezerwacjaRadar, s09 ArcheoDąbrowa, s15 KlubKatowice.
 - [04] Etap 4: niezalogowany użytkownik dostaje za ★ status 401 z fragmentem „Zaloguj się…” (HTMX 4 podmienia odpowiedzi 4xx), a strona `/Ulubione` przekierowuje do logowania. Krok 3 s06: średnia w kafelku może mieć przecinek (pl-PL), w `checkpoints.md` jest kropka.
+- [05] Import w `src/GzmApp/Data/Import` to kopia reguł z `tools/Expect` (kodowanie, parsowanie, pomijanie wierszy, `RowHash`), bo aplikacja ucznia nie może zależeć od narzędzi. Zmiana reguły w jednym miejscu wymaga tej samej zmiany w drugim; inaczej E1 rozjedzie się z bazą.
+- [05] `RecordTableBuilder.CreateTable` generuje ten sam tekst co `tools/Cards` (`SqlText`), więc `db/sNN_create.sql` = SQL z karty etapu 1 (sprawdzone dla s08).
+- [05] Żaden zbiór nie przekracza 5000 wierszy (największy s12: 2313), więc `SqlBulkCopy` nie uruchamia się na warsztacie. Ścieżkę sprawdzono na s12 z progiem obniżonym do 100: te same liczby.
+- [05] `MERGE` aktualizuje istniejące rekordy (`WHEN MATCHED`), więc po podmianie pliku CSV wartości się odświeżają, a `RecordId` zostaje. Rekordów, których nie ma już w pliku, import nie usuwa.
+- [05] Dapper wysyła `DateTime` domyślnie jako `datetime` (od 1753 r.); import przekazuje daty jako `DbType.DateTime2`.
+- [05] Środowisko: w tym kontenerze demon Dockera nie działał po starcie sesji; uruchomiono `dockerd` ręcznie, potem kontener SQL Server 2022.
+- [06] Wariant A decyzji 2 (pola na liście) jest w `mapping.json` jako `listFields`; `tools/Cards` sprawdza, że to ten sam wariant co w `scenarios.json`. Gałęzie ratunkowe czytają go z `mapping.json`.
+- [06] SQL Server: `Latin1_General_CI_AI` traktuje „ł” jak „l” (sprawdzone), a ICU w `tools/Expect` nie. Frazy E2 i tak dają te same wyniki we wszystkich 15 scenariuszach (sprawdzone żądaniami HTTP), bo dane nie mają wariantów bez ogonków.
+- [06] Razor koduje polskie litery w HTML jako encje (`&#x105;`). Strona wygląda dobrze, ale w zakładce Network (Response) uczniowie zobaczą encje zamiast „ą”. Jeśli przeszkadza: `builder.Services.Configure<WebEncoderOptions>(o => o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All))` w `main`.
+- [06] Licznik „Wyników: N” pokazuje wszystkie pasujące rekordy, a lista najwyżej 20. Rekord bez tytułu ma na liście „(bez nazwy)”.
+- [06] Skrypt sprawdzający E2/E3 żądaniami HTTP był w scratchpadzie (nie w repo); testy automatyczne powstają w krokach 13–17.
