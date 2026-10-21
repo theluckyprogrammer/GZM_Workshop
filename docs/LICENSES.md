@@ -44,6 +44,21 @@ Bez pakietów NuGet (referencja do projektu `tools/Expect`).
 | AngleSharp | 1.8.5 | MIT |
 | Microsoft.Playwright (tylko `ratunek/etap-4`) | 1.64.0 | MIT |
 
+## Pakiety NuGet (`tools/CodeRules`)
+
+| Pakiet | Wersja | Licencja |
+|---|---|---|
+| Microsoft.CodeAnalysis.CSharp | 5.9.0 | MIT |
+
+## Pakiety przechodnie spoza listy dozwolonych licencji
+
+| Pakiet | Wersja | Licencja | Skąd |
+|---|---|---|---|
+| Microsoft.Data.SqlClient.SNI.runtime | 6.0.3 | Microsoft Software License Terms (komponent redystrybuowalny) | zależność `Microsoft.Data.SqlClient` (natywny SNI na Windows) |
+| Microsoft.Identity.Client.NativeInterop | 0.20.6 | Microsoft Software License Terms (komponent redystrybuowalny) | zależność `Microsoft.Data.SqlClient` (MSAL) |
+
+Oba przychodzą z `Microsoft.Data.SqlClient`, którego wymaga stos (Dapper + SQL Server); bez nich nie ma połączenia z bazą. Uzasadnienie w `findings.md` (krok 23).
+
 ## Dane
 
 Zbiory z otwartedane.metropoliagzm.pl: licencja i wymagana atrybucja każdego zbioru są w `data/metadata.json` (pole `license`).
