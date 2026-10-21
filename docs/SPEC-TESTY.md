@@ -20,12 +20,12 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | E1-06 | Puste pola → `NULL`, bez wyjątku | `ImportTests.Empty_or_unreadable_fields_are_NULL` (15) | OK |
 | E1-07 | Idempotencja: drugi import daje tę samą liczbę wierszy | `ImportTests.Second_import_keeps_the_row_count` (15) | OK |
 | E1-08 | Atomowość: import przerwany w połowie nie zostawia częściowych danych | `ImportTests.Import_interrupted_halfway_leaves_no_partial_data` (s06, trigger testowy) | OK |
-| E2-01 | Filtr dla frazy z checkpointu = E2 (liczba i tytuły) | — | — |
-| E2-02 | Wielkość liter nie ma znaczenia | — | — |
-| E2-03 | Fraza z ogonkami działa; zachowanie bez ogonków opisane w `findings.md` | — | — |
-| E2-04 | Pusta fraza zwraca pierwsze 20 rekordów | — | — |
-| E2-05 | `' OR 1=1 --` daje 0 wyników, a log `SQL` ma parametr `@q`, nie sklejony tekst | — | — |
-| E2-06 | Fraza dłuższa niż 100 znaków → 400 | — | — |
+| E2-01 | Filtr dla frazy z checkpointu = E2 (liczba i tytuły) | `SearchTests.Filter_for_the_checkpoint_phrase_gives_E2` (15) | OK |
+| E2-02 | Wielkość liter nie ma znaczenia | `SearchTests.Letter_case_does_not_matter` (15) | OK |
+| E2-03 | Fraza z ogonkami działa; zachowanie bez ogonków opisane w `findings.md` | `SearchTests.Phrase_with_Polish_letters_works_also_without_them` (15) | OK |
+| E2-04 | Pusta fraza zwraca pierwsze 20 rekordów | `SearchTests.Empty_phrase_returns_the_first_20_records` (15) | OK |
+| E2-05 | `' OR 1=1 --` daje 0 wyników, a log `SQL` ma parametr `@q`, nie sklejony tekst | `SearchTests.SQL_injection_gives_0_results_and_the_log_shows_parameter_q` (15) | OK |
+| E2-06 | Fraza dłuższa niż 100 znaków → 400 | `SearchTests.Phrase_longer_than_100_characters_gives_400` (15) | OK |
 | E3-01 | Żądanie z nagłówkiem `HX-Request` dostaje fragment bez `<html>` | — | — |
 | E3-02 | Żądanie bez nagłówka dostaje pełną stronę | — | — |
 | E3-03 | Statystyka w HTML = E3 | — | — |
