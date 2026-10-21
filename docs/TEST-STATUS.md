@@ -10,7 +10,18 @@
 | 3 | endpoint z filtrowaniem (16) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 | 4 | widok HTMX i ulubione (17) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 | 5 | przeglądarka, Playwright (18) | n/d | OK | n/d | OK | n/d | OK | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d |
-| 6 | gałęzie ratunkowe (19) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| 6 | gałęzie ratunkowe (19) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 | 7 | przejście promptami (20–22) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | 8 | statyczne: kod, Kilo, sekrety, licencje (23) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | 9 | materiały i SOL-6 (24) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+
+## Gałęzie (krok 19)
+
+| Gałąź | Poziomy | Testów | Wynik |
+|---|---|---|---|
+| `ratunek/etap-1` | 0–2 | 169 | OK |
+| `ratunek/etap-2` | 0–3 | 259 | OK |
+| `ratunek/etap-3` | 0–4 (E3) | 350 | OK |
+| `ratunek/etap-4` | 0–5 | 470 | OK |
+
+Poprawek w gałęziach nie było potrzeba.
