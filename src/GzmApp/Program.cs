@@ -29,10 +29,12 @@ builder.Services.AddSingleton<IFavoritesRepository, FavoritesRepository>();
 builder.Services.Configure<Sol6Options>(builder.Configuration.GetSection("Sol6"));
 builder.Services.AddSingleton<IAiSummarizer, AiSummarizer>();
 builder.Services.AddRazorPages();
+builder.Services.AddAppServices(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
 await app.Services.GetRequiredService<DatabaseBootstrapper>().RunAsync();
+await AppServices.RunAtStartupAsync(app.Services);
 
 // "dotnet run -- import": import only (again, idempotent) and exit. Normal start: import when the table is empty.
 var importer = app.Services.GetRequiredService<ICsvImporter>();
