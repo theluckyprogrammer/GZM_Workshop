@@ -22,6 +22,7 @@
 | 18 | testy w przeglądarce (Playwright) | OK | 2026-10-21 | Poziom 5 na ratunek/etap-4: 15 testów zielonych (UI-01–UI-05 × s06, s04, s02), Chromium headless z /opt/pw-browsers, aplikacja na Kestrelu z bazą GzmTest_{scenariusz}_ui. |
 | 19 | testy gałęzi ratunkowych | OK | 2026-10-21 | 4 przebiegi (etap-1: 169, etap-2: 259, etap-3: 350, etap-4: 470 testów) zielone; ratunek.ps1: schowek odzyskiwalny, -Etap 3 s06 importuje i jest idempotentny; gałęzie spójne (is-ancestor). |
 | 23 | testy statyczne: kod, Kilo, sekrety, licencje | OK | 2026-10-21 | tools/CodeRules (Roslyn): 9 naruszeń poprawionych, 0 na etap-4; kilo.jsonc OK; 0 sekretów w historii; licencje: 2 przechodnie pakiety Microsoft (SNI, NativeInterop) uzasadnione w findings. |
+| 24 | testy materiałów i SOL-6 | OK | 2026-10-21 | Poziom 9: M-01–M-04 (main), M-05 atrybucja (etap-3, 15/15), AI-01–AI-03 z fałszywym IChatClient (etap-4) zielone; AI-04 (prawdziwe wywołanie SOL-6) pominięte – brak klucza. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
