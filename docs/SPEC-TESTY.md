@@ -26,20 +26,20 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | E2-04 | Pusta fraza zwraca pierwsze 20 rekordów | `SearchTests.Empty_phrase_returns_the_first_20_records` (15) | OK |
 | E2-05 | `' OR 1=1 --` daje 0 wyników, a log `SQL` ma parametr `@q`, nie sklejony tekst | `SearchTests.SQL_injection_gives_0_results_and_the_log_shows_parameter_q` (15) | OK |
 | E2-06 | Fraza dłuższa niż 100 znaków → 400 | `SearchTests.Phrase_longer_than_100_characters_gives_400` (15) | OK |
-| E3-01 | Żądanie z nagłówkiem `HX-Request` dostaje fragment bez `<html>` | — | — |
-| E3-02 | Żądanie bez nagłówka dostaje pełną stronę | — | — |
-| E3-03 | Statystyka w HTML = E3 | — | — |
-| E3-04 | Strona wczytuje lokalny `/lib/htmx/4.0.0/htmx.min.js`, nie CDN | — | — |
-| E3-05 | `<body>` ma `hx-headers:inherited` z tokenem | — | — |
-| E3-06 | Wyszukiwarka ma `hx-trigger` z `delay:300ms` | — | — |
-| E3-07 | Błąd 500 w żądaniu HTMX zwraca krótki fragment z komunikatem | — | — |
-| E4-01 | Niezalogowany: `/Ulubione` przekierowuje do logowania, ★ daje 401 | — | — |
-| E4-02 | Zalogowany bez tokenu antiforgery → 400 | — | — |
-| E4-03 | Z tokenem → 200 | — | — |
-| E4-04 | Dwukrotne dodanie daje 1 wiersz w `Favorites` | — | — |
-| E4-05 | Dwukrotne usunięcie nie zwraca błędu | — | — |
-| E4-06 | Użytkownik B nie widzi ulubionych użytkownika A | — | — |
-| E4-07 | Tytuł ulubionego rekordu nr 7 = E4.title | — | — |
+| E3-01 | Żądanie z nagłówkiem `HX-Request` dostaje fragment bez `<html>` | `ViewTests.HTMX_request_gets_a_fragment_without_html` (15) | OK |
+| E3-02 | Żądanie bez nagłówka dostaje pełną stronę | `ViewTests.Request_without_HTMX_header_gets_the_whole_page` (15) | OK |
+| E3-03 | Statystyka w HTML = E3 | `ViewTests.Statistic_tile_equals_E3` (15) | OK |
+| E3-04 | Strona wczytuje lokalny `/lib/htmx/4.0.0/htmx.min.js`, nie CDN | `ViewTests.Page_loads_the_local_htmx_4_file` (15) | OK |
+| E3-05 | `<body>` ma `hx-headers:inherited` z tokenem | `ViewTests.Body_has_inherited_hx_headers_with_the_token` (15) | OK |
+| E3-06 | Wyszukiwarka ma `hx-trigger` z `delay:300ms` | `ViewTests.Search_box_waits_300_ms` (15) | OK |
+| E3-07 | Błąd 500 w żądaniu HTMX zwraca krótki fragment z komunikatem | `ViewTests.Server_error_in_HTMX_request_returns_a_short_fragment` (s02) | OK |
+| E4-01 | Niezalogowany: `/Ulubione` przekierowuje do logowania, ★ daje 401 | `FavoritesTests.Anonymous_user_is_sent_to_login_and_gets_401_for_the_star` (15) | OK |
+| E4-02 | Zalogowany bez tokenu antiforgery → 400 | `FavoritesTests.Signed_in_user_without_token_gets_400` (15) | OK |
+| E4-03 | Z tokenem → 200 | `FavoritesTests.Signed_in_user_with_token_gets_200` (15) | OK |
+| E4-04 | Dwukrotne dodanie daje 1 wiersz w `Favorites` | `FavoritesTests.Adding_twice_gives_one_row` (15) | OK |
+| E4-05 | Dwukrotne usunięcie nie zwraca błędu | `FavoritesTests.Removing_twice_does_not_fail` (15) | OK |
+| E4-06 | Użytkownik B nie widzi ulubionych użytkownika A | `FavoritesTests.User_B_does_not_see_favorites_of_user_A` (15) | OK |
+| E4-07 | Tytuł ulubionego rekordu nr 7 = E4.title | `FavoritesTests.Favorite_record_7_has_the_title_E4` (15) | OK |
 | UI-01 | Wpisanie frazy znak po znaku → po ~300 ms dokładnie 1 żądanie i zmiana `#wyniki` | — | — |
 | UI-02 | Brak błędów JS w konsoli przeglądarki | — | — |
 | UI-03 | Po zalogowaniu klik ★ → gwiazdka aktywna i rekord w bazie | — | — |

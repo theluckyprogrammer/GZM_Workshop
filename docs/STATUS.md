@@ -18,6 +18,7 @@
 | 14 | dane i wartości kontrolne | OK | 2026-10-21 | Poziom 1: 61 testów zielonych (D-01–D-05); drugi parser bez CsvHelpera daje te same E1–E4 co tools/Expect – 0 rozbieżności; kontrola testu: celowo zmieniona wartość i format są wyłapane. |
 | 15 | testy importu | OK | 2026-10-21 | Poziom 2 na ratunek/etap-1: 106 testów zielonych (E1-01–E1-08, 15 scenariuszy; wartości decimal i dat porównane we wszystkich wierszach); zmergowane w górę, zielone też na etap-4. |
 | 16 | testy endpointu z filtrowaniem | OK | 2026-10-21 | Poziom 3 na ratunek/etap-2: 90 testów zielonych (E2-01–E2-06, 15 scenariuszy, HTTP przez WebApplicationFactory, log SQL przechwycony); zmergowane w górę. |
+| 17 | testy widoku HTMX i ulubionych | OK | 2026-10-21 | Poziom 4: E3-01–E3-07 na ratunek/etap-3 (91 testów), E4-01–E4-07 na ratunek/etap-4 (razem 196 testów poziomu 4), 15 scenariuszy, HTTP + AngleSharp. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
