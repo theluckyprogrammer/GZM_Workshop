@@ -1,3 +1,4 @@
+using GzmApp;
 using GzmApp.Data;
 using GzmApp.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -13,10 +14,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton(sp => new SqlRunner(connectionString, sp.GetRequiredService<ILoggerFactory>()));
 builder.Services.AddSingleton<DatabaseBootstrapper>();
 builder.Services.AddRazorPages();
+builder.Services.AddAppServices(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
 await app.Services.GetRequiredService<DatabaseBootstrapper>().RunAsync();
+await AppServices.RunAtStartupAsync(app.Services);
 
 if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
