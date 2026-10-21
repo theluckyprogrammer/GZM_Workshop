@@ -11,7 +11,7 @@
 | 4 | widok HTMX i ulubione (17) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 | 5 | przeglądarka, Playwright (18) | n/d | OK | n/d | OK | n/d | OK | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d |
 | 6 | gałęzie ratunkowe (19) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
-| 7 | przejście promptami (20–22) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| 7 | przejście promptami (20–22) | n/d | OK | n/d | OK | n/d | OK | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d |
 | 8 | statyczne: kod, Kilo, sekrety, licencje (23) | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d |
 | 9 | materiały i SOL-6 (24) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 
@@ -27,5 +27,7 @@
 Poprawek w gałęziach nie było potrzeba.
 
 Poziom 9: M-01–M-05 dla 15 scenariuszy; AI-01–AI-03 na s02 (fałszywy `IChatClient`), AI-04 pominięte bez klucza SOL-6.
+
+Poziom 7: pełne przejście promptami tylko dla s06, s04 i s02 (prompt 22 nie każe przechodzić pozostałych); wspólne poprawki naniesione na 15 scenariuszy, szczegóły w `docs/WALIDACJA.md`.
 
 Poziom 8 nie zależy od scenariusza (`n/d`): Q-01–Q-04 OK, szczegóły w `docs/SPEC-TESTY.md`.
