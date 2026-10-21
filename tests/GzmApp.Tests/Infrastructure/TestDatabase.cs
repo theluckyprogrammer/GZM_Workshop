@@ -9,13 +9,13 @@ public sealed class TestDatabase
     public const string EnvironmentVariable = "GZM_TEST_CONNSTR";
     private const string LocalDb = @"Server=(localdb)\MSSQLLocalDB;Trusted_Connection=True;TrustServerCertificate=True";
 
-    public TestDatabase(string scenario)
+    public TestDatabase(string scenario, string suffix = "")
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(scenario);
 
         var builder = new SqlConnectionStringBuilder(Environment.GetEnvironmentVariable(EnvironmentVariable) ?? LocalDb)
         {
-            InitialCatalog = $"GzmTest_{scenario}",
+            InitialCatalog = $"GzmTest_{scenario}{suffix}",
         };
         ConnectionString = builder.ConnectionString;
         Name = builder.InitialCatalog;

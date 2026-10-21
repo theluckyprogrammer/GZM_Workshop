@@ -42,6 +42,7 @@ Bez pakietów NuGet (referencja do projektu `tools/Expect`).
 | xunit.runner.visualstudio | 4.0.1 | Apache-2.0 |
 | Microsoft.AspNetCore.Mvc.Testing | 10.0.13 | MIT |
 | AngleSharp | 1.8.5 | MIT |
+| Microsoft.Playwright (tylko `ratunek/etap-4`) | 1.64.0 | MIT |
 
 ## Dane
 

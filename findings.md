@@ -78,3 +78,6 @@
 - [16] Testy poziomu 3 wysyłają `HX-Request: true`, więc działają na etap-2 (zawsze fragment) i na wyższych gałęziach (fragment tylko dla HTMX).
 - [17] E3-07: błąd serwera wywołany w teście przez chwilowe przemianowanie tabeli scenariusza (`sp_rename`); żądanie HTMX dostaje 500 z krótkim fragmentem `alert`, nie stronę błędu.
 - [17] E4: każdy test rejestruje własnego użytkownika przez strony Identity (token z formularza), token dla ★ bierze z `<body hx-headers:inherited>` – tak jak przeglądarka z HTMX.
+- [18] Playwright 1.64 uruchamia Chromium z `/opt/pw-browsers` (zmienna `GZM_CHROMIUM` albo automatyczne wyszukanie), bez pobierania przeglądarek. Na Windows bez tych ścieżek Playwright użyje przeglądarki z `playwright.ps1 install chromium` (wymaga internetu raz).
+- [18] Testy UI uruchamiają aplikację na prawdziwym porcie przez `WebApplicationFactory.UseKestrel(0)` (.NET 10) z osobną bazą `GzmTest_{scenariusz}_ui`. UI-05: przy zablokowanych wszystkich żądaniach poza aplikację strona nie próbowała pobrać niczego z zewnątrz (lista zablokowanych pusta), wyszukiwarka działa.
+- [18] Licencja Microsoft.Playwright to MIT (prompt podawał Apache-2.0).

@@ -40,11 +40,11 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | E4-05 | Dwukrotne usunięcie nie zwraca błędu | `FavoritesTests.Removing_twice_does_not_fail` (15) | OK |
 | E4-06 | Użytkownik B nie widzi ulubionych użytkownika A | `FavoritesTests.User_B_does_not_see_favorites_of_user_A` (15) | OK |
 | E4-07 | Tytuł ulubionego rekordu nr 7 = E4.title | `FavoritesTests.Favorite_record_7_has_the_title_E4` (15) | OK |
-| UI-01 | Wpisanie frazy znak po znaku → po ~300 ms dokładnie 1 żądanie i zmiana `#wyniki` | — | — |
-| UI-02 | Brak błędów JS w konsoli przeglądarki | — | — |
-| UI-03 | Po zalogowaniu klik ★ → gwiazdka aktywna i rekord w bazie | — | — |
-| UI-04 | Wymuszony błąd 500 → komunikat w `#wyniki`, nie cała strona błędu | — | — |
-| UI-05 | Strona działa offline: blokada żądań do CDN nic nie psuje | — | — |
+| UI-01 | Wpisanie frazy znak po znaku → po ~300 ms dokładnie 1 żądanie i zmiana `#wyniki` | `BrowserTests.Typing_sends_one_request_after_300_ms_and_changes_the_list` (s06, s04, s02) | OK |
+| UI-02 | Brak błędów JS w konsoli przeglądarki | `BrowserTests.No_JavaScript_errors_in_the_console` (s06, s04, s02) | OK |
+| UI-03 | Po zalogowaniu klik ★ → gwiazdka aktywna i rekord w bazie | `BrowserTests.Signed_in_user_clicks_the_star_and_the_record_is_saved` (s06, s04, s02) | OK |
+| UI-04 | Wymuszony błąd 500 → komunikat w `#wyniki`, nie cała strona błędu | `BrowserTests.Server_error_shows_a_message_in_the_results_not_an_error_page` (s06, s04, s02) | OK |
+| UI-05 | Strona działa offline: blokada żądań do CDN nic nie psuje | `BrowserTests.Page_works_with_requests_outside_the_app_blocked` (s06, s04, s02) | OK |
 | R-01 | Każda gałąź `ratunek/etap-N` buduje się i przechodzi testy poziomów ≤ N+1 | — | — |
 | R-02 | `ratunek.ps1` odkłada niezacommitowane zmiany do schowka i da się je odzyskać | — | — |
 | R-03 | `ratunek.ps1 -Etap 3 -Scenariusz s06` ustawia scenariusz i importuje dane; powtórka jest bezpieczna | — | — |
