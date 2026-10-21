@@ -16,7 +16,7 @@ Pełny zestaw na `ratunek/etap-4` (bez Playwright, bez prawdziwego SOL-6): 509 t
 - `tools/ratunek.ps1` – wypisuje drogę powrotu do zmian pary.
 - `tools/Cards/Variables.cs`, `Decisions.cs` – MERGE po kluczu i czas polski w wariancie 4B.
 
-**Prompty uczniów** (szablon, 15 scenariuszy, 13 zmian w `docs/WALIDACJA.md`): ścieżka `db/*.sql` z `AppContext.BaseDirectory`, NULL tylko w kolumnach, które mogą być puste, `MERGE` po kluczu, log „Import pominięty”, `take` = 20 i licznik wszystkich wyników, `IsHtmx()` w `OnGetSzukaj`, liczby w pl-PL, widok `_Gwiazdka.cshtml`, stan ☆/★ w `_Lista` przez `@inject` zamiast `ViewData`, uwagi w pauzach o encjach i adresie fragmentu.
+**Prompty uczniów** (szablon, 15 scenariuszy, 14 zmian w `docs/WALIDACJA.md`; 2. przejście s06 na poprawionych promptach – OK bez poprawek kodu): ścieżka `db/*.sql` z `AppContext.BaseDirectory`, NULL tylko w kolumnach, które mogą być puste, `MERGE` po kluczu, log „Import pominięty”, `take` = 20 i licznik wszystkich wyników, `IsHtmx()` w `OnGetSzukaj`, liczby w pl-PL, widok `_Gwiazdka.cshtml`, stan ☆/★ w `_Lista` przez `@inject` zamiast `ViewData`, uwagi w pauzach o encjach i adresie fragmentu.
 
 **Top 5 z `findings.md`:**
 1. Stan ★ przez `ViewData` ginie w `Partial()`, więc w HTMX ★ wraca do „niedodane” (2 z 3 przejść). Prompt kroku 4 zabrania tego teraz wprost.

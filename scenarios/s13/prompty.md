@@ -116,7 +116,7 @@ Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pa
 ### ⏸ Pauza – zobaczcie, co powstało
 
 1. Uruchomcie aplikację i otwórzcie adres `http://localhost:5080/?handler=Szukaj&q=` z dopisanym słowem z wybranej kolumny (dla wariantu A np. `dziecięcy`). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.
-2. F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie `?handler=Szukaj`: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać jak `&#x144;` – to ten sam znak, zapisany kodem HTML.
+2. F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie `?handler=Szukaj`: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać np. jak `&#x142;` (to „ł”) – to ten sam znak, zapisany kodem HTML.
 3. W terminalu (log SQL) widać zapytanie z parametrem `q` – to Wasza fraza.
 
 ### ⏸ Pauza – decyzja 2: co pokazać na liście?
