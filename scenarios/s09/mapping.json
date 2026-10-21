@@ -1,0 +1,134 @@
+{
+  "scenario": "s09",
+  "dataset": "Dąbrowa Górnicza: zabytki archeologiczne",
+  "source": {
+    "file": "data/raw/s09_dabrowa-zabytki-archeologiczne.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "ArchaeologicalSites",
+  "columns": [
+    {
+      "csv": "archaeologicalSiteNumberInArea",
+      "field": "AzpArea",
+      "sqlType": "nvarchar(10)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "archaeologicalSiteNumberInCity",
+      "field": "SiteNumberInCity",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "azpnumber",
+      "field": "AzpNumber",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "azpsiteNumber",
+      "import": false
+    },
+    {
+      "csv": "chronology",
+      "field": "Chronology",
+      "sqlType": "nvarchar(200)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "city",
+      "import": false
+    },
+    {
+      "csv": "comment",
+      "field": "Comment",
+      "sqlType": "nvarchar(400)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": true
+    },
+    {
+      "csv": "commune",
+      "import": false
+    },
+    {
+      "csv": "county",
+      "import": false
+    },
+    {
+      "csv": "expungeDate",
+      "import": false
+    },
+    {
+      "csv": "expungeDecisionNumber",
+      "import": false
+    },
+    {
+      "csv": "id",
+      "field": "Id",
+      "sqlType": "int",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "localName",
+      "field": "LocalName",
+      "sqlType": "nvarchar(200)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "originalFunction",
+      "import": false
+    },
+    {
+      "csv": "protectionForm",
+      "import": false
+    },
+    {
+      "csv": "registrationDate",
+      "import": false
+    },
+    {
+      "csv": "registryNumber",
+      "import": false
+    },
+    {
+      "csv": "type",
+      "import": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Id"
+    ]
+  },
+  "filter": {
+    "field": "LocalName"
+  },
+  "statistic": {
+    "kind": "count-by",
+    "field": "AzpArea"
+  },
+  "titleField": "LocalName",
+  "listFields": [
+    "Chronology"
+  ],
+  "checkField": "Chronology",
+  "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/60616698d4c313601e766da27640196b633b7c33b5d16f3c1b568bf977dec292"
+}

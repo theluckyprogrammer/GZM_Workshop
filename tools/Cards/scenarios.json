@@ -1,0 +1,972 @@
+{
+  "s01": {
+    "app": "PamięćZabrze",
+    "idea": "Wyszukiwarka tablic i miejsc pamięci w Zabrzu z informacją, w której dzielnicy jest ich najwięcej.",
+    "favorites": "miejsca pamięci, które para chce odwiedzić na wycieczce po Zabrzu",
+    "starTask": "Opisz w jednym zdaniu to miejsce pamięci: co upamiętnia i gdzie jest. Korzystaj tylko z opisu i napisu z rekordu.",
+    "traps": [
+      {
+        "stage": 3,
+        "trap": "Ta sama dzielnica zapisana różnie: „Zabrze-Biskupice”, „Zabrze – Biskupice”, „Zabrze - Mikulczyce”",
+        "effect": "W top 5 to osobne grupy. Tak jest w danych – nie poprawiaj ich.",
+        "tool": "rozszerzenie mssql: `SELECT DISTINCT City FROM ZabrzeMemorials`"
+      }
+    ],
+    "search": [
+      {
+        "field": "Description",
+        "label": "opis miejsca (najwięcej tekstu)",
+        "match": "contains"
+      },
+      {
+        "field": "LocationName",
+        "label": "nazwa miejsca, np. szkoła albo budynek",
+        "match": "contains"
+      },
+      {
+        "field": "Inscription",
+        "label": "napis na tablicy",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "City",
+          "Street"
+        ],
+        "label": "dzielnica i ulica"
+      },
+      {
+        "fields": [
+          "Description"
+        ],
+        "label": "opis miejsca"
+      },
+      {
+        "fields": [
+          "RecordNumber"
+        ],
+        "label": "numer w rejestrze"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "top5",
+        "field": "City",
+        "label": "5 dzielnic z największą liczbą miejsc pamięci"
+      },
+      {
+        "kind": "top5",
+        "field": "Street",
+        "label": "5 ulic z największą liczbą miejsc pamięci"
+      },
+      {
+        "kind": "count-by",
+        "field": "City",
+        "label": "liczba miejsc w każdej dzielnicy"
+      }
+    ]
+  },
+  "s02": {
+    "app": "StacjaFinder",
+    "idea": "Znajdź stację Metroroweru w swojej gminie i sprawdź, ile ma stojaków.",
+    "favorites": "stacje Metroroweru, z których para korzysta najczęściej",
+    "starTask": "Opisz w jednym zdaniu tę stację: w jakiej jest gminie, ile ma stojaków i czy jest dostępna.",
+    "traps": [
+      {
+        "stage": 4,
+        "trap": "Kolumna „Nazwa” zawiera numer stacji (np. 27007), a nie nazwę",
+        "effect": "Tytuł ulubionego wygląda jak liczba. To nie błąd importu.",
+        "tool": "rozszerzenie mssql: `SELECT TOP 5 Name, Number FROM BikeStations`"
+      }
+    ],
+    "search": [
+      {
+        "field": "Area",
+        "label": "gmina",
+        "match": "contains"
+      },
+      {
+        "field": "Name",
+        "label": "numer stacji",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Area",
+          "Racks"
+        ],
+        "label": "gmina i liczba stojaków"
+      },
+      {
+        "fields": [
+          "Area",
+          "Available"
+        ],
+        "label": "gmina i czy stacja jest dostępna"
+      },
+      {
+        "fields": [
+          "Lat",
+          "Lng"
+        ],
+        "label": "współrzędne na mapie"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "sum",
+        "field": "Racks",
+        "label": "łączna liczba stojaków"
+      },
+      {
+        "kind": "top5",
+        "field": "Area",
+        "label": "5 gmin z największą liczbą stacji"
+      },
+      {
+        "kind": "sum",
+        "field": "BaseBikes",
+        "label": "łączna liczba rowerów bazowych"
+      }
+    ]
+  },
+  "s03": {
+    "app": "RowerStat",
+    "idea": "Ile rowerów miejskich jest dostępnych w każdej gminie GZM i gdzie jest ich za mało.",
+    "favorites": "gminy, które para obserwuje",
+    "starTask": "Napisz w jednym zdaniu, czy w tej gminie rowerów jest wystarczająco: porównaj liczbę dostępnych z wymaganą.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Wszystkie wiersze mają ten sam dzień",
+        "effect": "Klucz to para Day + Commune. Sama data nie jest unikalna – import z kluczem Day przerwie się błędem.",
+        "tool": "log SQL: komunikat o naruszeniu klucza UNIQUE"
+      }
+    ],
+    "search": [
+      {
+        "field": "Commune",
+        "label": "gmina – fraza w dowolnym miejscu nazwy",
+        "match": "contains"
+      },
+      {
+        "field": "Commune",
+        "label": "gmina – nazwa zaczyna się od frazy",
+        "match": "prefix"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "AvailableBikes",
+          "RequiredBikes"
+        ],
+        "label": "rowery dostępne i wymagane"
+      },
+      {
+        "fields": [
+          "Exceeded"
+        ],
+        "label": "czy przekroczono"
+      },
+      {
+        "fields": [
+          "Day"
+        ],
+        "label": "dzień pomiaru"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "sum",
+        "field": "AvailableBikes",
+        "label": "łączna liczba dostępnych rowerów"
+      },
+      {
+        "kind": "sum",
+        "field": "RequiredBikes",
+        "label": "łączna wymagana liczba rowerów"
+      },
+      {
+        "kind": "count-by",
+        "field": "Exceeded",
+        "label": "ile gmin przekroczyło wymaganą liczbę, a ile nie"
+      }
+    ]
+  },
+  "s04": {
+    "app": "ZgubaBytom",
+    "idea": "Sprawdź, czy ktoś znalazł Twoją zgubę w Bytomiu i czy sprawa jest jeszcze otwarta.",
+    "favorites": "rzeczy podobne do zgubionej, które para chce śledzić",
+    "starTask": "Opisz w jednym zdaniu tę rzecz znalezioną: co to jest, kiedy wpisano ją do rejestru i jaki ma status.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Kolumna `id` ma postać „1”, „2.0”, „3.0”",
+        "effect": "Typ int nie przyjmie „2.0”. Dlatego pole `Id` ma typ `decimal(10,1)` z kropką (`invariant`).",
+        "tool": "breakpoint w imporcie + Watch na wartości `id` w wierszu 2"
+      }
+    ],
+    "search": [
+      {
+        "field": "ItemName",
+        "label": "nazwa rzeczy – fraza w dowolnym miejscu",
+        "match": "contains"
+      },
+      {
+        "field": "ItemName",
+        "label": "nazwa rzeczy – zaczyna się od frazy",
+        "match": "prefix"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "EntryDate",
+          "Status"
+        ],
+        "label": "data wpisu i status sprawy"
+      },
+      {
+        "fields": [
+          "Year"
+        ],
+        "label": "rok"
+      },
+      {
+        "fields": [
+          "Id"
+        ],
+        "label": "numer w rejestrze"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "count-by",
+        "field": "Status",
+        "label": "ile spraw zakończonych, a ile otwartych"
+      },
+      {
+        "kind": "top5",
+        "field": "ItemName",
+        "label": "5 najczęściej znajdowanych rzeczy"
+      },
+      {
+        "kind": "count-by",
+        "field": "Year",
+        "label": "ile rzeczy w każdym roku"
+      }
+    ]
+  },
+  "s05": {
+    "app": "ZgubaDąbrowa",
+    "idea": "Rzeczy znalezione w Dąbrowie Górniczej: co znaleziono i do kiedy można to odebrać.",
+    "favorites": "rzeczy podobne do zgubionej, które para chce śledzić",
+    "starTask": "Opisz w jednym zdaniu tę rzecz znalezioną: co to jest, kiedy ją znaleziono i do kiedy można ją odebrać.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Daty odbioru (`collectionDate`) są w przyszłości",
+        "effect": "To nie błąd przeliczenia – to termin, do którego można odebrać rzecz.",
+        "tool": "rozszerzenie mssql: `SELECT TOP 5 FoundDate, CollectionDate FROM DabrowaLostItems`"
+      }
+    ],
+    "search": [
+      {
+        "field": "ItemName",
+        "label": "nazwa rzeczy",
+        "match": "contains"
+      },
+      {
+        "field": "Id",
+        "label": "numer sprawy",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "FoundDate",
+          "CollectionDate"
+        ],
+        "label": "data znalezienia i termin odbioru"
+      },
+      {
+        "fields": [
+          "Id"
+        ],
+        "label": "numer sprawy"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "top5",
+        "field": "ItemName",
+        "label": "5 najczęściej znajdowanych rzeczy"
+      },
+      {
+        "kind": "top5",
+        "field": "FoundDate",
+        "label": "5 dni z największą liczbą znalezionych rzeczy"
+      }
+    ]
+  },
+  "s06": {
+    "app": "DrzewoRekord",
+    "idea": "Pomniki przyrody Dąbrowy Górniczej: jakie to drzewa i jaki mają obwód.",
+    "favorites": "drzewa, które para chce zobaczyć na spacerze",
+    "starTask": "Opisz w jednym zdaniu to drzewo: gatunek, obwód i miejsce. Nie wymyślaj faktów spoza rekordu.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Współrzędne w `coordinateData` mają stopnie, minuty i cudzysłów („N50° 23' 29.9\"”)",
+        "effect": "Cudzysłów w środku pola psuje dzielenie przez `Split`. Zostają tekstem.",
+        "tool": "breakpoint + Watch na polu `coordinateData`"
+      },
+      {
+        "stage": 2,
+        "trap": "Ten sam gatunek zapisany różnie: „Fagus silvatica” i „Fagus sylvatica”",
+        "effect": "Fraza „sylvatica” nie znajdzie wszystkich buków.",
+        "tool": "rozszerzenie mssql: `SELECT Name, COUNT(*) FROM NatureMonuments GROUP BY Name`"
+      }
+    ],
+    "search": [
+      {
+        "field": "Name",
+        "label": "gatunek drzewa",
+        "match": "contains"
+      },
+      {
+        "field": "Description",
+        "label": "opis położenia",
+        "match": "contains"
+      },
+      {
+        "field": "CadastralDistrict",
+        "label": "obręb (dzielnica)",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Circumference",
+          "CadastralDistrict"
+        ],
+        "label": "obwód i obręb"
+      },
+      {
+        "fields": [
+          "Description"
+        ],
+        "label": "opis położenia"
+      },
+      {
+        "fields": [
+          "Coordinates"
+        ],
+        "label": "współrzędne"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "avg",
+        "field": "Circumference",
+        "label": "średni obwód drzewa (cm)"
+      },
+      {
+        "kind": "top5",
+        "field": "Name",
+        "label": "5 najczęstszych gatunków"
+      },
+      {
+        "kind": "count-by",
+        "field": "CadastralDistrict",
+        "label": "liczba pomników w każdym obrębie"
+      }
+    ]
+  },
+  "s07": {
+    "app": "SportGliwice",
+    "idea": "Obiekty sportowe w Gliwicach: hale, boiska, baseny – gdzie są i kto nimi zarządza.",
+    "favorites": "obiekty, na których para trenuje",
+    "starTask": "Napisz w jednym zdaniu, co to za obiekt, gdzie jest i kto nim zarządza.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Nazwa kolumny `ADRES___ZARZĄDZAJĄCY` ma ogonek i trzy podkreślniki",
+        "effect": "Literówka w nazwie kolumny = pusta kolumna w bazie albo wyjątek CsvHelper.",
+        "tool": "breakpoint + Watch na nagłówkach pliku"
+      },
+      {
+        "stage": 3,
+        "trap": "Spacja na końcu nazwy obiektu („Boisko wielofunkcyjne ”)",
+        "effect": "Bez Trim ta sama nazwa tworzy dwie grupy w top 5.",
+        "tool": "rozszerzenie mssql: `SELECT Facility, LEN(Facility) FROM SportsFacilities`"
+      }
+    ],
+    "search": [
+      {
+        "field": "Facility",
+        "label": "rodzaj obiektu",
+        "match": "contains"
+      },
+      {
+        "field": "AddressManager",
+        "label": "adres i zarządca",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "AddressManager"
+        ],
+        "label": "adres i zarządca"
+      },
+      {
+        "fields": [
+          "ObjectId"
+        ],
+        "label": "numer obiektu"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "top5",
+        "field": "Facility",
+        "label": "5 najczęstszych rodzajów obiektów"
+      },
+      {
+        "kind": "count-by",
+        "field": "Facility",
+        "label": "liczba obiektów każdego rodzaju"
+      }
+    ]
+  },
+  "s08": {
+    "app": "RezerwacjaRadar",
+    "idea": "Ostatnie rezerwacje Metroroweru: które kończą się wypożyczeniem, a które wygasają albo są anulowane.",
+    "favorites": "stacje, których rezerwacje para obserwuje",
+    "starTask": "Opisz w jednym zdaniu tę rezerwację: kiedy była, na której stacji i jak się skończyła. Czas w rekordzie jest w UTC.",
+    "traps": [
+      {
+        "stage": 2,
+        "trap": "„Nazwa stacji” to zwykle numer (np. 27402), czasem „BIKE 582980”",
+        "effect": "Wyszukiwarka szuka w tekście – fraza z cyframi jest tu normalna.",
+        "tool": "Network: odpowiedź `?handler=Szukaj`"
+      }
+    ],
+    "search": [
+      {
+        "field": "StationName",
+        "label": "stacja",
+        "match": "contains"
+      },
+      {
+        "field": "Channel",
+        "label": "kanał (aplikacja iOS / Android)",
+        "match": "contains"
+      },
+      {
+        "field": "Status",
+        "label": "status rezerwacji",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "ReservedAt",
+          "Status"
+        ],
+        "label": "czas rezerwacji (UTC) i status"
+      },
+      {
+        "fields": [
+          "Channel",
+          "Rented"
+        ],
+        "label": "kanał i czy wypożyczono"
+      },
+      {
+        "fields": [
+          "ExpiresAt"
+        ],
+        "label": "czas wygaśnięcia (UTC)"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "count-by",
+        "field": "Status",
+        "label": "ile rezerwacji zamknięto, anulowano i wygasło"
+      },
+      {
+        "kind": "count-by",
+        "field": "Channel",
+        "label": "ile rezerwacji z każdego kanału"
+      },
+      {
+        "kind": "sum",
+        "field": "ReservedBikes",
+        "label": "łączna liczba zarezerwowanych rowerów"
+      }
+    ]
+  },
+  "s09": {
+    "app": "ArcheoDąbrowa",
+    "idea": "Stanowiska archeologiczne Dąbrowy Górniczej: co znaleziono i z jakiej epoki.",
+    "favorites": "stanowiska, które para chce odwiedzić",
+    "starTask": "Opisz w jednym zdaniu to stanowisko i jego chronologię. Korzystaj tylko z rekordu.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Pole `comment` ma kilka linii w cudzysłowie",
+        "effect": "Czytanie pliku linia po linii (`ReadAllLines` + `Split`) rozbije rekord na kilka. CsvHelper czyta go poprawnie.",
+        "tool": "breakpoint + Watch na liczbie odczytanych wierszy (ma być E1.fileRows)"
+      }
+    ],
+    "search": [
+      {
+        "field": "LocalName",
+        "label": "nazwa stanowiska",
+        "match": "contains"
+      },
+      {
+        "field": "Chronology",
+        "label": "epoka",
+        "match": "contains"
+      },
+      {
+        "field": "Comment",
+        "label": "opis znalezisk",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Chronology"
+        ],
+        "label": "epoka"
+      },
+      {
+        "fields": [
+          "AzpArea",
+          "AzpNumber"
+        ],
+        "label": "obszar i numer AZP"
+      },
+      {
+        "fields": [
+          "Comment"
+        ],
+        "label": "opis znalezisk"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "count-by",
+        "field": "AzpArea",
+        "label": "liczba stanowisk w każdym obszarze AZP"
+      },
+      {
+        "kind": "top5",
+        "field": "Chronology",
+        "label": "5 najczęstszych opisów epoki"
+      },
+      {
+        "kind": "top5",
+        "field": "LocalName",
+        "label": "5 najczęstszych nazw stanowisk"
+      }
+    ]
+  },
+  "s10": {
+    "app": "BoiskoMap",
+    "idea": "Boiska i stadiony w Gliwicach: znajdź boisko przy swojej szkole.",
+    "favorites": "boiska, na których para gra",
+    "starTask": "Napisz w jednym zdaniu, jakie to boisko i pod jakim adresem jest.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "`x` i `y` to metry w układzie PL-2000 (np. 2077206.03), a nie stopnie",
+        "effect": "Liczby mają 7 cyfr przed kropką i 10 po – typ `decimal(20,10)`, kultura `invariant`.",
+        "tool": "breakpoint + Watch na sparsowanej wartości `x`"
+      }
+    ],
+    "search": [
+      {
+        "field": "Name",
+        "label": "nazwa szkoły lub obiektu",
+        "match": "contains"
+      },
+      {
+        "field": "Address",
+        "label": "adres",
+        "match": "contains"
+      },
+      {
+        "field": "Kind",
+        "label": "rodzaj boiska",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Kind",
+          "Address"
+        ],
+        "label": "rodzaj boiska i adres"
+      },
+      {
+        "fields": [
+          "X",
+          "Y"
+        ],
+        "label": "współrzędne"
+      },
+      {
+        "fields": [
+          "Address"
+        ],
+        "label": "adres"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "top5",
+        "field": "Kind",
+        "label": "5 najczęstszych rodzajów boisk"
+      },
+      {
+        "kind": "top5",
+        "field": "Name",
+        "label": "5 miejsc z największą liczbą boisk"
+      },
+      {
+        "kind": "count-by",
+        "field": "Kind",
+        "label": "liczba boisk każdego rodzaju"
+      }
+    ]
+  },
+  "s11": {
+    "app": "PamięćKatowic",
+    "idea": "Tablice, pomniki i groby pamięci narodowej w Katowicach.",
+    "favorites": "miejsca na lekcję historii w terenie",
+    "starTask": "Opisz w jednym zdaniu to miejsce pamięci. Nie dodawaj faktów spoza rekordu.",
+    "traps": [
+      {
+        "stage": 4,
+        "trap": "Tytuł rekordu to długi opis (nawet 390 znaków)",
+        "effect": "Lista ulubionych robi się szeroka – skróć tekst w widoku CSS-em, nie w bazie.",
+        "tool": "rozszerzenie mssql: `SELECT MAX(LEN(Description)) FROM KatowiceMemorials`"
+      }
+    ],
+    "search": [
+      {
+        "field": "Description",
+        "label": "opis miejsca",
+        "match": "contains"
+      },
+      {
+        "field": "Street",
+        "label": "ulica",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "ObjectType",
+          "Street"
+        ],
+        "label": "rodzaj obiektu i ulica"
+      },
+      {
+        "fields": [
+          "RecordNumber"
+        ],
+        "label": "numer w rejestrze"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "count-by",
+        "field": "ObjectType",
+        "label": "liczba tablic, pomników, grobów…"
+      },
+      {
+        "kind": "top5",
+        "field": "Street",
+        "label": "5 ulic z największą liczbą miejsc pamięci"
+      }
+    ]
+  },
+  "s12": {
+    "app": "ZabytkiBytom",
+    "idea": "Zabytki Bytomia: wyszukaj budynek i sprawdź jego styl.",
+    "favorites": "zabytki na trasie spaceru po Bytomiu",
+    "starTask": "Opisz w jednym zdaniu ten zabytek: co to jest, gdzie stoi i w jakim stylu. Nie wymyślaj faktów spoza rekordu.",
+    "traps": [
+      {
+        "stage": 3,
+        "trap": "Styl „Modernizm” i „modernizm”",
+        "effect": "SQL (collation bez wielkości liter) liczy je razem, LINQ w C# osobno – wynik top 5 będzie inny niż na karcie.",
+        "tool": "log SQL + Watch na liście grup"
+      }
+    ],
+    "search": [
+      {
+        "field": "Name",
+        "label": "nazwa zabytku",
+        "match": "contains"
+      },
+      {
+        "field": "Street",
+        "label": "ulica",
+        "match": "contains"
+      },
+      {
+        "field": "Style",
+        "label": "styl",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Street",
+          "BuildingNumber"
+        ],
+        "label": "adres"
+      },
+      {
+        "fields": [
+          "Style"
+        ],
+        "label": "styl"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "top5",
+        "field": "Style",
+        "label": "5 najczęstszych stylów"
+      },
+      {
+        "kind": "top5",
+        "field": "Street",
+        "label": "5 ulic z największą liczbą zabytków"
+      }
+    ]
+  },
+  "s13": {
+    "app": "SekcjaSCK",
+    "idea": "Zajęcia w Siemianowickim Centrum Kultury: znajdź sekcję dla siebie albo rodzeństwa.",
+    "favorites": "zajęcia, na które para chce się zapisać",
+    "starTask": "Napisz w dwóch zdaniach, dla kogo są te zajęcia i kiedy się odbywają.",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Wiek „0.5” w `minimalAge` (pół roku)",
+        "effect": "Typ int go odrzuci – pole `MinAge` ma typ `decimal(4,1)`.",
+        "tool": "breakpoint + Watch na `minimalAge` w wierszu 1"
+      }
+    ],
+    "search": [
+      {
+        "field": "Section",
+        "label": "nazwa sekcji",
+        "match": "contains"
+      },
+      {
+        "field": "ClassType",
+        "label": "rodzaj zajęć",
+        "match": "contains"
+      },
+      {
+        "field": "Room",
+        "label": "sala",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Day",
+          "StartHour"
+        ],
+        "label": "dzień i godzina"
+      },
+      {
+        "fields": [
+          "ClassType",
+          "MinAge"
+        ],
+        "label": "rodzaj zajęć i minimalny wiek"
+      },
+      {
+        "fields": [
+          "Unit",
+          "Room"
+        ],
+        "label": "placówka i sala"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "count-by",
+        "field": "ClassType",
+        "label": "liczba sekcji każdego rodzaju"
+      },
+      {
+        "kind": "count-by",
+        "field": "Unit",
+        "label": "liczba sekcji w każdej placówce"
+      },
+      {
+        "kind": "avg",
+        "field": "MinAge",
+        "label": "średni minimalny wiek uczestnika"
+      }
+    ]
+  },
+  "s14": {
+    "app": "BiletBot",
+    "idea": "Gdzie kupisz bilet ZTM: automaty biletowe na przystankach w Twojej gminie.",
+    "favorites": "automaty przy przystankach, z których korzysta para",
+    "starTask": "Napisz w jednym zdaniu, gdzie dokładnie stoi ten automat (przystanek i opis lokalizacji).",
+    "traps": [
+      {
+        "stage": 1,
+        "trap": "Współrzędne „szerokość długość” w jednym polu, oddzielone spacją",
+        "effect": "Zostają tekstem (`Coordinates`). Nie rozdzielaj ich.",
+        "tool": "Watch na polu `Współrzędne geograficzne`"
+      },
+      {
+        "stage": 1,
+        "trap": "Ostatnia kolumna nie ma nazwy i jest pusta (średnik na końcu linii)",
+        "effect": "Nie importujemy jej; CsvHelper zobaczy 9 kolumn.",
+        "tool": "breakpoint + Watch na nagłówkach"
+      }
+    ],
+    "search": [
+      {
+        "field": "StopName",
+        "label": "nazwa przystanku",
+        "match": "contains"
+      },
+      {
+        "field": "LocationDescription",
+        "label": "opis lokalizacji",
+        "match": "contains"
+      },
+      {
+        "field": "Commune",
+        "label": "gmina",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Commune",
+          "LocationDescription"
+        ],
+        "label": "gmina i opis lokalizacji"
+      },
+      {
+        "fields": [
+          "MachineCode",
+          "Platform"
+        ],
+        "label": "kod automatu i stanowisko"
+      },
+      {
+        "fields": [
+          "Coordinates"
+        ],
+        "label": "współrzędne"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "top5",
+        "field": "Commune",
+        "label": "5 gmin z największą liczbą automatów"
+      },
+      {
+        "kind": "count-by",
+        "field": "Commune",
+        "label": "liczba automatów w każdej gminie"
+      }
+    ]
+  },
+  "s15": {
+    "app": "KlubKatowice",
+    "idea": "Uczniowskie kluby sportowe w Katowicach: znajdź klub w swojej okolicy.",
+    "favorites": "kluby, do których para chce dołączyć",
+    "starTask": "Opisz w jednym zdaniu ten klub: nazwa, ulica i status w rejestrze.",
+    "traps": [
+      {
+        "stage": 4,
+        "trap": "Nazwa klubu w wierszu 7 ma znak nowej linii w środku",
+        "effect": "W przeglądarce widać spację, na karcie zapis `\\n`. To ta sama wartość.",
+        "tool": "rozszerzenie mssql: `SELECT Name FROM SchoolSportsClubs WHERE SourceRow = 7`"
+      },
+      {
+        "stage": 1,
+        "trap": "Daty rejestracji sprzed 2001 r. mają 12 cyfr zamiast 13",
+        "effect": "Parsowanie po długości tekstu się pomyli – licz z liczby milisekund.",
+        "tool": "breakpoint + Watch na `registrationDate` w wierszu 1"
+      }
+    ],
+    "search": [
+      {
+        "field": "Name",
+        "label": "nazwa klubu",
+        "match": "contains"
+      },
+      {
+        "field": "Street",
+        "label": "ulica",
+        "match": "contains"
+      }
+    ],
+    "listFields": [
+      {
+        "fields": [
+          "Street",
+          "Status"
+        ],
+        "label": "ulica i status w rejestrze"
+      },
+      {
+        "fields": [
+          "RegisteredOn"
+        ],
+        "label": "data rejestracji"
+      }
+    ],
+    "stats": [
+      {
+        "kind": "count-by",
+        "field": "Status",
+        "label": "ile klubów aktywnych, wykreślonych i o nieznanym statusie"
+      },
+      {
+        "kind": "top5",
+        "field": "Street",
+        "label": "5 ulic z największą liczbą klubów"
+      }
+    ]
+  }
+}

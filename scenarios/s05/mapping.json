@@ -1,0 +1,111 @@
+{
+  "scenario": "s05",
+  "dataset": "Dąbrowa Górnicza: rzeczy znalezione",
+  "source": {
+    "file": "data/raw/s05_dabrowa-rzeczy-znalezione.csv",
+    "encoding": "UTF-8",
+    "separator": ",",
+    "headerLine": 1,
+    "skipRowsWhenEmpty": null
+  },
+  "table": "DabrowaLostItems",
+  "columns": [
+    {
+      "csv": "collectionDate",
+      "field": "CollectionDate",
+      "sqlType": "date",
+      "culture": "pl-PL",
+      "format": "unix-ms",
+      "nullable": false
+    },
+    {
+      "csv": "comments",
+      "import": false
+    },
+    {
+      "csv": "demand",
+      "import": false
+    },
+    {
+      "csv": "documentTransferDate",
+      "import": false
+    },
+    {
+      "csv": "entryDate",
+      "import": false
+    },
+    {
+      "csv": "foundDate",
+      "field": "FoundDate",
+      "sqlType": "date",
+      "culture": "pl-PL",
+      "format": "unix-ms",
+      "nullable": false
+    },
+    {
+      "csv": "giveOutDate",
+      "import": false
+    },
+    {
+      "csv": "id",
+      "field": "Id",
+      "sqlType": "nvarchar(30)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "issueNumber",
+      "import": false
+    },
+    {
+      "csv": "itemName",
+      "field": "ItemName",
+      "sqlType": "nvarchar(60)",
+      "culture": "pl-PL",
+      "format": null,
+      "nullable": false
+    },
+    {
+      "csv": "letterNumber",
+      "import": false
+    },
+    {
+      "csv": "placing",
+      "import": false
+    },
+    {
+      "csv": "status",
+      "import": false
+    },
+    {
+      "csv": "storageLocation",
+      "import": false
+    },
+    {
+      "csv": "year",
+      "import": false
+    }
+  ],
+  "key": {
+    "kind": "natural",
+    "fields": [
+      "Id"
+    ]
+  },
+  "filter": {
+    "field": "ItemName"
+  },
+  "statistic": {
+    "kind": "top5",
+    "field": "ItemName"
+  },
+  "titleField": "ItemName",
+  "listFields": [
+    "FoundDate",
+    "CollectionDate"
+  ],
+  "checkField": "FoundDate",
+  "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0",
+  "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/565dc7a79264b260f100cd7e07e40a06e5bd073b5d0721e8ea6619e721178b8c"
+}

@@ -1,0 +1,152 @@
+FID,FID_1,RODZAJ,NAZWA,uwagi,ADRES,TYP,x,y
+1,GDB$G_REK_POI_REKREACJA_REK.36a1f68e-1aa8-4649-a89f-291d6487206e,boisko do piłki nożnej,Szkoła Podstawowa Nr 23,,ul. Sikornik 1,Szkolne,2077206.0362285855,6496145.5309081236
+2,GDB$G_REK_POI_REKREACJA_REK.910bff88-d12e-44ce-9974-09d3780c789d,boisko do koszykówki,Szkoła Podstawowa Nr 23,,ul. Sikornik 1,Szkolne,2077169.6091403239,6496082.0386229539
+3,GDB$G_REK_POI_REKREACJA_REK.9db79e55-40d0-4fe3-9102-9ce68a97f60b,boisko do piłki nożnej,Szkoła Podstawowa Nr 28,,ul. Ks. Marcina Strzody 4,Szkolne,2078529.9818555496,6497179.8013317492
+4,GDB$G_REK_POI_REKREACJA_REK.a1779d18-a846-4946-b26d-ba8b14dd0e9c,boisko do koszykówki,Szkoła Podstawowa Nr 28,,ul. Ks. Marcina Strzody 4,Szkolne,2078473.6699939724,6497241.7221095255
+5,GDB$G_REK_POI_REKREACJA_REK.959fdbe0-d5eb-4c8a-999c-b9586676597a,boisko do piłki nożnej i koszykówki,Zespół Szkolno-Przedszkolny nr 7,,ul. Juliusza Ligonia 36,Szkolne,2074889.1310558605,6496636.5454666931
+6,GDB$G_REK_POI_REKREACJA_REK.cb9405b1-66ab-4092-bc64-3a2f4620f7db,boisko do piłki nożnej i koszykówki,Szkoła Podstawowa Nr 9,,ul. Jana III Sobieskiego 14,Szkolne,2076710.0164587304,6497609.9066491006
+7,GDB$G_REK_POI_REKREACJA_REK.a0fd4649-7b55-49db-b821-cba5b8aff7f9,boisko do piłki nożnej i koszykówki,Szkoła Podstawowa Nr 6,,"ul. Jasnogórska 15-17
+",Szkolne,2077273.6463570932,6498146.1338936426
+8,GDB$G_REK_POI_REKREACJA_REK.5d1e3f89-98c3-41e7-9de7-f4e6c7c6e005,boisko do koszykówki i siatkówki,Szkoła Podstawowa Nr 6,,"ul. Jasnogórska 15-17
+",Szkolne,2077241.5414883094,6498176.6899532368
+9,GDB$G_REK_POI_REKREACJA_REK.59cf4cb2-522f-4d25-a34a-216b05c8737b,boisko do siatkówki,Szkoła Podstawowa Nr 6,,"ul. Jasnogórska 15-17
+",Szkolne,2077224.976575136,6498232.9916259833
+10,GDB$G_REK_POI_REKREACJA_REK.d4a1ca07-a80f-46d3-b01c-7b4bde471d42,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 8",,ul. Stefana Okrzei 16,Szkolne,2081297.1091818081,6498533.3356297426
+11,GDB$G_REK_POI_REKREACJA_REK.9eca53f9-d14e-4a37-99af-bc34ea50595d,boisko do siatkówki,"	
+Zespół Szkolno-Przedszkolny nr 8",,ul. Stefana Okrzei 16,Szkolne,2081325.9587881633,6498553.9043792142
+12,GDB$G_REK_POI_REKREACJA_REK.010eaa20-3f2b-481e-86a7-4ec0281724bb,boisko do piłki nożnej,Zespół Szkolno-Przedszkolny nr 12,,"ul. Lipowa 29
+",Szkolne,2080135.9866136007,6498833.5891709775
+13,GDB$G_REK_POI_REKREACJA_REK.bf91b309-97b1-4ed4-b02b-2440f653b4cd,boisko do piłki nożnej i koszykówki,Zespół Szkolno-Przedszkolny nr 12,,"ul. Lipowa 29
+",Szkolne,2080264.8194892202,6498783.69770087
+14,GDB$G_REK_POI_REKREACJA_REK.794c4260-1e07-4667-9c3a-02bdf667a9eb,boisko do piłki nożnej i koszykówki,Zespół Szkół Ogólnokształcących Specjalnych Nr 7,,ul. Aleksandra Gierymskiego 7,Szkolne,2079636.3490724131,6499473.8700559465
+15,GDB$G_REK_POI_REKREACJA_REK.5919d6b8-065a-4ccc-afd3-c40635b66286,boisko do siatkówki,Zespół Szkół Ogólnokształcących Nr 14,,ul. Przedwiośnie 2,Szkolne,2085226.2912022667,6496093.8285938688
+16,GDB$G_REK_POI_REKREACJA_REK.e674a0cd-c31e-47ad-835f-b1f485094675,boisko asfaltowe do piłki nożnej,"	Centrum Kształcenia Zawodowego i Ustawicznego nr 1",,ul. Kozielska 1a,Szkolne,2076559.0828025201,6497972.3635344794
+17,GDB$G_REK_POI_REKREACJA_REK.25a0d8b9-af28-41e7-9d4b-a247681e1a18,boisko do koszykówki i siatkówki,I Liceum Ogólnokształcące,,ul. Zimnej Wody 8,Szkolne,2079306.9956748702,6497242.0051479051
+18,GDB$G_REK_POI_REKREACJA_REK.f15d5da5-e669-4276-ab9f-761277d37fa0,boisko do koszykówki i siatkówki,II Liceum Ogólnokształcące,,ul. Walerego Wróblewskiego 9,Szkolne,2080557.3153732973,6498340.4234584952
+19,GDB$G_REK_POI_REKREACJA_REK.f4130e26-af41-422b-bafe-90a8732c342f,boisko do piłki nożnej,II Liceum Ogólnokształcące,,ul. Walerego Wróblewskiego 9,Szkolne,2080531.8225330033,6498375.099403657
+20,GDB$G_REK_POI_REKREACJA_REK.ff92e199-0156-4b76-91e8-3bfbc7e7e6a5,boisko do piłki nożnej i koszykówki,Zespół Szkół Ogólnokształcących Nr 12,,ul. Płocka 16,Szkolne,2069236.830787186,6502094.0098712314
+21,GDB$G_REK_POI_REKREACJA_REK.31e8afc4-54e3-4a29-8dc0-3849d7787124,boisko do siatkówki,Zespół Szkolno-Przedszkolny nr 7,,ul. Juliusza Ligonia 36,Szkolne,2074921.8835258291,6496604.6827379121
+22,GDB$G_REK_POI_REKREACJA_REK.1f89af44-636b-4301-8fcd-87178228baa0,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 11",,ul. Tarnogórska 59,Szkolne,2079855.2931091292,6499688.8378174324
+23,GDB$G_REK_POI_REKREACJA_REK.b80cb069-f4c9-45c7-becd-e7e0d7b1b94b,boisko do piłki nożnej,Zespół Szkolno-Przedszkolny nr 4,,ul. Orląt Śląskich 25,Szkolne,2078841.3050112585,6500871.6299613109
+24,GDB$G_REK_POI_REKREACJA_REK.f25f07f3-8d8f-4359-8a48-bb3395ec91a8,boisko do piłki nożnej i koszykówki,Zespół Szkolno-Przedszkolny nr 4,,ul. Obrońców Pokoju 4,Szkolne,2080358.53017378,6501652.5326295476
+25,GDB$G_REK_POI_REKREACJA_REK.d6c2651d-a8f7-444d-81d2-5d67e354ae5f,boisko do piłki nożnej i koszykówki,Szkoła Podstawowa Nr 13,,ul. Józefa Elsnera 25,Szkolne,2082937.0101253558,6502794.315618502
+26,GDB$G_REK_POI_REKREACJA_REK.915e2824-6b53-4def-a7d1-ac64df448c2f,boisko do koszykówki i siatkówki,"	
+Zespół Szkolno-Przedszkolny nr 2",,ul. Mikołaja Kopernika 63,Szkolne,2076837.8594492886,6501796.1954635764
+27,GDB$G_REK_POI_REKREACJA_REK.0d2975c5-d640-4d03-a7d1-f0af835f7670,boisko do piłki nożnej,"	
+Zespół Szkolno-Przedszkolny nr 2",,ul. Mikołaja Kopernika 63,Szkolne,2076784.3455574722,6501783.0628141928
+28,GDB$G_REK_POI_REKREACJA_REK.ff01c6fd-1cbd-4ca2-b716-82a2339bfd7f,arena lekkoatletyczna,GKS Piast Gliwice,dzierżawa,"ul. Syriusza 30
+",,2076035.8280166613,6502744.3123958576
+29,GDB$G_REK_POI_REKREACJA_REK.8fcc1a05-b0ad-45f9-b3a0-af4d41845515,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkół Ogólnokształcących nr 8",,"ul. Syriusza 30
+",Szkolne,2076151.6873778116,6502828.4538271986
+30,GDB$G_REK_POI_REKREACJA_REK.c0753217-f5df-4057-b9d4-b76117ad7408,boisko do piłki nożnej,"	
+Zespół Szkolno-Przedszkolny nr 9",,ul. Wrzosowa 14,Szkolne,2073695.4031390881,6506657.8365385141
+31,GDB$G_REK_POI_REKREACJA_REK.f53a8889-fd5c-43b1-a9ad-069d97f7b769,boisko do koszykówki i siatkówki,"	
+Zespół Szkolno-Przedszkolny nr 9",,ul. Wrzosowa 14,Szkolne,2073695.1857836565,6506606.0188319953
+32,GDB$G_REK_POI_REKREACJA_REK.07693a6b-5ead-423f-b82c-f8168a152fa9,boisko asfaltowe do koszykówki i mini piłki nożnej,"	
+Zespół Szkół Ogólnokształcących Nr 2",,ul. Partyzantów 25,Szkolne,2074212.1193595086,6505362.0899580559
+33,GDB$G_REK_POI_REKREACJA_REK.e750b6b6-020a-49a5-bf31-f4d2e4cee12e,boisko asfaltowe do piłki nożnej,Szkoła Podstawowa Nr 8,,ul. Spacerowa 6,Szkolne,2079337.0603582095,6489746.4053557934
+34,GDB$G_REK_POI_REKREACJA_REK.0850d33a-e2e3-4fbb-b4dd-e8267a14301d,boisko asfaltowe do koszykówki,Szkoła Podstawowa Nr 8,,ul. Spacerowa 6,Szkolne,2079463.3974850976,6489797.40352467
+35,GDB$G_REK_POI_REKREACJA_REK.5916e73c-04bc-4fcf-80a1-ce54ffbcc7a3,boisko do piłki nożnej,Fundacja ESPANOLA,dzierżawa,ul. Parkowa,,2079191.4437381194,6489501.4964200286
+36,GDB$G_REK_POI_REKREACJA_REK.d8710399-d0cd-40f0-95c7-8b3137f19c02,boisko asfaltowe do piłki nożnej,Zespół Szkół Oświata,,ul. Stanisława Konarskiego 16,Szkolne,2079229.4507676677,6497294.698562732
+37,GDB$G_REK_POI_REKREACJA_REK.24225e18-4235-496a-a435-4f6eb835005f,boisko asfaltowe do koszykówki i mini piłki nożnej,Zespół Szkół Budowlano-Ceramicznych,,ul. Bojkowska 20A,Szkolne,2078702.7633594354,6495493.24704594
+38,GDB$G_REK_POI_REKREACJA_REK.7e5fd53a-8c5c-4593-9798-d4affd98fd09,boisko asfaltowe do koszykówki i mini piłki nożnej,I Społeczna Szkoła im. Janusza Korczaka,,ul. Robotnicza 4,Szkolne,2080626.9254996739,6496729.143059819
+39,GDB$G_REK_POI_REKREACJA_REK.163aef30-4ae4-4581-b420-a0e2602af0d8,boisko do piłki nożnej,Zespół Szkół Ogólnokształcących Nr 14,,ul. Przedwiośnie 2,Szkolne,2085192.2946717248,6496039.1197978267
+40,GDB$G_REK_POI_REKREACJA_REK.1cadf99b-5097-4caf-8c83-8afa26a1d815,boisko do siatkówki plażowej,MZUK,,ul. Gwiazdy Polarnej 26,,2076421.311568511,6502352.5493583493
+41,GDB$G_REK_POI_REKREACJA_REK.648fe24b-f36a-4efe-8a42-10cd89dd1ea2,stadion,"GKS ""Piast""",,ul. Okrzei 20,,2081199.8611279435,6499543.1681084344
+42,GDB$G_REK_POI_REKREACJA_REK.ad953014-3f68-42a0-86e8-d6cf1d583331,stadion piłkarski,MZUK,,ul. Lekarska 5,,2070646.82785904,6495304.631308727
+43,GDB$G_REK_POI_REKREACJA_REK.4c26ac47-41f7-46ed-83bd-6ad731e7a1aa,boisko sportowe,MZUK,,ul. Radomska,,2068549.1563343289,6503334.5071286578
+44,GDB$G_REK_POI_REKREACJA_REK.40062918-7d0d-4fcc-be87-0a31bdf55871,boisko,"KKS ""Kolejarz""",,ul. Sportowa 20,,2082513.4220577141,6497327.7740546232
+45,GDB$G_REK_POI_REKREACJA_REK.c109172a-f196-49cf-8e0d-54f6f6313ecd,boisko,"GKS ""Piast""",,ul. Sokoła,,2077963.2944485752,6501764.1731103016
+46,GDB$G_REK_POI_REKREACJA_REK.18df5255-9eff-4489-853b-1986d3c3e5c1,boisko do piłki nożnej i koszykówki,MZUK,,ul. Anny Jagiellonki,,2072367.7757309952,6506949.99242237
+47,GDB$G_REK_POI_REKREACJA_REK.5a9b6e79-180c-49f8-9d45-562bae7144a2,boisko do koszykówki i piłki ręcznej,MZUK,"Kompleks boisk wielofunkcyjnych ""Piaskowa Dolina""",ul. Piaskowa,,2075530.182903009,6505660.32346298
+48,GDB$G_REK_POI_REKREACJA_REK.4a0d00ea-7435-4228-b783-e70e97133145,boisko do piłki nożnej,MZUK,"Kompleks boisk wielofunkcyjnych ""Orlik 2012""",ul. Jasna 21,,2078404.8537673471,6495585.1921417639
+49,GDB$G_REK_POI_REKREACJA_REK.9e5428fc-3de7-4c7c-9b1a-7d417ded3ea5,boisko do koszykówki,MZUK,,ul. Narutowicza,,2073258.2970563571,6505940.24906366
+50,GDB$G_REK_POI_REKREACJA_REK.e6d1aef8-1bad-44ee-84f8-790a82aca459,boisko do piłki nożnej,MZUK,,ul. Pszczyńska 112-118,,2079441.3013043315,6495394.6893730164
+51,GDB$G_REK_POI_REKREACJA_REK.debd16e5-b78a-41e7-8c40-f262d6e55bc0,boisko do koszykówki,MZUK,,ul. Gwiazdy Polarnej 54,,2076514.1318034739,6502278.4325584164
+52,GDB$G_REK_POI_REKREACJA_REK.b5fc7155-87a9-425d-9b22-d3ca4cd8de27,boisko trawiaste do piłki nożnej,MZUK,,ul. Centaura,,2076873.8870803614,6502582.1269295169
+53,GDB$G_REK_POI_REKREACJA_REK.cc20f303-bfba-4aec-8864-0521e597f3c5,boisko trawiaste do piłki nożnej,MZUK,,ul. Syriusza 14,,2076485.7135814573,6502941.2752274517
+54,GDB$G_REK_POI_REKREACJA_REK.21c6cad3-07a7-448c-ac0b-2ff399819042,boisko asfaltowe do koszykówki i mini piłki nożnej,MZUK,,ul. Pszczyńska 173,,2080398.6733800396,6495030.3629169129
+55,GDB$G_REK_POI_REKREACJA_REK.3d5aee13-a252-41c4-8179-d3efcbdfc93e,boisko trawiaste do piłki nożnej,MZUK,,ul. Słowackiego,,2075869.1590361076,6496391.9550317284
+56,GDB$G_REK_POI_REKREACJA_REK.4d48e252-4aea-4b8b-a83a-db5fb2476d4c,boisko do piłki nożnej i koszykówki,MZUK,,ul. Wiejska/ Sadowa,,2073095.4129650188,6500485.7198057855
+57,GDB$G_REK_POI_REKREACJA_REK.3b6c1cab-c236-434a-a15f-060ee3ad8028,boisko do siatkówki plażowej,MZUK,,ul. Chałubińskiego 99,,2081591.7286311379,6503985.79871358
+58,GDB$G_REK_POI_REKREACJA_REK.03d3f6ad-cfb8-47ca-ac65-5e0efaaf3d3b,boisko do piłki nożnej,MZUK,,ul. Mieszka I,,2075133.0719962989,6497709.6332954243
+59,GDB$G_REK_POI_REKREACJA_REK.774d06fd-3bec-4174-872c-bde46eecf1c1,boisko asfaltowe do piłki nożnej,MZUK,,skwer Nacka,,2078477.0980321034,6499801.805785086
+60,GDB$G_REK_POI_REKREACJA_REK.12c6127e-543d-41a6-9ac0-9caea1e4f0bb,boisko do koszykówki i siatkówki,MZUK,,pl. Grunwaldzki,,2076461.4142803538,6496878.9140899507
+61,GDB$G_REK_POI_REKREACJA_REK.81a7327d-a3fa-40e9-aead-0f0de72af994,boisko sportowe,MZUK,,ul. Niezapominajki,,2067269.7943490262,6491329.57946992
+62,GDB$G_REK_POI_REKREACJA_REK.75e02e96-2c30-4c8e-a135-1290b96f1cf1,boisko sportowe,Stowarzyszenie GTW,dzierżawa,ul. Orkana 44,,2073515.3449539458,6495660.0958159631
+63,GDB$G_REK_POI_REKREACJA_REK.cf832fbe-15fd-40d6-912d-e35fd29c09d1,boisko do siatkówki plażowej i koszykówki ulicznej,Politechnika Śląska,,ul. Akademicka 26,,2079628.6785990759,6496118.8510505073
+64,GDB$G_REK_POI_REKREACJA_REK.0a092f43-ad66-41fa-83b1-e64f4edd42bf,boisko do mini piłki nożnej,,,ul. Stefana Okrzei,,2081323.1399889067,6499525.589294388
+65,GDB$G_REK_POI_REKREACJA_REK.f78672b7-3842-4161-bf06-39b5676b1351,boisko,KS CARBO Gliwice,,ul. Józefa Sowińskiego,,2074795.6680435059,6497813.875523462
+66,GDB$G_REK_POI_REKREACJA_REK.d6f9b6aa-c547-4449-8bfc-17653fc03134,boisko do piłki nożnej,GKS Piast,,ul. Robotnicza,Szkolne,2080536.6957971873,6496438.76456198
+67,GDB$G_REK_POI_REKREACJA_REK.4affe6a3-d003-4703-8639-c4c5d2520552,boisko do koszykówki ulicznej,Adamex s.c.,,ul. Ignacego Daszyńskiego 226F,,2073399.8466647475,6496411.3600713452
+68,GDB$G_REK_POI_REKREACJA_REK.ccecd27b-f194-4000-9a66-b5b03cb4cb64,boisko trawiaste do piłki nożnej,MZUK,,ul. Nad Łąkami,,2074768.109828444,6509469.3062636629
+69,GDB$G_REK_POI_REKREACJA_REK.794516c0-5b1c-445a-ae4b-a0cb3684d1d0,boisko trawiaste do piłki nożnej,MZUK,,Park Chrobrego,,2079970.8651221506,6496314.3593668211
+70,GDB$G_REK_POI_REKREACJA_REK.535d5d33-5531-4f4c-8d4e-ac8198b1ed2d,boisko sportowe,MZUK,,ul. Fiołkowa 26,,2074049.2194818584,6506290.6098441277
+71,GDB$G_REK_POI_REKREACJA_REK.35199607-3ef9-41ad-b3e0-de3713dd73ff,"boisko wielofunkcyjne do koszykówki, siatkówki i tenisa",MZUK,,ul. Dzionkarzy,,2085602.1582490017,6496157.8989038542
+72,GDB$G_REK_POI_REKREACJA_REK.9e5b1063-b1c2-47be-b801-af140c849279,boisko do gry w bule,MZUK,,ul. Szybowcowa,,2077795.8435586726,6494064.28556285
+73,GDB$G_REK_POI_REKREACJA_REK.1a020b41-37df-48d2-8f9b-b4db4b7894ae,boisko żwirowe do kometki,MZUK,,ul. Centaura/Oriona,,2077156.0855350916,6502378.1924537364
+74,GDB$G_REK_POI_REKREACJA_REK.5f416f17-fba4-4b70-802e-24c46736ee68,boisko trawiaste do piłki nożnej,MZUK,,ul. Głogowska,,2085447.7676443739,6497561.40159746
+75,GDB$G_REK_POI_REKREACJA_REK.467f48bf-d5f8-4a43-a0fc-023ac2880a6e,boisko asfaltowe do koszykówki,MZUK,,ul. Pszczyńska 116,,2079508.7947477887,6495432.9159341482
+76,GDB$G_REK_POI_REKREACJA_REK.9dfcb8e1-3414-4bf6-9d58-53abb3bd665e,ścianka do tenisa,MZUK,,ul. Syriusza 28,,2076523.0306995437,6502663.1811896916
+77,GDB$G_REK_POI_REKREACJA_REK.bf5879a7-a6b4-4f80-a709-dd3a5cbba219,boisko do koszykówki,MZUK,,ul. Chorzowska / Kapliczna,,2082109.3565070571,6498367.7402282869
+78,GDB$G_REK_POI_REKREACJA_REK.b22136cf-72ad-4382-a6d2-9473bf7485ac,boisko do piłki nożnej,Szkoła Podstawowa Nr 11,,ul. Pocztowa 31,Szkolne,2081985.5214484511,6494610.6158645386
+79,GDB$G_REK_POI_REKREACJA_REK.32c8f35b-d23c-4c98-a5ef-d639a8ce9198,boisko wielofunkcyjne,Szkoła Podstawowa Nr 2,,ul. Goździkowa 2,Szkolne,2067427.7436485623,6491426.4855735973
+80,GDB$G_REK_POI_REKREACJA_REK.b5f9a820-915e-46a3-8ee4-e3d070592e19,boisko do piłki nożnej i koszykówki,Szkoła Podstawowa Nr 41,,ul. Kormoranów 23,Szkolne,2076657.9464797294,6493883.1522818385
+81,GDB$G_REK_POI_REKREACJA_REK.b16c2496-c7c7-4269-83c6-674f2d3a4f70,boisko do koszykówki,Szkoła Podstawowa Nr 11,,ul. Pocztowa 31,Szkolne,2082123.6278994263,6494578.3925880464
+82,GDB$G_REK_POI_REKREACJA_REK.431b83e6-34b5-4bbb-9b58-6556650e636b,ścianka do tenisa,"	
+Zespół Szkół Ekonomiczno-Technicznych",,ul. Władysława Sikorskiego 134,Szkolne,2087249.3626104521,6496578.57147769
+83,GDB$G_REK_POI_REKREACJA_REK.df643f43-6789-4487-8676-d0d1da748278,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkół Ekonomiczno-Technicznych",,ul. Władysława Sikorskiego 134,Szkolne,2087146.1195897097,6496642.7754201936
+84,GDB$G_REK_POI_REKREACJA_REK.a3110a6c-d294-4f79-969b-d9f5c5fc9c94,boisko do piłki nożnej i koszykówki,Szkoła Podstawowa Nr 14,,ul. Jedności 35,Szkolne,2085224.8981846531,6496440.9593986552
+85,GDB$G_REK_POI_REKREACJA_REK.0ca58bd3-2d71-4fc9-9dda-25b5a6059727,boisko do piłki nożnej i koszykówki,Szkoła Podstawowa Nr 21,,ul. Władysława Reymonta 18a,Szkolne,2085426.2466010109,6497229.0688816486
+86,GDB$G_REK_POI_REKREACJA_REK.47a7fa42-0ede-4c1c-811e-ff9f465ce601,boisko do koszykówki,Szkoła Podstawowa Nr 21,,ul. Władysława Reymonta 18a,Szkolne,2085378.5977655358,6497254.7622680357
+87,GDB$G_REK_POI_REKREACJA_REK.22d78dec-c471-4300-99a2-72f5a231dc72,boisko do koszykówki,Szkoła Podstawowa Nr 14,,ul. Jedności 35,Szkolne,2085214.8117375982,6496482.9466368062
+88,GDB$G_REK_POI_REKREACJA_REK.54fd65c6-8960-48c1-81e3-1793c8c7b8fc,boisko do koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 6",,ul. Robotnicza 6,Szkolne,2080606.0311268715,6496530.29675838
+89,GDB$G_REK_POI_REKREACJA_REK.d48b7622-2b6c-41af-abf5-6049fbb3df9c,boisko do siatkówki,Szkoła Podstawowa Nr 9,,ul. Jana III Sobieskiego 14,Szkolne,2076744.5143636444,6497602.8026659591
+90,GDB$G_REK_POI_REKREACJA_REK.5729d39c-5893-4f35-9090-1c0ff0c57a4d,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 5",,ul. Kozielska 39,Szkolne,2075667.3927320198,6498312.6596696833
+91,GDB$G_REK_POI_REKREACJA_REK.9fac4af8-36b9-4aa4-a8bf-770d92d3ced9,boisko do piłki nożnej i koszykówki,Szkoła Podstawowa Nr 27,,ul. Rubinowa 16a,Szkolne,2072800.4351146563,6500194.600095816
+92,GDB$G_REK_POI_REKREACJA_REK.2e8afa7d-89f2-4679-b10d-0bcdc4e4cdf0,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 10",,ul. Jana Śliwki 8,Szkolne,2078055.3362278105,6500161.8666099012
+93,GDB$G_REK_POI_REKREACJA_REK.7d1383e8-d6a1-44f5-b066-39c1fe211c05,boisko do piłki nożnej,"	
+Zespół Szkolno-Przedszkolny nr 10",,ul. Jana Śliwki 8,Szkolne,2078107.7193012447,6500196.28094627
+94,GDB$G_REK_POI_REKREACJA_REK.971f8e80-f963-4738-95a4-062c5ff62c5d,boisko trawiaste do piłki nożnej,MZUK,,ul. Elsnera/Żernicka,,2082937.0944459811,6502891.6878131051
+95,GDB$G_REK_POI_REKREACJA_REK.fafc77f6-b3c8-4fa1-866b-3f4d4b74e3b7,boisko trawiaste do piłki nożnej,klub sportowy Carbo Gliwice,dzierżawa,ul. Fizyków,,2070762.4629564108,6494671.12218786
+96,GDB$G_REK_POI_REKREACJA_REK.4490d783-5f1e-49a5-a517-e43a6db01d51,boisko do piłki nożnej,Szkoła Podstawowa Nr 3,,ul. Ignacego Daszyńskiego 424,Szkolne,2070162.3312016586,6495372.0603190251
+97,GDB$G_REK_POI_REKREACJA_REK.f87f36e5-29a9-45df-b5ba-00bd5c4ffb1a,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 1",,ul. Jan Kilińskiego 1,Szkolne,2078166.7084513844,6494424.8774297889
+98,GDB$G_REK_POI_REKREACJA_REK.b3ba60e0-f2e4-47b1-bc0b-2cb9c434ae87,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 3",,ul. Żwirki i Wigury 85,Szkolne,2078624.2014711443,6495333.52150596
+99,GDB$G_REK_POI_REKREACJA_REK.c9db3adc-748a-4c5d-996a-c406291a6d63,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkolno-Przedszkolny nr 6",,ul. Robotnicza 6,Szkolne,2080526.0719554247,6496563.4975196337
+100,GDB$G_REK_POI_REKREACJA_REK.4984ee8e-6104-421d-b806-c8e9a5f9c4e7,boisko do piłki nożnej i koszykówki,Zespół Szkół Łączności,,ul. Warszawska 35,Szkolne,2079108.9103511786,6499948.5861567128
+101,GDB$G_REK_POI_REKREACJA_REK.4ae5e24e-0c67-4c70-92aa-a96e85ece4be,boisko do piłki nożnej,Politechnika Śląska,,ul. Kujawska,,2079291.514788691,6495903.5418265117
+102,GDB$G_REK_POI_REKREACJA_REK.b1a8e7b7-da83-47a3-9193-f00b1651bf80,boisko do koszykówki i siatkówki,Politechnika Śląska,,ul. Kujawska,,2079255.1337819654,6495919.0053598154
+103,GDB$G_REK_POI_REKREACJA_REK.af9aceea-f579-4715-8bf1-a4a59e6dcd3f,boisko do siatkówki plażowej,Politechnika Śląska,,ul. Kujawska,,2079225.9907764785,6495936.8149267
+104,GDB$G_REK_POI_REKREACJA_REK.a9fdf18e-44f9-4db7-b4b4-a45a1970ef9f,boisko wielofunkcyjne,Szkoła Podstawowa Nr 5,,ul. Asnyka 36,Szkolne,2078638.4311449272,6495096.4737680247
+105,GDB$G_REK_POI_REKREACJA_REK.67f12182-fb27-40a7-b2b7-ff36c152a680,boisko do gry w bule,Politechnika Śląska,,ul. Akademicka 26,,2080121.8534366824,6496146.3308832021
+106,GDB$G_REK_POI_REKREACJA_REK.8bcf7f3f-dfea-40fc-a571-0d93de1f3aa3,boisko do piłki nożnej,MZUK,,ul. Jesienna,,2085327.143769125,6494986.7456199974
+107,GDB$G_REK_POI_REKREACJA_REK.491a331a-a346-4b52-a7c0-70341d69efb5,boisko wielofunkcyjne,Szkoła Podstawowa Nr 8,,ul. Spacerowa 6,Szkolne,2079397.6987952918,6489589.8308513379
+108,GDB$G_REK_POI_REKREACJA_REK.9c97dd0b-63ab-45eb-b87c-20a0969e0018,boisko do siatkówki plażowej,MZUK,,ul. Niezapominajki,,2067211.7088246511,6491363.9520904878
+109,GDB$G_REK_POI_REKREACJA_REK.5d409d5f-d9fb-40b7-b724-3d92d383b861,boisko asfaltowe do koszykówki,Zespół Szkół Ogólnokształcących Nr 14,,ul. Przedwiośnie 2,Szkolne,2085259.1680623977,6496190.4350322513
+110,GDB$G_REK_POI_REKREACJA_REK.0f09fb2b-7ced-4fca-972b-318290bdcc7e,boisko do piłki nożnej,"	
+Zespół Szkół Ogólnokształcących Nr 5",,ul. Sikornik 34,Szkolne,2076537.0322011155,6494924.7611838309
+111,GDB$G_REK_POI_REKREACJA_REK.57a0507b-3d8f-4d21-83f2-96cf75a6d19f,boisko do koszykówki,"	
+Zespół Szkół Ogólnokształcących Nr 5",,ul. Sikornik 34,Szkolne,2076620.89875653,6495013.0454668691
+112,GDB$G_REK_POI_REKREACJA_REK.cf73221f-6e55-4af9-b626-253f30268d05,boisko wielofunkcyjne,"	
+Zespół Szkół Ogólnokształcących Nr 5",,ul. Sikornik 34,Szkolne,2076620.0156582922,6494962.1828908315
+113,GDB$G_REK_POI_REKREACJA_REK.0a00aaad-d820-4bf7-9f8a-9a5438dde226,boisko do piłki nożnej i koszykówki,"	
+Zespół Szkół Specjalnych",,ul. Dolnej Wsi 74,Szkolne,2075071.1094687744,6496335.1585430838
+114,GDB$G_REK_POI_REKREACJA_REK.d30563c9-f501-4c04-8e0d-9e36f742c31c,boisko,"	
+Zespół Szkół Specjalnych",,ul. Dolnej Wsi 74,Szkolne,2075119.4880465118,6496340.4429956013
+115,GDB$G_REK_POI_REKREACJA_REK.11a16b2c-8d1a-47b1-9aca-3c939314a45f,boisko wielofunkcyjne,,,ul. Ordona,,2075066.5693872892,6498757.5039318418
+116,GDB$G_REK_POI_REKREACJA_REK.30119705-3a8c-42d6-b693-6dbbc6579ce1,boisko do piłki nożnej i koszykówki,Zespół Szkół Samochodowych,,ul. Jana Kilińskiego 24a,Szkolne,2078520.6472166781,6494205.5452966159
+117,GDB$G_REK_POI_REKREACJA_REK.f9642d52-0af7-44b7-80af-dfb2dafa1eca,boisko do koszykówki i siatkówki,Zespół Szkół Samochodowych,,ul. Jana Kilińskiego 24a,Szkolne,2078472.9979601554,6494207.2914769985
+118,GDB$G_REK_POI_REKREACJA_REK.d82556f9-2e58-4dec-8ea3-506402362e9e,boisko do piłki nożnej i siatkówki,MZUK,"Kompleks boisk wielofunkcyjnych ""Piaskowa Dolina""",ul. Piaskowa,,2075525.370498393,6505711.5203321846
+119,GDB$G_REK_POI_REKREACJA_REK.f940f049-bb4e-4b2c-ac1c-33fedcfd886f,boisko do siatkówki plażowej,MZUK,,ul. Jesienna,,2085395.7352089675,6494994.6251955573
+120,GDB$G_REK_POI_REKREACJA_REK.7bf99fe5-fd99-402b-87cf-e1634bec4113,boisko do siatkówki plażowej,MZUK,,O.W. Czechowice,,2076188.3921016932,6509315.5692954622
+121,GDB$G_REK_POI_REKREACJA_REK.c9e611be-f3a7-4b76-9612-3e96fa913649,boisko wielofunkcyjne,MZUK,"Kompleks boisk wielofunkcyjnych ""Orlik 2012""",ul. Jasna 21,,2078543.8300648956,6495573.4105518926
