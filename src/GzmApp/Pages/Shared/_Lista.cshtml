@@ -3,6 +3,11 @@
 <ul id="lista" class="list-unstyled">
     @foreach (var r in Model.Items)
     {
-        <li data-record-id="@r.RecordId">Nr @r.SourceRow: @(r.Title ?? "(bez nazwy)")</li>
+        <li data-record-id="@r.RecordId" class="mb-2">Nr @r.SourceRow: <span class="tytul">@(r.Title ?? "(bez nazwy)")</span>
+            @if (r.Fields.Count > 0)
+            {
+                <br /><small class="text-muted">@string.Join(" · ", r.Fields.Where(f => f.Value.Length > 0).Select(f => $"{f.Name}: {f.Value}"))</small>
+            }
+        </li>
     }
 </ul>

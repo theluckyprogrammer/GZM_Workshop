@@ -1,4 +1,5 @@
 using System.Text;
+using GzmApp;
 using GzmApp.Data;
 using GzmApp.Data.Import;
 using GzmApp.Identity;
@@ -16,8 +17,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddSingleton(sp => new SqlRunner(connectionString, sp.GetRequiredService<ILoggerFactory>()));
 builder.Services.AddSingleton<DatabaseBootstrapper>();
-builder.Services.AddSingleton(_ => ImportPaths.Resolve(builder.Environment.ContentRootPath, builder.Configuration["Scenario"] ?? "s01"));
-builder.Services.AddSingleton(sp => MappingLoader.Load(sp.GetRequiredService<ImportPaths>().MappingFile));
+var paths = ImportPaths.Resolve(builder.Environment.ContentRootPath, builder.Configuration["Scenario"] ?? "s01");
+var mapping = MappingLoader.Load(paths.MappingFile);
+builder.Configuration["DataAttribution"] = mapping.Attribution;
+builder.Services.AddSingleton(paths);
+builder.Services.AddSingleton(mapping);
 builder.Services.AddSingleton<ICsvImporter, CsvImporter>();
 builder.Services.AddSingleton<IRecordRepository, RecordRepository>();
 builder.Services.AddRazorPages();
@@ -38,6 +42,7 @@ await importer.ImportIfEmptyAsync();
 if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 
+app.UseHtmxErrorFragments();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

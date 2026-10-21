@@ -27,7 +27,7 @@ public sealed record StatisticMapping(string Kind, string Field);
 public sealed record ScenarioMapping(
     string Scenario, string Dataset, SourceMapping Source, string Table, IReadOnlyList<ColumnMapping> Columns,
     KeyMapping Key, FilterMapping Filter, StatisticMapping Statistic, string TitleField, string CheckField,
-    string Attribution, string SourceUrl)
+    string Attribution, string SourceUrl, IReadOnlyList<string>? ListFields = null)
 {
     public IReadOnlyList<ColumnMapping> Imported => Columns.Where(c => c.Import).ToList();
 }

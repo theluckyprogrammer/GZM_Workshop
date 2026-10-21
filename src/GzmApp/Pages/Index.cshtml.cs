@@ -1,24 +1,38 @@
 using GzmApp.Data;
+using GzmApp.Data.Import;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace GzmApp.Pages;
 
-public class IndexModel(IConfiguration configuration, IRecordRepository records) : PageModel
+public class IndexModel(ScenarioMapping mapping, IRecordRepository records) : PageModel
 {
     public const int PageSize = 20;
 
-    public string Scenario { get; private set; } = string.Empty;
+    public ScenarioMapping Mapping => mapping;
 
-    public void OnGet() => Scenario = configuration["Scenario"] ?? "(brak scenariusza)";
+    public SearchResult Results { get; private set; } = new(string.Empty, 0, []);
 
-    // GET /?handler=Szukaj&q=...: an HTML fragment with the list (no layout).
+    public StatisticResult Statistic { get; private set; } = new(string.Empty, null, []);
+
+    public async Task OnGetAsync(string? q, CancellationToken ct) => await LoadAsync(q, ct);
+
+    // GET /?handler=Szukaj&q=...: HTMX gets the list fragment, a normal request gets the whole page.
     public async Task<IActionResult> OnGetSzukajAsync(string? q, CancellationToken ct)
     {
         if ((q?.Trim().Length ?? 0) > RecordRepository.MaxQueryLength)
             return Fragment(StatusCodes.Status400BadRequest, $"Fraza może mieć najwyżej {RecordRepository.MaxQueryLength} znaków.");
+        if (Request.IsHtmx())
+            return Partial("_Lista", await records.SearchAsync(q, PageSize, ct));
 
-        return Partial("_Lista", await records.SearchAsync(q, PageSize, ct));
+        await LoadAsync(q, ct);
+        return Page();
+    }
+
+    private async Task LoadAsync(string? q, CancellationToken ct)
+    {
+        Results = await records.SearchAsync(q, PageSize, ct);
+        Statistic = await records.StatisticAsync(ct);
     }
 
     private ContentResult Fragment(int statusCode, string message) => new()
