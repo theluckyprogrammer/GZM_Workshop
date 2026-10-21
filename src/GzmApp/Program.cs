@@ -19,6 +19,7 @@ builder.Services.AddSingleton<DatabaseBootstrapper>();
 builder.Services.AddSingleton(_ => ImportPaths.Resolve(builder.Environment.ContentRootPath, builder.Configuration["Scenario"] ?? "s01"));
 builder.Services.AddSingleton(sp => MappingLoader.Load(sp.GetRequiredService<ImportPaths>().MappingFile));
 builder.Services.AddSingleton<ICsvImporter, CsvImporter>();
+builder.Services.AddSingleton<IRecordRepository, RecordRepository>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

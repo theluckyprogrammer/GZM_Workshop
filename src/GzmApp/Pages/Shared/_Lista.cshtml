@@ -1,0 +1,8 @@
+@model GzmApp.Data.SearchResult
+<p id="licznik">Wyników: @Model.Total</p>
+<ul id="lista" class="list-unstyled">
+    @foreach (var r in Model.Items)
+    {
+        <li data-record-id="@r.RecordId">Nr @r.SourceRow: @(r.Title ?? "(bez nazwy)")</li>
+    }
+</ul>
