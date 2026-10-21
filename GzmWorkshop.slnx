@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GzmApp/GzmApp.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GzmApp.Tests/GzmApp.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Cards/Cards.csproj" />
+    <Project Path="tools/Expect/Expect.csproj" />
+    <Project Path="tools/Fetch/Fetch.csproj" />
+  </Folder>
+</Solution>

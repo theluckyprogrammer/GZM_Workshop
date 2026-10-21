@@ -33,6 +33,16 @@ Dozwolone: MIT, Apache-2.0, MS-PL, BSD (w tym 0BSD).
 
 Bez pakietów NuGet (referencja do projektu `tools/Expect`).
 
+## Pakiety NuGet (`tests/GzmApp.Tests`)
+
+| Pakiet | Wersja | Licencja |
+|---|---|---|
+| Microsoft.NET.Test.Sdk | 18.11.0 | MIT |
+| xunit | 2.9.3 | Apache-2.0 |
+| xunit.runner.visualstudio | 4.0.1 | Apache-2.0 |
+| Microsoft.AspNetCore.Mvc.Testing | 10.0.13 | MIT |
+| AngleSharp | 1.8.5 | MIT |
+
 ## Dane
 
 Zbiory z otwartedane.metropoliagzm.pl: licencja i wymagana atrybucja każdego zbioru są w `data/metadata.json` (pole `license`).
