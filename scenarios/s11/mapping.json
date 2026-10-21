@@ -137,6 +137,10 @@
     "field": "ObjectType"
   },
   "titleField": "Description",
+  "listFields": [
+    "ObjectType",
+    "Street"
+  ],
   "checkField": "Street",
   "attribution": "Źródło: Katowice, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/1def0df4cbc60ff042636848df79479a71a3b87247138be2615f72499323ac64"

@@ -26,7 +26,7 @@ public sealed record StatisticMapping(string Kind, string Field);
 public sealed record ScenarioMapping(
     string Scenario, string Dataset, SourceMapping Source, string Table, IReadOnlyList<ColumnMapping> Columns,
     KeyMapping Key, FilterMapping Filter, StatisticMapping Statistic, string TitleField, string CheckField,
-    string Attribution, string SourceUrl)
+    string Attribution, string SourceUrl, IReadOnlyList<string>? ListFields = null)
 {
     public IReadOnlyList<ColumnMapping> Imported => Columns.Where(c => c.Import).ToList();
 }
@@ -50,7 +50,8 @@ public static class MappingLoader
     private static void Validate(ScenarioMapping mapping)
     {
         var fields = mapping.Imported.Select(c => c.Field ?? "").ToList();
-        var referenced = mapping.Key.Fields.Concat([mapping.Filter.Field, mapping.Statistic.Field, mapping.TitleField, mapping.CheckField]);
+        var referenced = mapping.Key.Fields.Concat([mapping.Filter.Field, mapping.Statistic.Field, mapping.TitleField, mapping.CheckField])
+            .Concat(mapping.ListFields ?? []);
         Ensure(mapping, fields.Count == fields.Distinct().Count(), "powtórzona nazwa pola");
         Ensure(mapping, mapping.Imported.All(IsComplete), "importowana kolumna bez field/sqlType/culture");
         Ensure(mapping, referenced.All(fields.Contains), "odwołanie do pola, którego nie ma w columns");

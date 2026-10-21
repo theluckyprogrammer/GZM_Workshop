@@ -49,6 +49,9 @@
     "field": "Facility"
   },
   "titleField": "Facility",
+  "listFields": [
+    "AddressManager"
+  ],
   "checkField": "AddressManager",
   "attribution": "Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/f310c9b971378c90071de753fc47e60d0b7b7fa52a9a0408bc5937c9373f6bd3"

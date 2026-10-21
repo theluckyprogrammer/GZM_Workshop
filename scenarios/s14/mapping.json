@@ -93,6 +93,10 @@
     "field": "Commune"
   },
   "titleField": "StopName",
+  "listFields": [
+    "Commune",
+    "LocationDescription"
+  ],
   "checkField": "Coordinates",
   "attribution": "Źródło: Zarząd Transportu Metropolitalnego, otwartedane.metropoliagzm.pl, Creative Commons Attribution",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/lista-automatow-biletowych"

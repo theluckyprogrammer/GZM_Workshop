@@ -145,6 +145,10 @@
     "field": "City"
   },
   "titleField": "LocationName",
+  "listFields": [
+    "City",
+    "Street"
+  ],
   "checkField": "City",
   "attribution": "Źródło: Zabrze, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/b78bdf8a194b381025a5c2f4a79b9daa01d335f107519145604fb35412178299"

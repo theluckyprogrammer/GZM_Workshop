@@ -165,6 +165,10 @@
     "field": "Style"
   },
   "titleField": "Name",
+  "listFields": [
+    "Street",
+    "BuildingNumber"
+  ],
   "checkField": "Style",
   "attribution": "Źródło: Bytom, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/77714e3bb8cad342bc54cfe6d77c478c4d2141b97aefc1cb6df6cc0719ce52a3"

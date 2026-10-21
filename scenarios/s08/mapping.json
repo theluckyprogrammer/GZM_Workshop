@@ -95,6 +95,10 @@
     "field": "Status"
   },
   "titleField": "StationName",
+  "listFields": [
+    "ReservedAt",
+    "Status"
+  ],
   "checkField": "ReservedAt",
   "attribution": "Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/27d74bc7362cbcb3aeaf9b41b3635cc331c227cf122431be9a6aab11e29ac975"

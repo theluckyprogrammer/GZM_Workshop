@@ -105,6 +105,10 @@
     "field": "ClassType"
   },
   "titleField": "Section",
+  "listFields": [
+    "Day",
+    "StartHour"
+  ],
   "checkField": "MinAge",
   "attribution": "Źródło: Siemianowickie Centrum Kultury, otwartedane.metropoliagzm.pl, CC BY 4.0",
   "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/1ea36ecce32f5766c78654f9cd1358a75830a7799d8a002fc251bec6b7359f47"
