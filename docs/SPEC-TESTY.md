@@ -57,12 +57,12 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | Q-02 | Kod w `src/` i `tools/`: bez zagnieżdżonych if-ów i pętli, metody ≤ 20 linii, klasy ≤ 150, guard clauses | `tools/CodeRules` (Roslyn) na `src/` i `tools/` gałęzi `ratunek/etap-4`: 0 naruszeń (po 9 poprawkach) | OK |
 | Q-03 | Brak sekretów we wszystkich gałęziach i w historii | skan `git log -p --all` (sk-…, api_key, ApiKey":"…", Password=, długi base64): 0 trafień | OK |
 | Q-04 | Każdy pakiet ma licencję MIT, Apache, MS-PL albo BSD i jest w `docs/LICENSES.md` | `StaticTests.Every_direct_package_is_in_LICENSES_md`, `StaticTests.Every_package_including_transitive_ones_has_an_allowed_license` (2 wyjątki opisane) | OK |
-| M-01 | Ściąga prowadzącego = `checkpoints.md` dla 15 scenariuszy | — | — |
-| M-02 | Karty uczniów i `prompty.md` nie zawierają wartości oczekiwanych; decyzje mają ≥ 2 warianty, wariant A = `mapping.json` | — | — |
-| M-03 | `print/*.html` bez pustych pól i placeholderów | — | — |
-| M-04 | Ścieżki i polecenia z `docs/PROWADZACY.md` istnieją w repo | — | — |
-| M-05 | Stopka aplikacji ma atrybucję CC BY 4.0 w każdym scenariuszu | — | — |
-| AI-01 | Fałszywy `IChatClient` → fragment HTML bez `<html>`, do modelu trafiają tylko pola rekordu z bazy | — | — |
-| AI-02 | Brak klucza → „Brak klucza SOL-6 – poproś prowadzącego”, bez wyjątku | — | — |
-| AI-03 | Klucza nie ma w logach | — | — |
-| AI-04 | Prawdziwe wywołanie SOL-6 (tylko z sekretem `Sol6:ApiKey`) | — | — |
+| M-01 | Ściąga prowadzącego = `checkpoints.md` dla 15 scenariuszy | `MaterialsTests.Cheat_sheet_has_the_values_of_checkpoints` (15) | OK |
+| M-02 | Karty uczniów i `prompty.md` nie zawierają wartości oczekiwanych; decyzje mają ≥ 2 warianty, wariant A = `mapping.json` | `MaterialsTests.Student_materials_have_no_expected_values_and_variant_A_follows_mapping` (15) | OK |
+| M-03 | `print/*.html` bez pustych pól i placeholderów | `MaterialsTests.Printed_pages_have_no_placeholders_or_empty_fields` | OK |
+| M-04 | Ścieżki i polecenia z `docs/PROWADZACY.md` istnieją w repo | `MaterialsTests.Paths_in_PROWADZACY_md_exist` | OK |
+| M-05 | Stopka aplikacji ma atrybucję CC BY 4.0 w każdym scenariuszu | `AttributionTests.Footer_shows_the_attribution_from_mapping` (15, etap-3) | OK |
+| AI-01 | Fałszywy `IChatClient` → fragment HTML bez `<html>`, do modelu trafiają tylko pola rekordu z bazy | `AiTests.Fake_model_gives_an_HTML_fragment_and_gets_only_the_record_fields` | OK |
+| AI-02 | Brak klucza → „Brak klucza SOL-6 – poproś prowadzącego”, bez wyjątku | `AiTests.Missing_key_gives_a_friendly_message_not_an_exception` | OK |
+| AI-03 | Klucza nie ma w logach | `AiTests.Key_is_not_in_the_logs_also_after_a_model_error` | OK |
+| AI-04 | Prawdziwe wywołanie SOL-6 (tylko z sekretem `Sol6:ApiKey`) | `AiTests.Real_SOL6_call_describes_record_7` (uruchamia się tylko z `SOL6__APIKEY`, `SOL6__ENDPOINT`, `SOL6__MODEL`) | pominięte (brak klucza) |

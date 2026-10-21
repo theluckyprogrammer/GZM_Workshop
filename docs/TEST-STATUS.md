@@ -13,7 +13,7 @@
 | 6 | gałęzie ratunkowe (19) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 | 7 | przejście promptami (20–22) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | 8 | statyczne: kod, Kilo, sekrety, licencje (23) | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d |
-| 9 | materiały i SOL-6 (24) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| 9 | materiały i SOL-6 (24) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 
 ## Gałęzie (krok 19)
 
@@ -25,5 +25,7 @@
 | `ratunek/etap-4` | 0–5 | 470 | OK |
 
 Poprawek w gałęziach nie było potrzeba.
+
+Poziom 9: M-01–M-05 dla 15 scenariuszy; AI-01–AI-03 na s02 (fałszywy `IChatClient`), AI-04 pominięte bez klucza SOL-6.
 
 Poziom 8 nie zależy od scenariusza (`n/d`): Q-01–Q-04 OK, szczegóły w `docs/SPEC-TESTY.md`.
