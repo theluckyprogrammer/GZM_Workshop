@@ -15,8 +15,9 @@ Przeczytaj `zadanie/prompts/00-KONTEKST-wspolny.md` (sekcje: Stos, Zasady kodu, 
    - Przycisk „★” przy rekordzie: `hx-post` / `hx-delete`.
      - Wymaga `[Authorize]` i walidacji antiforgery.
      - Token idzie z `<body hx-headers:inherited=...>`.
-   - Zakładka „Moje ulubione” dla zalogowanego użytkownika.
-2. **Zadanie * na tej samej gałęzi:**
+   - Zakładka „Moje ulubione” dla zalogowanego użytkownika (wariant A decyzji 4: lista tytułów).
+   - Nazwy jak w kroku 4 `prompty.md`: `OnPostUlubione` / `OnDeleteUlubione`, strona `Ulubione`, niezalogowany przy ★ dostaje 401 z fragmentem.
+2. **SOL-6 na tej samej gałęzi** (w materiałach uczniów to pomysł z „Co dalej?”, tu – działający przykład do pokazania):
    - `IAiSummarizer` z implementacją na `IChatClient`; konfiguracja `Sol6:*` opisana w kontekście.
    - Handler `OnGetPodsumuj` zwraca fragment HTML.
    - Brak klucza → fragment „Brak klucza SOL-6 – poproś prowadzącego”, bez wyjątku.

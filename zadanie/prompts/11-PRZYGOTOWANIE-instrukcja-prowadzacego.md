@@ -37,7 +37,7 @@ Napisz `docs/PROWADZACY.md` (zwięźle, do wydruku):
    | 26–30 | zamknięcie |
 
    Wariant skrócony na wypadek opóźnień: etap 4 tylko jako demo.
-4. **Tekst otwarcia** (do 60 sekund) i **tekst zamknięcia** (do 90 sekund) z pytaniem do sali: „Co AI zrobiło źle i jak to złapaliście?”.
+4. **Tekst otwarcia** (do 60 sekund) i **tekst zamknięcia** (do 90 sekund) z pytaniem do sali: „Co zbudowaliście i co dodalibyście jako następne?”. Na otwarciu: uczniowie dostają gotowe prompty, w pauzach podejmują decyzje o swojej aplikacji – nic nie jest sprawdzianem.
 5. **Tabela: problem → objaw → szybkie rozwiązanie.** Co najmniej:
    - port zajęty,
    - LocalDB nie startuje,
@@ -46,7 +46,10 @@ Napisz `docs/PROWADZACY.md` (zwięźle, do wydruku):
    - zła liczba wierszy,
    - 400 przy ulubionych,
    - brak żądań w zakładce Network,
-   - para skończyła wcześniej → zadanie z gwiazdką.
+   - para skończyła wcześniej → „Co dalej?” na końcu `prompty.md` (m.in. SOL-6).
+   - para nie wkleiła decyzji → Kilo użyje wariantu A, to nie błąd.
+
+   Przy każdym scenariuszu korzystaj z `scenarios/sNN/prowadzacy.md` (wartości dla wariantów A i pułapki w danych).
 6. **Klucze:**
    - Kilo: klucz per para, z limitem i wygaśnięciem 28.10.2026 23:59; wpisuje prowadzący.
    - SOL-6: `dotnet user-secrets set Sol6:ApiKey …`, wpisuje prowadzący.

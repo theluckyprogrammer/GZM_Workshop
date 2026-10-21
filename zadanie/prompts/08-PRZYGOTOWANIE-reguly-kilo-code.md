@@ -24,11 +24,8 @@ Pracuj na `main`, potem zmerguj w górę do wszystkich `ratunek/etap-N`.
    - Nie zmieniaj plików spoza listy z promptu.
    - Odpowiadaj po polsku, prostym językiem.
 3. **`.kilo/rules/htmx4.md`:** ściąga różnic HTMX 2 → 4 (z kontekstu wspólnego) z przykładami „źle / dobrze”.
-4. **`.kilo/agents/detektyw.md`:** agent oparty na trybie debug.
-   - Może edytować tylko metodę wskazaną w prompcie.
-   - Przed poprawką musi wyjaśnić przyczynę.
-5. Kopie reguł dla zgodności wstecznej: `.kilocode/rules/` oraz `AGENTS.md`.
-6. **`docs/KILO-TEST.md`:** instrukcja ręcznego testu na komputerze z Kilo. Prośby „dodaj paczkę X”, „zmień port na 6000” i „zmień logowanie na JWT” mają zostać zablokowane.
+4. Kopie reguł dla zgodności wstecznej: `.kilocode/rules/` oraz `AGENTS.md`.
+5. **`docs/KILO-TEST.md`:** instrukcja ręcznego testu na komputerze z Kilo. Prośby „dodaj paczkę X”, „zmień port na 6000” i „zmień logowanie na JWT” mają zostać zablokowane.
 
 ## Kryterium ukończenia
 - `kilo.jsonc` to poprawny JSONC (sprawdź parserem).

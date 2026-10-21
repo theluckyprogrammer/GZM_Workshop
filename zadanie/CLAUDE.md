@@ -1,6 +1,6 @@
 # Instrukcja dla Claude Code: pakiet warsztatowy „AI + otwarte dane GZM”
 
-Ten folder (`zadanie/`) zawiera zadanie do wykonania w tym repozytorium. Projekt warsztatu (kod, dane, scenariusze, materiały) budujesz w **katalogu głównym repo**, obok `zadanie/`. Folderu `zadanie/` nie modyfikuj. Wyjątek: poprawki promptów uczniów robisz w `scenarios/`, nie tutaj.
+Ten folder (`zadanie/`) zawiera zadanie do wykonania w tym repozytorium. Projekt warsztatu (kod, dane, scenariusze, materiały) budujesz w **katalogu głównym repo**, obok `zadanie/`. Folderu `zadanie/` nie modyfikuj. Wyjątki: poprawki promptów uczniów robisz w szablonach `tools/Cards/templates/` (i generujesz `scenarios/`), nie tutaj; 20.10.2026 prowadzący zmienił podejście warsztatu (gotowe prompty z pauzami zamiast sprawdzania wiedzy) i na jego polecenie dostosowano prompty 00, 04–08, 10, 11, 20, 22 i 24.
 
 ## Jak pracować
 1. Prompty leżą w `zadanie/prompts/` i są ponumerowane w kolejności wykonania (01–25).

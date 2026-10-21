@@ -55,8 +55,3 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
-
-# Warsztat GZM
-*.user
-secrets.json
-data/work/

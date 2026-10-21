@@ -14,8 +14,9 @@ Przeczytaj `zadanie/prompts/00-KONTEKST-wspolny.md` (sekcje: Stos, Zasady kodu, 
    - `SqlBulkCopy`, gdy wierszy jest więcej niż 5000,
    - kodowanie: BOM → ścisły UTF-8 → fallback Windows-1250,
    - pl-PL i formaty dat z mapowania.
+2a. Tabela ma dokładnie postać `CREATE TABLE` z kroku 1 w `scenarios/<Scenario>/prompty.md` (`RecordId` IDENTITY, `SourceRow`, pola z mapowania, `UQ_<Tabela>_Key`).
 3. Import uruchamia się przy starcie aplikacji, jeśli tabela scenariusza jest pusta, albo poleceniem `dotnet run -- import`. Na koniec loguje: liczbę wierszy, liczbę „dziwnych” rekordów, czas.
-4. Każdy wiersz staging ma numer źródłowy (`SourceRow`). Dzięki temu „wiersz 7” z karty da się znaleźć w bazie.
+4. Każdy wiersz staging ma numer źródłowy (`SourceRow`). Dzięki temu „wiersz 7” z `prowadzacy.md` da się znaleźć w bazie.
 
 ## Kryterium ukończenia
 - Dla każdego scenariusza (pętla w skrypcie, ustawienie `Scenario` przez zmienną `Scenario`) liczba wierszy w bazie = E1 z `checkpoints.md`.

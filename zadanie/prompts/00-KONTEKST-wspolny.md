@@ -9,19 +9,25 @@ Pakiet warsztatowy „AI + otwarte dane GZM”:
 - Windows 10, konta bez uprawnień administratora,
 - data warsztatu: 28.10.2026.
 
-Format „Jeden przepis, różne składniki”: każda para ma inny zbiór CSV. Wszystkie przechodzą te same 4 etapy:
+Format „Jeden przepis, różne składniki”: każda para ma inny zbiór CSV. Celem jest pokazać, jak postawić „całą” aplikację z AI – nie sprawdzamy wiedzy uczniów. Wszystkie pary przechodzą te same 4 etapy:
 1. Dane → baza (import CSV przez Dapper),
 2. Endpoint GET z filtrowaniem (zwraca fragment HTML),
 3. Widok HTMX: lista + wyszukiwarka + jedna statystyka,
 4. Ulubione (wymaga logowania).
 
-Po każdym etapie jest checkpoint. Para dowodzi narzędziem (breakpoint, Watch, zakładka Network, log SQL, rozszerzenie mssql), że wynik zgadza się z kartą.
+Uczniowie dostają gotowe prompty (`scenarios/sNN/prompty.md`), po jednym na etap. Po każdym etapie jest pauza:
+- **zobaczcie, co powstało** – dane w rozszerzeniu mssql, żądanie w zakładce Network, strona w przeglądarce (bez porównywania liczb),
+- **decyzja** – wybór wariantu A/B/C (np. po jakim polu szukać, jaki kafelek statystyki); każdy wariant to gotowa linia, którą para wkleja w miejsce `[DECYZJA n]` w następnym prompcie. Bez wklejenia obowiązuje wariant A.
+
+Na końcu jest lista „Co dalej?” z pomysłami do samodzielnej zabawy (m.in. opis rekordu przez SOL-6).
 
 Role w parze zmieniają się co etap:
-- **Pilot** pisze prompt w Kilo Code i akceptuje zmiany.
-- **Kontroler danych** analizuje CSV i wypełnia kartę oczekiwań.
+- **Pilot** wkleja prompt do Kilo Code i akceptuje zmiany.
+- **Nawigator** prowadzi pauzy i decyzje, patrzy, czy wszystko działa.
 
-Brudne dane (średnik, przecinek dziesiętny, kodowanie, puste pola, formaty dat) są naturalnym źródłem błędów. NIE podkładamy sztucznych bugów.
+Wartości kontrolne (`checkpoints.md`) i pułapki w danych (`prowadzacy.md`) są dla prowadzącego, gałęzi ratunkowych i testów – nie dla uczniów. Wartości dotyczą wariantów A.
+
+Brudne dane (średnik, przecinek dziesiętny, kodowanie, puste pola, formaty dat) są prawdziwe, nie podkładamy sztucznych bugów. Prompty uczniów opisują je wprost, żeby aplikacja powstała bez szukania błędów.
 
 Język:
 - materiały dla uczniów i prowadzącego: po polsku,
@@ -89,7 +95,7 @@ Język:
 
 ## Gałęzie
 - `main` to szkielet i logowanie. To punkt startu uczniów.
-- `ratunek/etap-1`…`ratunek/etap-4` są kumulatywne: każda zawiera poprzednią plus kolejny etap.
+- `ratunek/etap-1`…`ratunek/etap-4` są kumulatywne: każda zawiera poprzednią plus kolejny etap. Realizują warianty A wszystkich decyzji z `prompty.md`.
 - Silnik jest generyczny i sterowany plikiem `scenarios/sNN/mapping.json`. Scenariusz wybiera klucz `"Scenario"` w `appsettings.Development.json`.
 - Poprawka we wspólnym kodzie:
   1. commit na najniższej gałęzi, której dotyczy,
