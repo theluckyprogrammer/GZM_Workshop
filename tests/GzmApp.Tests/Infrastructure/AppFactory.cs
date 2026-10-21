@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Logging;
 
 namespace GzmApp.Tests.Infrastructure;
 
@@ -19,6 +20,8 @@ public sealed class AppFactory : WebApplicationFactory<Program>
 
     public TestDatabase Database { get; }
 
+    public LogCapture Logs { get; } = new();
+
     public HttpClient CreateBrowser() =>
         CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false, HandleCookies = true });
 
@@ -29,6 +32,7 @@ public sealed class AppFactory : WebApplicationFactory<Program>
         builder.UseEnvironment("Development");
         builder.UseSetting("Scenario", Scenario);
         builder.UseSetting("GZM_CONNSTR", Database.ConnectionString);
+        builder.ConfigureLogging(logging => logging.AddProvider(Logs));
     }
 
     public override async ValueTask DisposeAsync()
