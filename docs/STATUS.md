@@ -6,10 +6,11 @@
 | 02 | dane | OK | 2026-10-21 | 15/15 scenariuszy; zamiany jak w poprzednim przebiegu (R2, R4, R5, R6, R7, szczegóły w docs/ZAMIANY.md); pliki identyczne z pobraniem z 20.10. |
 | 03 | mapowania i wartości kontrolne | OK | 2026-10-21 | 15 × mapping.json i checkpoints.md z tools/Expect (426 wartości, wszystkie w docs/expect-log.txt); ponowne uruchomienie daje identyczne pliki. |
 | 04 | karty i prompty uczniów | OK | 2026-10-21 | karta.md + prompty.md (4 kroki, pauzy, decyzje A/B/C, „Co dalej?”) + prowadzacy.md z tools/Cards, `-- check` bez błędów; do GzmApp dodano CsvHelper i pakiety AI. |
+| 05 | ratunek etap-1: generyczny import | OK | 2026-10-21 | 15/15 scenariuszy: liczba wierszy = E1.rows i „dziwnych” = E1.weird, drugi import bez zmian; db/sNN_create.sql = CREATE TABLE z prompty.md (15/15). |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
 Środowisko Claude Code w chmurze pushuje na gałąź sesji `claude/admiring-franklin-wpdxux`; `main` aktualizuje się przez PR.
 
 - `main`: reset jest już w `main` (PR #6). Zmerguj `claude/admiring-franklin-wpdxux` (nowy PR) z commitami od „01: repo startowe”.
-- `ratunek/etap-1` na GitHubie pochodzi sprzed resetu – usuń ją ręcznie; krok 05 utworzy ją od nowa.
+- `ratunek/etap-1`: zbudowana od nowa w kroku 05 na stanie po „04: karty i prompty uczniów” i wypchnięta (fast-forward starej gałęzi).
