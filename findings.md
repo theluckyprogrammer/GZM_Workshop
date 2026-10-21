@@ -64,3 +64,7 @@
 - [11] Gdzie dokładnie wpisać klucz Kilo w rozszerzeniu (ustawienia / logowanie) zależy od wersji Kilo Code – sprawdź na komputerze szkolnym razem z `docs/KILO-TEST.md`.
 - [12] Test dymny s02 (czysty klon, SQL Server w Dockerze): `main` pokazuje s02; `ratunek.ps1 -Etap 1` → 945 wierszy = E1; `-Etap 3` → fragment bez `<html>`, kafelek 4750 = E3; `-Etap 4` → rejestracja, ★ na rekordzie 7, 1 wiersz w `Favorites`; powrót na `main` z czystym `git status`.
 - [12] Odchylenie: `ratunek.ps1` zmienia `appsettings.Development.json` (Scenario) i ta zmiana przechodzi przy `git switch` z powrotem na `main`. Poprawka: skrypt wypisuje drogę powrotu (`git checkout -- src/GzmApp/appsettings.Development.json`, potem `git switch` i `git stash apply`).
+- [13] `tools/check.ps1` na Linuksie: analiza składni i przebieg (krok 09); pełny przebieg na Windows na komputerze szkolnym.
+- [13] `GzmConnection` czyta `GZM_CONNSTR` z konfiguracji (zmienne środowiskowe są jej częścią), żeby `WebApplicationFactory` mogła podać bazę testową przez `UseSetting`. Zachowanie dla uczniów bez zmian.
+- [13] Dodano `GzmWorkshop.slnx` (aplikacja, testy, Fetch, Expect, Cards): `dotnet build GzmWorkshop.slnx` bez ostrzeżeń. W .NET 10 klasa `Program` z instrukcji najwyższego poziomu jest publiczna, więc testy nie potrzebują `public partial class Program`.
+- [13] Testy używają kolekcji „Apps”: jedna `AppFactory` na scenariusz (baza `GzmTest_{scenariusz}`), tworzona przy pierwszym użyciu, usuwana na końcu. Testy w kolekcji idą po kolei – wolniej, ale bez kolizji baz.

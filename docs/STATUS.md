@@ -14,6 +14,7 @@
 | 10 | materiały do druku | OK | 2026-10-21 | 15 kart par + ściąga prowadzącego z tools/Cards; ściąga = checkpoints.md (skrypt), karty bez wartości oczekiwanych, HTML poprawny, wydruk w Chromium: 2 strony A4. |
 | 11 | instrukcja prowadzącego | OK | 2026-10-21 | docs/PROWADZACY.md: przygotowanie, checklista 15 stanowisk, przebieg 30 min, teksty, problemy, klucze, atrybucja; ścieżki i polecenia sprawdzone skryptem. |
 | 12 | smoke test | OK | 2026-10-21 | s02 w czystym klonie: main → ratunek etap 1 (E1) → etap 3 (fragment, E3) → etap 4 (★ → 1 wiersz w Favorites) → main z czystym git status; ratunek.ps1 podaje teraz drogę powrotu. |
+| 13 | środowisko i infrastruktura testów | OK | 2026-10-21 | tests/GzmApp.Tests (xUnit, Mvc.Testing, AngleSharp): DbFixture/AppFactory/ScenarioData/helpery, test dymny D-00 + INF-01 zielone na wszystkich gałęziach; docs/SPEC-TESTY.md i TEST-STATUS.md; build całego rozwiązania bez ostrzeżeń. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
