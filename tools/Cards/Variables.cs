@@ -74,7 +74,7 @@ public static class Variables
 
     private static string KeyNote(ScenarioMapping mapping) => mapping.Key.IsRowHash
         ? "- Klucz: `RowHash` = SHA-256 z wartości wszystkich importowanych pól (po `Trim`) połączonych znakiem `\\u001F`, zapisany jako `binary(32)`."
-        : $"- Klucz naturalny (unikalny): {string.Join(" + ", mapping.Key.Fields.Select(f => $"`{f}`"))}.";
+        : $"- Klucz naturalny (unikalny): {string.Join(" + ", mapping.Key.Fields.Select(f => $"`{f}`"))}. Wiersze zapisuj przez `MERGE` po kluczu: powtórzony klucz nadpisuje wcześniejszy wiersz, bez wyjątku.";
 
     private static string CsvName(ScenarioMapping mapping, string field) => mapping.Imported.First(c => c.Field == field).Csv;
 }
