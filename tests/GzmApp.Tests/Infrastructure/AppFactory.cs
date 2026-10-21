@@ -6,14 +6,14 @@ namespace GzmApp.Tests.Infrastructure;
 
 // The app for one scenario on its own test database (TestServer, no port).
 // UseSetting works before Program.cs reads the configuration, so "Scenario" and GZM_CONNSTR apply from the start.
-public sealed class AppFactory : WebApplicationFactory<Program>
+public class AppFactory : WebApplicationFactory<Program>
 {
-    public AppFactory(string scenario)
+    public AppFactory(string scenario, string databaseSuffix = "")
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(scenario);
 
         Scenario = scenario;
-        Database = new TestDatabase(scenario);
+        Database = new TestDatabase(scenario, databaseSuffix);
     }
 
     public string Scenario { get; }
