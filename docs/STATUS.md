@@ -13,6 +13,7 @@
 | 09 | check.ps1 | OK | 2026-10-21 | tools/check.ps1 + check.cmd: składnia OK, przebieg pwsh 7 na Linuksie (LocalDB pominięte, brak VS Code w kontenerze); pełny test na komputerze szkolnym (Windows PowerShell 5.1). |
 | 10 | materiały do druku | OK | 2026-10-21 | 15 kart par + ściąga prowadzącego z tools/Cards; ściąga = checkpoints.md (skrypt), karty bez wartości oczekiwanych, HTML poprawny, wydruk w Chromium: 2 strony A4. |
 | 11 | instrukcja prowadzącego | OK | 2026-10-21 | docs/PROWADZACY.md: przygotowanie, checklista 15 stanowisk, przebieg 30 min, teksty, problemy, klucze, atrybucja; ścieżki i polecenia sprawdzone skryptem. |
+| 12 | smoke test | OK | 2026-10-21 | s02 w czystym klonie: main → ratunek etap 1 (E1) → etap 3 (fragment, E3) → etap 4 (★ → 1 wiersz w Favorites) → main z czystym git status; ratunek.ps1 podaje teraz drogę powrotu. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 
