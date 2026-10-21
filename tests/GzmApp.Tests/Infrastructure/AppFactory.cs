@@ -8,12 +8,16 @@ namespace GzmApp.Tests.Infrastructure;
 // UseSetting works before Program.cs reads the configuration, so "Scenario" and GZM_CONNSTR apply from the start.
 public class AppFactory : WebApplicationFactory<Program>
 {
-    public AppFactory(string scenario, string databaseSuffix = "")
+    private readonly Action<IWebHostBuilder>? _configure;
+
+    // configure: extra settings or test services (e.g. a fake IChatClient) for one test class.
+    public AppFactory(string scenario, string databaseSuffix = "", Action<IWebHostBuilder>? configure = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(scenario);
 
         Scenario = scenario;
         Database = new TestDatabase(scenario, databaseSuffix);
+        _configure = configure;
     }
 
     public string Scenario { get; }
@@ -33,6 +37,7 @@ public class AppFactory : WebApplicationFactory<Program>
         builder.UseSetting("Scenario", Scenario);
         builder.UseSetting("GZM_CONNSTR", Database.ConnectionString);
         builder.ConfigureLogging(logging => logging.AddProvider(Logs));
+        _configure?.Invoke(builder);
     }
 
     public override async ValueTask DisposeAsync()
