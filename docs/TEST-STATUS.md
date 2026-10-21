@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 0 | środowisko, infrastruktura (13) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 | 1 | dane i wartości kontrolne (14) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
-| 2 | import (15) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| 2 | import (15) | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK | OK |
 | 3 | endpoint z filtrowaniem (16) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | 4 | widok HTMX i ulubione (17) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | 5 | przeglądarka, Playwright (18) | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |

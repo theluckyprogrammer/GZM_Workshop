@@ -37,6 +37,31 @@ public sealed class TestDatabase
         return result is null or DBNull ? default : (T)Convert.ChangeType(result, typeof(T));
     }
 
+    // Rows of (SourceRow, value as text); value is null for NULL.
+    public async Task<IReadOnlyList<(int SourceRow, string? Value)>> PairsAsync(string sql)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(sql);
+
+        await using var connection = new SqlConnection(ConnectionString);
+        await connection.OpenAsync();
+        await using var command = new SqlCommand(sql, connection);
+        await using var reader = await command.ExecuteReaderAsync();
+        var rows = new List<(int, string?)>();
+        while (await reader.ReadAsync())
+            rows.Add((reader.GetInt32(0), reader.IsDBNull(1) ? null : reader.GetString(1)));
+        return rows;
+    }
+
+    public async Task ExecuteAsync(string sql)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(sql);
+
+        await using var connection = new SqlConnection(ConnectionString);
+        await connection.OpenAsync();
+        await using var command = new SqlCommand(sql, connection);
+        await command.ExecuteNonQueryAsync();
+    }
+
     public async Task DropAsync()
     {
         var master = new SqlConnectionStringBuilder(ConnectionString) { InitialCatalog = "master" };
