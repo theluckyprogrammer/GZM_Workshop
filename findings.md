@@ -73,3 +73,6 @@
 - [15] Atomowość importu sprawdzona triggerem testowym (`AFTER INSERT ... THROW`) na tabeli s06: `MERGE` wstawia wiersze, trigger przerywa, transakcja się wycofuje – tabela pusta, potem trigger usuwany i dane wracają. `SqlRunner` jest klasą `sealed`, więc błąd wstrzyknięto w bazie, nie przez podmianę klasy.
 - [15] E1-03 (ogonki): s08 nie ma polskich liter w importowanych kolumnach tekstowych – test przechodzi tam bez porównania.
 - [15] E1-04/E1-05 porównują w bazie każdą kolumnę `decimal` i datową we wszystkich wierszach z drugim parserem (poziom 1), nie tylko jeden rekord.
+- [16] E2-03: frazy z ogonkami i te same frazy bez ogonków (np. „bieruń”/„bierun”, „wyniosły”/„wyniosly”, „garaż”/„garaz”) dają w SQL Server (`Latin1_General_CI_AI`) identyczne liczby wyników we wszystkich 14 scenariuszach z polską frazą (s08 ma frazę z cyfr). Uczeń może pisać bez polskich liter.
+- [16] E2-05: log kategorii `SQL` przechwytywany w testach (`LogCapture`): zapytanie ma `@q`, a tekst `' OR 1=1 --` jest tylko w parametrach.
+- [16] Testy poziomu 3 wysyłają `HX-Request: true`, więc działają na etap-2 (zawsze fragment) i na wyższych gałęziach (fragment tylko dla HTMX).
