@@ -1,5 +1,6 @@
 using System.Text;
 using GzmApp;
+using GzmApp.Ai;
 using GzmApp.Data;
 using GzmApp.Data.Import;
 using GzmApp.Identity;
@@ -24,6 +25,9 @@ builder.Services.AddSingleton(paths);
 builder.Services.AddSingleton(mapping);
 builder.Services.AddSingleton<ICsvImporter, CsvImporter>();
 builder.Services.AddSingleton<IRecordRepository, RecordRepository>();
+builder.Services.AddSingleton<IFavoritesRepository, FavoritesRepository>();
+builder.Services.Configure<Sol6Options>(builder.Configuration.GetSection("Sol6"));
+builder.Services.AddSingleton<IAiSummarizer, AiSummarizer>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

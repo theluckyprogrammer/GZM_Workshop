@@ -1,0 +1,11 @@
+@model GzmApp.Pages.StarModel
+@if (Model.IsFavorite)
+{
+    <button type="button" class="btn btn-sm btn-warning" title="Usuń z ulubionych" data-favorite="true"
+            hx-delete="?handler=Ulubione&id=@Model.RecordId" hx-swap="outerHTML">★</button>
+}
+else
+{
+    <button type="button" class="btn btn-sm btn-outline-secondary" title="Dodaj do ulubionych" data-favorite="false"
+            hx-post="?handler=Ulubione&id=@Model.RecordId" hx-swap="outerHTML">☆</button>
+}

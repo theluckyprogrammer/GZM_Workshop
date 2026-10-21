@@ -26,9 +26,9 @@
 </section>
 
 <input type="search" name="q" class="form-control mb-3" placeholder="Szukaj…" aria-label="Szukaj"
-       value="@Model.Results.Query"
+       value="@Model.Lista.Results.Query"
        hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms" hx-target="#wyniki" />
 
 <div id="wyniki">
-    <partial name="_Lista" model="Model.Results" />
+    <partial name="_Lista" model="Model.Lista" />
 </div>

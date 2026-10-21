@@ -14,6 +14,8 @@ public interface IRecordRepository
     Task<SearchResult> SearchAsync(string? q, int take, CancellationToken ct = default);
 
     Task<StatisticResult> StatisticAsync(CancellationToken ct = default);
+
+    Task<IReadOnlyList<RecordField>?> GetFieldsAsync(int recordId, CancellationToken ct = default);
 }
 
 // Records of the scenario table (mapping.json). Search: LIKE on the filter field, ignoring case and accents.
@@ -49,6 +51,17 @@ public sealed class RecordRepository : IRecordRepository
 
     public Task<StatisticResult> StatisticAsync(CancellationToken ct = default) =>
         new StatisticQuery(_sql, _mapping).RunAsync(ct);
+
+    // All imported fields of one record (null when there is no such record).
+    public async Task<IReadOnlyList<RecordField>?> GetFieldsAsync(int recordId, CancellationToken ct = default)
+    {
+        var fields = _mapping.Imported.Select(c => c.Field!).ToList();
+        var rows = await _sql.QueryAsync<dynamic>(
+            $"SELECT {string.Join(", ", fields.Select(f => $"[{f}]"))} FROM {Table} WHERE [RecordId] = @recordId", new { recordId }, ct);
+        return rows.Select(r => (IDictionary<string, object?>)r)
+            .Select(r => (IReadOnlyList<RecordField>)fields.Select(f => new RecordField(f, DisplayValue.Format(r[f]))).ToList())
+            .FirstOrDefault();
+    }
 
     private string Table => $"dbo.[{_mapping.Table}]";
 

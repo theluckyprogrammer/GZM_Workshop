@@ -1,0 +1,18 @@
+@page
+@model UlubioneModel
+@{
+    ViewData["Title"] = "Moje ulubione";
+}
+
+<h1 class="h3">Moje ulubione</h1>
+
+@if (Model.Items.Count == 0)
+{
+    <p id="brak-ulubionych">Nie masz jeszcze ulubionych. Kliknij ☆ przy rekordzie na stronie głównej.</p>
+}
+<ul id="ulubione" class="list-unstyled">
+    @foreach (var f in Model.Items)
+    {
+        <li data-record-id="@f.RecordId">Nr @f.SourceRow: <span class="tytul">@(f.Title ?? "(bez nazwy)")</span></li>
+    }
+</ul>

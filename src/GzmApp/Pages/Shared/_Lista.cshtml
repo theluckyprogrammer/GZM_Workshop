@@ -1,13 +1,18 @@
-@model GzmApp.Data.SearchResult
-<p id="licznik">Wyników: @Model.Total</p>
+@model GzmApp.Pages.ListaModel
+<p id="licznik">Wyników: @Model.Results.Total</p>
 <ul id="lista" class="list-unstyled">
-    @foreach (var r in Model.Items)
+    @foreach (var r in Model.Results.Items)
     {
-        <li data-record-id="@r.RecordId" class="mb-2">Nr @r.SourceRow: <span class="tytul">@(r.Title ?? "(bez nazwy)")</span>
+        <li data-record-id="@r.RecordId" class="mb-2">
+            <partial name="_Gwiazdka" model="new GzmApp.Pages.StarModel(r.RecordId, Model.Favorites.Contains(r.RecordId))" />
+            <button type="button" class="btn btn-sm btn-outline-info" title="Opis od SOL-6"
+                    hx-get="?handler=Podsumuj&id=@r.RecordId" hx-target="#opis-@r.RecordId">✨ Opisz</button>
+            Nr @r.SourceRow: <span class="tytul">@(r.Title ?? "(bez nazwy)")</span>
             @if (r.Fields.Count > 0)
             {
                 <br /><small class="text-muted">@string.Join(" · ", r.Fields.Where(f => f.Value.Length > 0).Select(f => $"{f.Name}: {f.Value}"))</small>
             }
+            <div id="opis-@r.RecordId"></div>
         </li>
     }
 </ul>

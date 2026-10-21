@@ -2,7 +2,7 @@ using GzmApp.Identity;
 
 namespace GzmApp.Data;
 
-// At startup: create the database (db/000_create.sql), create AspNet* tables, check the connection.
+// At startup: create the database (db/000_create.sql), create AspNet* tables, the Favorites table (db/900_favorites.sql), check the connection.
 public sealed class DatabaseBootstrapper
 {
     private readonly SqlRunner _sql;
@@ -21,6 +21,7 @@ public sealed class DatabaseBootstrapper
     {
         await CreateDatabaseAsync(ct);
         await EnsureIdentityTablesAsync(ct);
+        await _sql.ExecuteAsync(await File.ReadAllTextAsync(ScriptPath("900_favorites.sql"), ct), ct: ct);
         await _sql.ExecuteScalarAsync<int>("SELECT 1", ct: ct);
     }
 
