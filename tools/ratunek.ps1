@@ -62,10 +62,12 @@ try {
     if ($saved) {
         Write-Host "Wasze wcześniejsze zmiany są w schowku: 'ratunek $stamp ...'."
         Write-Host 'Podgląd schowka:   git stash list'
-        Write-Host 'Powrót do zmian:   git switch <Wasza gałąź>, potem git stash apply stash@{N} (N z listy, opis zaczyna się od "ratunek")'
+        Write-Host 'Powrót do zmian:   git checkout -- src/GzmApp/appsettings.Development.json'
+        Write-Host '                   git switch <Wasza gałąź>, potem git stash apply stash@{N} (N z listy, opis zaczyna się od "ratunek")'
     }
     else {
         Write-Host 'Nie było zmian do odłożenia (schowek bez zmian).'
+        Write-Host 'Powrót na main:    git checkout -- src/GzmApp/appsettings.Development.json, potem git switch main'
     }
 }
 finally {
