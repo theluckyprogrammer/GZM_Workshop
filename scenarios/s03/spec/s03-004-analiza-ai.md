@@ -8,7 +8,7 @@ state: draft
 
 ## Co się dzieje
 
-Przycisk „✨ Analizuj z AI” wysyła rekordy z listy wyników do modelu sztucznej inteligencji SOL-6. Model analizuje dane RowerStat, a jego odpowiedź pojawia się na stronie w osobnej karcie. Karta mówi wprost, że ten tekst napisała AI, i pokazuje, co poszło do modelu.
+Przycisk „✨ Analizuj z AI” wysyła rekordy z listy wyników do modelu sztucznej inteligencji GPT-6 Luna. Model analizuje dane RowerStat, a jego odpowiedź pojawia się na stronie w osobnej karcie. Karta mówi wprost, że ten tekst napisała AI, i pokazuje, co poszło do modelu.
 
 ## Reguły
 
@@ -21,6 +21,7 @@ Przycisk „✨ Analizuj z AI” wysyła rekordy z listy wyników do modelu sztu
 6. Jedno kliknięcie to jedno zapytanie do modelu.
 7. Odpowiedź modelu jest pokazana jako tekst, a nie jako kod HTML.
 8. Gdy model nie odpowiada, karta pokazuje krótki komunikat zamiast strony błędu.
+9. Prawdziwy model AI odpowiada na analizę danych z Waszej bazy.
 
 ## Czego się nauczyliśmy
 

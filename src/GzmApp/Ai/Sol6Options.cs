@@ -17,6 +17,6 @@ public sealed class Sol6Options
 // The only error the AI model gives to the pages: a short Polish message, safe to show (no key, no request details).
 public sealed class Sol6Exception(string message) : Exception(message)
 {
-    public const string MissingKey = "Brak klucza SOL-6 – poproś prowadzącego.";
-    public const string NoAnswer = "Model SOL-6 nie odpowiedział – spróbujcie za chwilę.";
+    public const string MissingKey = "Brak klucza do modelu AI – poproś prowadzącego.";
+    public const string NoAnswer = "Model AI nie odpowiedział – spróbujcie za chwilę.";
 }

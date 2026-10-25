@@ -16,7 +16,7 @@ Gałęzie `ratunek/etap-1..4` realizują warianty A wszystkich decyzji i dają d
 {{cpList:E2.result}}
 - Krok 3: kafelek – {{statDescription}}
 {{cpStat}}
-- Krok 4: karta „✨ Analiza AI” z odpowiedzią modelu SOL-6 (treść za każdym razem trochę inna – nie ma wartości kontrolnej). Wariant A zadania: {{aiTask}} Bez pliku `src/GzmApp/appsettings.Local.json` karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”.
+- Krok 4: karta „✨ Analiza AI” z odpowiedzią modelu AI GPT-6 Luna (treść za każdym razem trochę inna – nie ma wartości kontrolnej). Wariant A zadania: {{aiTask}} Bez pliku `src/GzmApp/appsettings.Local.json` karta pokazuje „Brak klucza do modelu AI – poproś prowadzącego.”.
 - Dodatkowo (ulubione): tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): {{cp:E4.title}}.
 
 Pełna lista wartości: `checkpoints.md` (generuje `tools/Expect`).

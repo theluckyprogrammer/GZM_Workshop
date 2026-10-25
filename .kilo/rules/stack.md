@@ -6,7 +6,7 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 - .NET 10, jeden projekt ASP.NET Core Razor Pages: `src/GzmApp`. Port 5080.
 - Widok: HTMX 4.0.0 z pliku lokalnego `wwwroot/lib/htmx/4.0.0/htmx.min.js` (już podpięty w `_Layout.cshtml`). Fragmenty HTML zwracają handlery Razor Pages (`Partial(...)`). Zasady HTMX 4: `.kilo/rules/htmx4.md`.
 - Wygląd: biblioteka CSS Tabler 1.6.1 (klasy Bootstrap 5: `card`, `list-group`, `badge`, `btn`, `row`/`col-*`), plik lokalny już podpięty w `_Layout.cshtml`. Wszystkie teksty na stronie po polsku.
-- AI: model SOL-6 jest już podłączony w `Program.cs` – z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`). Klucz jest w `src/GzmApp/appsettings.Local.json` (od prowadzącego). Odpowiedź modelu pokazuj jako tekst (`@`), nigdy przez `Html.Raw`.
+- AI: model GPT-6 Luna jest już podłączony w `Program.cs` – z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`). Klucz jest w `src/GzmApp/appsettings.Local.json` (od prowadzącego). Odpowiedź modelu pokazuj jako tekst (`@`), nigdy przez `Html.Raw`.
 - Dane: Dapper + jawne skrypty SQL w `db/*.sql`. Każde zapytanie przez istniejącą klasę `SqlRunner` (loguje SQL). Parametry zawsze przez Dappera (`@q`), nigdy sklejanie tekstu SQL.
 - CSV: pakiet CsvHelper (jest w projekcie), `CultureInfo("pl-PL")` albo kultura z promptu.
 - Logowanie: ASP.NET Core Identity (już skonfigurowane). Token antiforgery wysyła `<body hx-headers:inherited=...>` w `_Layout.cshtml`.

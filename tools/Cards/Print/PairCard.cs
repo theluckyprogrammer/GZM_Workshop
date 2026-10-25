@@ -43,6 +43,6 @@ public static class PairCard
           </div>
         """;
 
-    // The SOL-6 idea ends with "Prompt na start:" – on paper only the idea itself.
+    // An AI idea may end with "Prompt na start:" – on paper only the idea itself.
     private static string Shorten(string idea) => idea.Replace(" Prompt na start:", string.Empty, StringComparison.Ordinal);
 }

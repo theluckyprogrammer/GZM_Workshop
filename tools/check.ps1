@@ -6,7 +6,7 @@
     Dla każdego punktu wypisuje OK / BŁĄD (albo POMINIĘTO) i podpowiedź naprawy.
     Działa w Windows PowerShell 5.1 i pwsh 7, bez uprawnień administratora.
     Kod wyjścia: 0 – wszystko OK, 1 – co najmniej jeden BŁĄD.
-    Klucze (Kilo, SOL-6) nigdy nie są wypisywane na ekran ani do logu.
+    Klucze (Kilo, model AI) nigdy nie są wypisywane na ekran ani do logu.
 
 .PARAMETER KiloEndpoint
     Adres HTTPS usługi Kilo do sprawdzenia połączenia (domyślnie zmienna KILO_ENDPOINT albo https://api.kilo.ai).
@@ -157,7 +157,7 @@ try {
     }
 
     $sol6 = Get-Sol6Settings
-    Test-Step "SOL-6 ($($sol6.Model)): jedno krótkie wywołanie – krok 4 warsztatu" 'Brak klucza albo adresu: skopiuj plik src/GzmApp/appsettings.Local.json od prowadzącego (Sol6:Endpoint i Sol6:ApiKey).' {
+    Test-Step "Model AI ($($sol6.Model)): jedno krótkie wywołanie – krok 4 warsztatu" 'Brak klucza albo adresu: skopiuj plik src/GzmApp/appsettings.Local.json od prowadzącego (Sol6:Endpoint i Sol6:ApiKey).' {
         if (-not $sol6.ApiKey) { return $false }
         Invoke-Sol6Ping $sol6
     }

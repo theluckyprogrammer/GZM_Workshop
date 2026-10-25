@@ -13,10 +13,10 @@ public sealed class Sol6LoggingClient(IChatClient inner, string model, ILogger l
         ArgumentNullException.ThrowIfNull(messages);
 
         var sent = messages.ToList();
-        logger.LogInformation("SOL-6 ({Model}): wysyłam do modelu {Messages} wiadomości, {Chars} znaków", model, sent.Count, sent.Sum(m => m.Text.Length));
+        logger.LogInformation("AI ({Model}): wysyłam do modelu {Messages} wiadomości, {Chars} znaków", model, sent.Count, sent.Sum(m => m.Text.Length));
         var clock = Stopwatch.StartNew();
         var response = await AnswerOrSol6ErrorAsync(sent, options, cancellationToken);
-        logger.LogInformation("SOL-6 ({Model}): odpowiedź po {Seconds:0.0} s, tokeny: wejście {Input}, wyjście {Output}",
+        logger.LogInformation("AI ({Model}): odpowiedź po {Seconds:0.0} s, tokeny: wejście {Input}, wyjście {Output}",
             model, clock.Elapsed.TotalSeconds, response.Usage?.InputTokenCount, response.Usage?.OutputTokenCount);
         return response;
     }
@@ -30,7 +30,7 @@ public sealed class Sol6LoggingClient(IChatClient inner, string model, ILogger l
         catch (Exception ex) when (ex is not Sol6Exception and not OperationCanceledException)
         {
             // Only the type of the error: its message could contain details of the request.
-            logger.LogWarning("SOL-6 ({Model}): błąd wywołania ({ErrorType})", model, ex.GetType().Name);
+            logger.LogWarning("AI ({Model}): błąd wywołania ({ErrorType})", model, ex.GetType().Name);
             throw new Sol6Exception(Sol6Exception.NoAnswer);
         }
     }

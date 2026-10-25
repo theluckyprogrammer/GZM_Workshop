@@ -238,13 +238,13 @@ Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pl
 
 ~~~~text
 CEL
-Przycisk „✨ Analizuj z AI”: rekordy z listy wyników idą do modelu sztucznej inteligencji SOL-6, a jego analiza pojawia się na stronie w karcie, która mówi wprost, że ten tekst napisała AI.
+Przycisk „✨ Analizuj z AI”: rekordy z listy wyników idą do modelu sztucznej inteligencji GPT-6 Luna, a jego analiza pojawia się na stronie w karcie, która mówi wprost, że ten tekst napisała AI.
 
 SPECYFIKACJA
 Reguły tego kroku są w pliku `scenarios/s05/spec/s05-004-analiza-ai.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
 
 DANE
-- Model SOL-6 jest już podłączony w `Program.cs`: z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`, nazwa modelu w `Model`). Klucz jest w pliku `src/GzmApp/appsettings.Local.json` od prowadzącego. Nie twórz własnego klienta AI i nie wpisuj klucza w kod.
+- Model AI (GPT-6 Luna) jest już podłączony w `Program.cs`: z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`, nazwa modelu w `Model`). Klucz jest w pliku `src/GzmApp/appsettings.Local.json` od prowadzącego. Nie twórz własnego klienta AI i nie wpisuj klucza w kod.
 - Zadanie dla modelu to zdanie z reguły 3 specyfikacji, bez początku „Model dostaje zadanie: ”.
 - Rekordy: te same co na liście dla frazy `q` – `Search(q, 20)` z `RecordRepository`. Do modelu wyślij pola: `CollectionDate`, `FoundDate`, `Id`, `ItemName`. Jedna linia na rekord: `Nr <SourceRow>: Pole=wartość; Pole=wartość`.
 
@@ -267,7 +267,7 @@ ZASADY
 
 - Widok częściowy `src/GzmApp/Pages/Shared/_Analiza.cshtml`: `<div class="card card-ai" data-ai>` z nagłówkiem `<div class="card-header"><h3 class="card-title">✨ Analiza AI</h3><span class="badge bg-purple-lt ms-auto">model …</span></div>`, odpowiedzią w `<div class="card-body ai-text">@Model.Text</div>` (zwykłe `@`, nigdy `Html.Raw` – odpowiedź modelu to tekst, nie HTML) i stopką `<div class="card-footer text-secondary small">`: „Ten tekst wygenerowała sztuczna inteligencja (model …) na podstawie N rekordów z Waszej bazy. AI może się mylić – sprawdźcie w danych.” oraz `<details><summary>Co poszło do modelu?</summary><pre class="small">@Model.Prompt</pre></details>`. Bez `<html>` i bez layoutu.
 - Rejestracja `AiAnalyzer` w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
-- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s05-004-analiza-ai`. Testy używają udawanego modelu (bez klucza i bez tokenów). Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
+- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s05-004-analiza-ai`. Reguły 1–8 sprawdza udawany model (bez tokenów), a reguła 9 – jedno zapytanie do prawdziwego modelu. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
 Nie zmieniaj plików poza: `src/GzmApp/Ai/AiAnalyzer.cs`, `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Analiza.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
@@ -277,10 +277,10 @@ Nie zmieniaj plików poza: `src/GzmApp/Ai/AiAnalyzer.cs`, `src/GzmApp/Pages/Inde
 
 1. Otwórzcie `http://localhost:5080`, wpiszcie frazę i kliknijcie „✨ Analizuj z AI”. Po kilku sekundach pojawia się fioletowa karta. Ten tekst napisał model AI, a nie Wasz kod.
 2. Rozwińcie „Co poszło do modelu?”: zadanie i Wasze rekordy. Model widzi tylko to – nic więcej o Waszej bazie nie wie.
-3. Terminal: wpisy `SOL-6 (…): wysyłam do modelu … znaków` i `odpowiedź po … s, tokeny: …`. Tokeny to „waluta” AI – każde kliknięcie kosztuje.
+3. Terminal: wpisy `AI (…): wysyłam do modelu … znaków` i `odpowiedź po … s, tokeny: …`. Tokeny to „waluta” AI – każde kliknięcie kosztuje.
 4. Sprawdźcie AI: czy numery „Nr” i liczby zgadzają się z listą wyników? Kliknijcie jeszcze raz – odpowiedź może być trochę inna. AI może się mylić, dlatego karta to mówi.
 5. F12 → Network: żądanie `?handler=Analizuj&q=…`. Z modelem rozmawia serwer – klucz nie trafia do przeglądarki.
-6. Testing → ▶ „Run Tests”. Wszystkie testy kroków 1–4 są zielone. Testy kroku 4 używają udawanego modelu: nie zużywają tokenów i zawsze dostają tę samą odpowiedź.
+6. Testing → ▶ „Run Tests”. Wszystkie testy kroków 1–4 są zielone. Reguły 1–8 kroku 4 sprawdza udawany model: zawsze odpowiada tak samo, więc test wie, czego szukać na stronie (np. kodu HTML albo awarii modelu). Reguła 9 pyta prawdziwy model – sprawdza, że u Was AI naprawdę działa.
 
 ## Gotowe! Co dalej?
 

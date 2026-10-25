@@ -47,8 +47,8 @@ public static class Traps
 
     private static IEnumerable<Trap> Ai()
     {
-        yield return new(4, "Brak pliku `src/GzmApp/appsettings.Local.json` (klucz SOL-6)", "Karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”, testy przechodzą (używają udawanego modelu).", "terminal: wpis kategorii `AI`; skopiuj plik z pendrive'a i uruchom aplikację ponownie");
-        yield return new(4, "Model odpowiada kilka sekund", "Bez wskaźnika „AI analizuje…” uczniowie klikają kilka razy – każde kliknięcie to osobne zapytanie (i tokeny).", "terminal: wpisy `SOL-6 (…): wysyłam…` i `odpowiedź po … s`");
+        yield return new(4, "Brak pliku `src/GzmApp/appsettings.Local.json` (klucz do modelu AI)", "Karta pokazuje „Brak klucza do modelu AI – poproś prowadzącego.”, reguła 9 kroku 4 (prawdziwy model) jest czerwona, reguły 1–8 przechodzą (udawany model).", "terminal: wpis kategorii `AI`; skopiuj plik z pendrive'a i uruchom aplikację ponownie");
+        yield return new(4, "Model odpowiada kilka sekund", "Bez wskaźnika „AI analizuje…” uczniowie klikają kilka razy – każde kliknięcie to osobne zapytanie (i tokeny).", "terminal: wpisy `AI (…): wysyłam…` i `odpowiedź po … s`");
         yield return new(4, "Model coś zmyśla albo myli numery rekordów", "To nie błąd kodu – tak działa AI. Porównajcie odpowiedź z listą wyników („Co poszło do modelu?”).", "karta analizy: rozwijane „Co poszło do modelu?”");
         yield return new(4, "Odpowiedź modelu wstawiona jako HTML (`@Html.Raw`)", "Model może odesłać znaczniki HTML i zepsuć stronę – reguła 7 jest wtedy czerwona.", "F12 → Elements: karta `#analiza`");
     }

@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using GzmApp.Ai;
 using GzmApp.Tests.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Spectree;
 
@@ -10,6 +11,7 @@ namespace GzmApp.Specs.Steps;
 
 // Krok 4 (sNN-004-analiza-ai): the button "✨ Analizuj z AI", the records sent to the model and the card with the answer.
 // The model is FakeModel (SpecApp), so the steps need no key and every answer is known. Decision 4 is rule 3.
+// Only rule 9 asks the real model (one call, Sol6:Model from appsettings.json, key from appsettings.Local.json).
 public sealed partial class AiSteps
 {
     private const string AnalyzePath = "/?handler=Analizuj&q=";
@@ -97,6 +99,24 @@ public sealed partial class AiSteps
         Assert.True(DisplayForms.Normalize(html).Contains(Sol6Exception.NoAnswer, StringComparison.Ordinal), $"Gdy model nie odpowiada, karta nie pokazuje komunikatu „{Sol6Exception.NoAnswer}”. Złapcie `Sol6Exception` i pokażcie jego `Message`.");
     }
 
+    [Step("Prawdziwy model AI odpowiada na analizę danych z Waszej bazy.")]
+    public async Task RealModelAnswers()
+    {
+        var app = await Records.TableReadyAsync();
+        var options = app.Services.GetRequiredService<IOptions<Sol6Options>>().Value;
+        Assert.True(options.IsConfigured, "Brak klucza do modelu AI: plik src/GzmApp/appsettings.Local.json (Sol6:Endpoint i Sol6:ApiKey) – poproś prowadzącego. Ta reguła jako jedyna pyta prawdziwy model.");
+
+        FakeModel.Instance.UseRealModel(Sol6Setup.CreateClient(options, app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("AI")));
+        var (_, html) = await Pages.GetAsync(AnalyzePath, htmx: true);
+        var (calls, answer) = (FakeModel.Instance.Calls, FakeModel.Instance.RealAnswer);
+        FakeModel.Instance.Reset();
+        var card = DisplayForms.Normalize(Html.Parse(html).Body?.TextContent ?? html);
+
+        Assert.True(calls == 1, $"Analiza nie zapytała modelu (zapytań: {calls}). Handler `OnGetAnalizuj` ma wołać `IChatClient` z DI.");
+        Assert.True(!string.IsNullOrWhiteSpace(answer), $"Model {options.Model} nie odpowiedział. Karta pokazuje: „{card}”.");
+        Assert.True(card.Contains(Start(answer), StringComparison.Ordinal), $"Model {options.Model} odpowiedział, ale karta nie pokazuje jego odpowiedzi („{Start(answer)}…”).");
+    }
+
     // The fragment of "✨ Analizuj z AI" for an empty phrase, with the given answer of the model.
     private static async Task<string> CardAsync(Func<Microsoft.Extensions.AI.ChatResponse>? answer = null, bool expectOk = true)
     {
@@ -122,6 +142,13 @@ public sealed partial class AiSteps
 
     private static async Task<string> ModelNameAsync() =>
         (await ActiveScenario.AppAsync()).Services.GetRequiredService<IOptions<Sol6Options>>().Value.Model;
+
+    // The first words of the model's answer, as the card shows them.
+    private static string Start(string text)
+    {
+        var normalized = DisplayForms.Normalize(text);
+        return normalized[..Math.Min(30, normalized.Length)];
+    }
 
     private static bool SentRow(string sent, int row) => Regex.IsMatch(sent, $@"\bNr\s*{row}\b");
 }

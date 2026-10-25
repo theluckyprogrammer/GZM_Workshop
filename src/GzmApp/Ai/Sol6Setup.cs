@@ -6,7 +6,7 @@ using OpenAI;
 
 namespace GzmApp.Ai;
 
-// Registers IChatClient for the model SOL-6 (Azure AI Foundry, OpenAI-compatible endpoint .../openai/v1/).
+// Registers IChatClient for the AI model (GPT-6 Luna on Azure AI Foundry, OpenAI-compatible endpoint .../openai/v1/).
 // Pages get IChatClient and IOptions<Sol6Options> from DI; tests replace IChatClient with a fake one.
 public static class Sol6Setup
 {
@@ -18,14 +18,21 @@ public static class Sol6Setup
         ArgumentNullException.ThrowIfNull(configuration);
 
         services.Configure<Sol6Options>(configuration.GetSection("Sol6"));
-        services.AddSingleton<IChatClient>(sp => Create(
+        services.AddSingleton<IChatClient>(sp => CreateClient(
             sp.GetRequiredService<IOptions<Sol6Options>>().Value,
             sp.GetRequiredService<ILoggerFactory>().CreateLogger("AI")));
         return services;
     }
 
-    private static IChatClient Create(Sol6Options options, ILogger logger) =>
-        new Sol6LoggingClient(options.IsConfigured ? Foundry(options) : new MissingKeyClient(), options.Model, logger);
+    // The real model with the log of every call; without Endpoint, Model or ApiKey every call gives Sol6Exception.MissingKey.
+    // Also used by rule 9 of step 4 (tests/GzmApp.Specs), the only test that asks the real model.
+    public static IChatClient CreateClient(Sol6Options options, ILogger logger)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(logger);
+
+        return new Sol6LoggingClient(options.IsConfigured ? Foundry(options) : new MissingKeyClient(), options.Model, logger);
+    }
 
     private static IChatClient Foundry(Sol6Options options) =>
         new OpenAIClient(new ApiKeyCredential(options.ApiKey), new OpenAIClientOptions
