@@ -4,12 +4,13 @@ Uczniowie pracują według zasady „najpierw specyfikacja, potem testy, na koń
 
 ## Jak to działa
 
-- Każdy scenariusz ma 4 pliki specyfikacji w `scenarios/sNN/spec/`, po jednym na krok warsztatu: `sNN-001-importuj-dane`, `-002-szukaj-rekordow`, `-003-pokaz-strone`, `-004-zapisz-ulubione`. Generuje je `tools/Cards` z szablonów `tools/Cards/templates/spec/*.md`. Nie edytuj ich ręcznie.
+- Każdy scenariusz ma 4 pliki specyfikacji w `scenarios/sNN/spec/`, po jednym na krok warsztatu: `sNN-001-importuj-dane`, `-002-szukaj-rekordow`, `-003-pokaz-strone`, `-004-analiza-ai`. Krok dodatkowy z „Co dalej?” (`-005-zapisz-ulubione`) leży w `spec/dodatkowe/` – nie ma testów, dopóki para nie przeniesie pliku do `spec/`. Generuje je `tools/Cards` z szablonów `tools/Cards/templates/spec/*.md`. Nie edytuj ich ręcznie.
 - Plik ma frontmatter z `capability: <nazwa>` i sekcję `## Reguły` z ponumerowanymi zdaniami. Komentarze `<!-- … -->` w tej sekcji generator pomija.
 - `tools/Spectree.Generator` (generator Roslyn) robi z każdego pliku klasę testów xUnit, a z każdej reguły test `[Fact(DisplayName = "Reguła N: <zdanie>")]` z cechami `Capability` i `Rule`. Plik bez `capability:`, bez reguł albo z powtórzonym numerem to błąd kompilacji SPEC0001–SPEC0003.
 - `tools/Spectree` wiąże zdanie z metodą `[Step("…")]`. `{nazwa}` w zdaniu kroku to parametr tekstowy, np. `` [Step("Wiersz 7 ma w polu `{pole}` tę samą wartość co w pliku.")] ``. Zdanie bez kroku to czerwony test z komunikatem „Brak definicji kroku…”.
 - `tests/GzmApp.Specs` bierze specyfikację scenariusza z `"Scenario"` w `src/GzmApp/appsettings.Development.json` (tam zapisuje go `ratunek.ps1`), a gdy go tam nie ma – z `appsettings.json`. Po zmianie scenariusza trzeba przebudować projekt.
 - Kroki są w `tests/GzmApp.Specs/Steps`. Sprawdzają aplikację z zewnątrz (HTTP + SQL na bazie `GzmTest_sNN`, kasowanej na starcie i na końcu przebiegu), a wartości oczekiwane liczą z bazy i z `checkpoints.md`. Dzięki temu działają dla każdego wariantu decyzji. Komunikaty są po polsku, bo czytają je uczniowie i Kilo.
+- Krok 4 (analiza AI) nie woła prawdziwego modelu: `SpecApp` podmienia `IChatClient` na `FakeModel` (znana odpowiedź, licznik wywołań, zapis wysłanego tekstu). Prawdziwe wywołanie sprawdza tylko AI-04 w `tests/GzmApp.Tests` (gdy jest klucz).
 - Test kontrolny `SpecCoverageTests` (bez bazy) pilnuje, że każde zdanie 15 scenariuszy i każdy wariant decyzji z `prompty.md` ma dokładnie jeden krok. Uruchamia go też `tools/check.ps1`.
 
 ## Zmiana zdania albo wariantu decyzji

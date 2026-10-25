@@ -45,6 +45,8 @@ public sealed partial class AiSteps
     [Step("Model dostaje zadanie: {zadanie}")]
     public async Task ModelGetsTheTask(string task)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(task);
+
         var sent = DisplayForms.Normalize(await SentForAsync(string.Empty));
 
         Assert.True(sent.Contains(DisplayForms.Normalize(task), StringComparison.Ordinal), $"Do modelu nie trafiło zadanie z reguły 3: „{task}”. Wyślijcie je w wiadomości razem z rekordami.");

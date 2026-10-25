@@ -24,7 +24,12 @@ public sealed class FakeModel : IChatClient
         _answer = answer ?? (() => Reply(DefaultAnswer));
     }
 
-    public static ChatResponse Reply(string text) => new(new ChatMessage(ChatRole.Assistant, text));
+    public static ChatResponse Reply(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        return new(new ChatMessage(ChatRole.Assistant, text));
+    }
 
     public Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default)
     {
