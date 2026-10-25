@@ -1,0 +1,50 @@
+// Kilo Code: reguły projektu i uprawnienia na warsztat (prompt 08).
+// Składnia według https://kilo.ai/docs (Custom Rules: "instructions"; How Tools Work / Agent Permissions: "permission").
+// W mapach wzorców wygrywa OSTATNIA pasująca reguła, dlatego "*" jest na początku.
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  // Model na warsztat (ustawienie prowadzącego): preset w OpenRouter.
+  "provider": {
+    "openrouter": {
+      "models": {
+        "z-ai/glm-5.3-flash": {
+          "options": {
+            "preset": "warsztaty-zspm"
+          }
+        }
+      }
+    }
+  },
+  "instructions": [".kilo/rules/*.md"],
+  "permission": {
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "edit": {
+      "*": "allow",
+      "**/*.csproj": "deny",
+      "**/launch.json": "deny",
+      "**/tasks.json": "deny",
+      "**/launchSettings.json": "deny",
+      "**/Program.cs": "deny",
+      "src/GzmApp/Identity/**": "deny",
+      "global.json": "deny",
+      "kilo.jsonc": "deny",
+      ".kilo/**": "deny",
+      ".kilocode/**": "deny",
+      "AGENTS.md": "deny",
+      "data/**": "deny",
+      "scenarios/**": "deny",
+      "tests/**": "deny",
+      "tools/**": "deny"
+    },
+    // Uczniowie mogą budować projekt i uruchamiać testy kroków (od kroku 26: dotnet test tests/GzmApp.Specs --filter ...).
+    "bash": {
+      "*": "deny",
+      "dotnet build*": "allow",
+      "dotnet test*": "allow"
+    },
+    "webfetch": "deny",
+    "websearch": "deny"
+  }
+}
