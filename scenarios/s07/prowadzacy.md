@@ -1,6 +1,8 @@
 # SportGliwice (s07) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md` i `prompty.md`.
+Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok).
+
+Każde zdanie z sekcji „Reguły” w `spec/` to test w `tests/GzmApp.Specs` (generator `tools/Spectree.Generator`, kroki w `tests/GzmApp.Specs/Steps`). Testy liczą wartości oczekiwane z bazy i z `checkpoints.md`, więc działają dla każdego wariantu decyzji. Testy biorą scenariusz z `"Scenario"` w `src/GzmApp/appsettings.json` (po `ratunek.ps1` – z `appsettings.Development.json`); po zmianie trzeba przebudować projekt.
 
 - **Pomysł:** Obiekty sportowe w Gliwicach: hale, boiska, baseny – gdzie są i kto nimi zarządza.
 - **Dane:** „Gliwice: obiekty sportowe”, plik `data/raw/s07_gliwice-obiekty-sportowe.csv`, tabela `SportsFacilities`.

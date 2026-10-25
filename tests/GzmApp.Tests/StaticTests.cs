@@ -9,10 +9,15 @@ namespace GzmApp.Tests;
 public partial class StaticTests
 {
     private static readonly string[] DeniedEdits =
-        ["**/*.csproj", "**/launch.json", "**/tasks.json", "**/launchSettings.json", "**/Program.cs", "src/GzmApp/Identity/**", "global.json"];
+        ["**/*.csproj", "**/launch.json", "**/tasks.json", "**/launchSettings.json", "**/Program.cs", "src/GzmApp/Identity/**", "global.json",
+         "scenarios/**", "tests/**", "tools/**"];
 
-    // Transitive dependencies of Microsoft.Data.SqlClient under the Microsoft redistributable license (findings.md, 23).
-    private static readonly string[] LicenseExceptions = ["Microsoft.Data.SqlClient.SNI.runtime", "Microsoft.Identity.Client.NativeInterop"];
+    // Transitive dependencies of Microsoft.Data.SqlClient under the Microsoft redistributable license (findings.md, 23)
+    // and the metadata-only Microsoft.NETCore.Platforms 1.1.0 of netstandard2.0 (tools/Spectree.Generator, build time only).
+    private static readonly string[] LicenseExceptions = ["Microsoft.Data.SqlClient.SNI.runtime", "Microsoft.Identity.Client.NativeInterop", "Microsoft.NETCore.Platforms"];
+
+    // Old .NET packages name their MIT license only by URL.
+    private static readonly string[] MitLicenseUrls = ["github.com/dotnet/corefx/blob/master/LICENSE.TXT", "github.com/dotnet/standard/blob/master/LICENSE.TXT"];
 
     [Fact]
     [Trait("Spec", "Q-01")]
@@ -64,7 +69,7 @@ public partial class StaticTests
             .Select(l => (l.Name.Split('/')[0], l.Name.Split('/')[1], License(l.Path)));
     }
 
-    // <license type="expression">, or a known license URL (xunit: Apache-2.0).
+    // <license type="expression">, or a known license URL (xunit: Apache-2.0, dotnet/corefx and dotnet/standard: MIT).
     private static string License(string packagePath)
     {
         var nuspec = Directory.GetFiles(packagePath, "*.nuspec").FirstOrDefault();
@@ -72,6 +77,7 @@ public partial class StaticTests
         var expression = Expression().Match(text);
         return expression.Success ? expression.Groups[1].Value
             : text.Contains("github.com/xunit/xunit", StringComparison.Ordinal) || text.Contains("xunit/xunit/master/license.txt", StringComparison.Ordinal) ? "Apache-2.0"
+            : MitLicenseUrls.Any(url => text.Contains(url, StringComparison.Ordinal)) ? "MIT"
             : "brak licencji w nuspec";
     }
 

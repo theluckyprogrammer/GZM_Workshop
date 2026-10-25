@@ -53,6 +53,7 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | P-02 | s04 przechodzi kroki 1–4 samymi promptami | — | — |
 | P-03 | s02 przechodzi kroki 1–4 samymi promptami | — | — |
 | P-04 | Wspólne poprawki promptów naniesione na 15 scenariuszy (szablony `tools/Cards`) | — | — |
+| P-05 | Po zmianie na metodykę spec-first (krok 0, blok SPECYFIKACJA, znaczniki HTML, decyzje w specyfikacji) s06, s04 i s02 przechodzą kroki 1–4 samymi promptami, a testy `tests/GzmApp.Specs` są zielone | — | — |
 | Q-01 | `kilo.jsonc` to poprawny JSONC z blokadami plików i `bash "*": "deny"` | `StaticTests.Kilo_config_is_valid_JSONC_and_denies_protected_files_and_shell` | OK |
 | Q-02 | Kod w `src/` i `tools/`: bez zagnieżdżonych if-ów i pętli, metody ≤ 20 linii, klasy ≤ 150, guard clauses | `tools/CodeRules` (Roslyn) na `src/` i `tools/` gałęzi `ratunek/etap-4`: 0 naruszeń (po 9 poprawkach) | OK |
 | Q-03 | Brak sekretów we wszystkich gałęziach i w historii | skan `git log -p --all` (sk-…, api_key, ApiKey":"…", Password=, długi base64): 0 trafień | OK |
@@ -65,4 +66,11 @@ Wartości oczekiwane dotyczą wariantów A (`checkpoints.md`). Status: `OK`, `B�
 | AI-01 | Fałszywy `IChatClient` → fragment HTML bez `<html>`, do modelu trafiają tylko pola rekordu z bazy | `AiTests.Fake_model_gives_an_HTML_fragment_and_gets_only_the_record_fields` | OK |
 | AI-02 | Brak klucza → „Brak klucza SOL-6 – poproś prowadzącego”, bez wyjątku | `AiTests.Missing_key_gives_a_friendly_message_not_an_exception` | OK |
 | AI-03 | Klucza nie ma w logach | `AiTests.Key_is_not_in_the_logs_also_after_a_model_error` | OK |
+| S-00 | Każde zdanie specyfikacji 15 scenariuszy (`scenarios/*/spec/*.md`) i każdy wariant decyzji z `prompty.md` ma dokładnie jedną definicję kroku | `tests/GzmApp.Specs` → `SpecCoverageTests` (bez bazy; też w `tools/check.ps1`) | OK |
+| S-01 | Krok 1 ze specyfikacji (6 reguł `sNN-001-importuj-dane`): czerwone na `main`, zielone od `ratunek/etap-1` | `tests/GzmApp.Specs` (testy generowane, nazwa = zdanie reguły) | OK (15/15 na etap-4) |
+| S-02 | Krok 2 (6 reguł `sNN-002-szukaj-rekordow`), także warianty B/C decyzji 1 (w tym „zaczyna się od frazy”) | jw.; warianty: `mapping.json` i zdanie reguły podmienione na B/C | OK (15/15, wszystkie warianty) |
+| S-03 | Krok 3 (6 reguł `sNN-003-pokaz-strone`), także warianty B/C decyzji 2 i 3 | jw. | OK (15/15, wszystkie warianty) |
+| S-04 | Krok 4 (8 reguł `sNN-004-zapisz-ulubione`), także warianty B/C decyzji 4 | jw.; B/C na tymczasowej stronie „Moje ulubione” z datą i „Usuń” (s02) | OK |
+| S-05 | Etap N gałęzi ratunkowych: zielone dokładnie testy kroków 1..N | `ratunek/etap-1..4` + pliki Spectree, s02 i s13: 7 / 13 / 19 / 27 zielonych | OK |
+| S-06 | Testy kroków łapią błędy: CS_AS zamiast CI_AI, brak TOP 20, limit frazy 1000, brak `[Authorize]`, ulubione bez `UserId`, MAX zamiast SUM | mutacje kodu `ratunek/etap-4`, s02: za każdym razem czerwona właściwa reguła | OK |
 | AI-04 | Prawdziwe wywołanie SOL-6 (tylko z sekretem `Sol6:ApiKey`) | `AiTests.Real_SOL6_call_describes_record_7` (uruchamia się tylko z `SOL6__APIKEY`, `SOL6__ENDPOINT`, `SOL6__MODEL`) | pominięte (brak klucza) |

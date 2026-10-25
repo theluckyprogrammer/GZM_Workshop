@@ -15,7 +15,7 @@ public static class Variables
         foreach (var (variants, index) in Decisions.For(mapping, text).Select((v, i) => (v, i + 1)))
         {
             variables[$"decision{index}"] = string.Join("\n\n", variants.Select(v => $"**{v.Letter} – {v.Label}**\n\n~~~text\n{v.Line}\n~~~"));
-            variables[$"default{index}"] = variants[0].Line;
+            variables[$"rule{index}"] = variants[0].Line;
         }
         return variables;
     }
@@ -34,7 +34,13 @@ public static class Variables
             ["titleField"] = mapping.TitleField, ["phrase"] = checkpoints.Value("E2.phrase"),
             ["statDescription"] = SqlText.Description(mapping.Statistic.Kind, mapping.Statistic.Field),
             ["starFields"] = string.Join(", ", mapping.Imported.Select(c => $"`{c.Field}`")),
+            ["statQueries"] = StatQueries(mapping.Table),
         };
+
+    // All four statistic queries with [Pole] in place of the field: the spec rule says which one and on which field.
+    private static string StatQueries(string table) =>
+        string.Join("\n", new[] { ("suma", "sum"), ("średnia", "avg"), ("5 najczęstszych wartości", "top5"), ("liczba rekordów dla każdej wartości", "count-by") }
+            .Select(k => $"  - {k.Item1}: `{SqlText.Statistic(k.Item2, "Pole", table)}`"));
 
     private static string SeparatorText(string separator) => separator switch
     {

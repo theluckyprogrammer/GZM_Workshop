@@ -27,9 +27,8 @@ public sealed partial record PromptOutline(IReadOnlyList<Step> Steps, IReadOnlyL
     private static Step ToStep(int number, string title, string section)
     {
         var body = section.Split("\n## Gotowe!")[0];
-        var look = body.Contains("zobaczcie, co powstało", StringComparison.Ordinal)
-            ? NumberedItems(body[body.IndexOf("zobaczcie, co powstało", StringComparison.Ordinal)..])
-            : [];
+        var marker = new[] { "zobaczcie, co powstało", "zanim zaczniecie" }.FirstOrDefault(m => body.Contains(m, StringComparison.Ordinal));
+        var look = marker is null ? [] : NumberedItems(body[body.IndexOf(marker, StringComparison.Ordinal)..]);
         var decisions = DecisionHeading().Matches(body)
             .Select(m => new Decision(int.Parse(m.Groups["n"].Value), m.Groups["q"].Value, Variants(body[m.Index..])))
             .ToList();

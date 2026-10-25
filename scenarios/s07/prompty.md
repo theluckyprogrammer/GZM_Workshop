@@ -3,11 +3,25 @@
 Pilot kopiuje cały blok promptu do Kilo Code i akceptuje zmiany. Nawigator prowadzi pauzy. Po każdym kroku zamieniacie się rolami.
 Aplikację uruchamiacie klawiszem F5 w VS Code. Adres: http://localhost:5080.
 
+Pracujecie jak zawodowcy: najpierw **specyfikacja**, potem **testy**, na końcu **kod**. Specyfikacja to 4 pliki w `scenarios/s07/spec/` – po jednym na krok. Każde ponumerowane zdanie w sekcji „Reguły” to jeden test. Kilo pisze kod, a testy mówią, czy kod robi to, co obiecuje zdanie.
+
+## Krok 0 – specyfikacja i czerwone testy
+
+### ⏸ Pauza – zanim zaczniecie
+
+1. Otwórzcie `src/GzmApp/appsettings.json` i wpiszcie swój scenariusz: `"Scenario": "s07"`. Zapiszcie (Ctrl+S).
+2. Otwórzcie folder `scenarios/s07/spec/` i przeczytajcie plik kroku 1. Sekcja „Co się dzieje” opisuje krok słowami, a „Reguły” – co dokładnie ma działać.
+3. Ikona kolby po lewej (Testing) → `GzmApp.Specs` → ▶ „Run Tests”. Każdy test nazywa się tak jak zdanie ze specyfikacji, np. „Reguła 1: …”. Wszystkie są czerwone – aplikacja jeszcze nic nie umie.
+4. Wasz cel: zamienić czerwone testy w zielone, krok po kroku.
+
 ## Krok 1 – dane z pliku do bazy
 
 ~~~~text
 CEL
 Wczytaj plik CSV „Gliwice: obiekty sportowe” do nowej tabeli `SportsFacilities` w SQL Server przez Dapper. Import uruchamia się przy starcie aplikacji, gdy tabela jest pusta.
+
+SPECYFIKACJA
+Reguły tego kroku są w pliku `scenarios/s07/spec/s07-001-importuj-dane.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
 
 DANE
 - Plik: `data/raw/s07_gliwice-obiekty-sportowe.csv` w katalogu głównym repozytorium. Ścieżka z aplikacji: `Path.Combine(environment.ContentRootPath, "..", "..", "data/raw/s07_gliwice-obiekty-sportowe.csv")` (`environment` to `IWebHostEnvironment`).
@@ -44,6 +58,7 @@ ZASADY
 - Po imporcie zapisz w logu liczbę wierszy w tabeli i czas importu. Gdy tabela nie jest pusta, zapisz w logu „Import pominięty – w tabeli jest N wierszy”.
 - Klasa `CsvImporter` z interfejsem `ICsvImporter`. Rejestracja w metodzie `AddAppServices`, a skrypt tabeli i import w `RunAtStartupAsync` – obie w `src/GzmApp/AppServices.cs`. `Program.cs` już je wywołuje, nie zmieniaj go.
 - Krótkie metody, bez zagnieżdżonych if-ów.
+- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s07-001-importuj-dane`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
 Nie zmieniaj plików poza: `db/s07_create.sql`, `src/GzmApp/Data/CsvImporter.cs`, `src/GzmApp/AppServices.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
@@ -54,22 +69,23 @@ Nie zmieniaj plików poza: `db/s07_create.sql`, `src/GzmApp/Data/CsvImporter.cs`
 1. Uruchomcie aplikację (F5). W terminalu pojawia się wpis z liczbą zaimportowanych wierszy.
 2. Rozszerzenie mssql (ikona bazy po lewej): serwer `(localdb)\MSSQLLocalDB`, baza `GzmWorkshop`, tabela `SportsFacilities` → prawy klik → „Select Top 1000”. To Wasze dane z pliku – już w bazie.
 3. Zatrzymajcie aplikację (Shift+F5).
+4. Testing → ▶ „Run Tests”. Testy kroku 1 (`s07-001-importuj-dane`) są zielone. Czerwony test? Kliknijcie go: komunikat mówi, czego brakuje. Wklejcie ten komunikat do Kilo.
 
 ### ⏸ Pauza – decyzja 1: po czym użytkownik będzie szukał?
 
 **A – rodzaj obiektu**
 
 ~~~text
-Szukaj w polu `Facility` (kolumna w pliku: `OBIEKT`), fraza w dowolnym miejscu: `LIKE '%' + @q + '%'`.
+Wyszukiwarka szuka frazy w dowolnym miejscu pola `Facility` (kolumna w pliku: `OBIEKT`).
 ~~~
 
 **B – adres i zarządca**
 
 ~~~text
-Szukaj w polu `AddressManager` (kolumna w pliku: `ADRES___ZARZĄDZAJĄCY`), fraza w dowolnym miejscu: `LIKE '%' + @q + '%'`.
+Wyszukiwarka szuka frazy w dowolnym miejscu pola `AddressManager` (kolumna w pliku: `ADRES___ZARZĄDZAJĄCY`).
 ~~~
 
-Skopiujcie linię wybranego wariantu i wklejcie ją w prompcie kroku 2 zamiast `[DECYZJA 1]`.
+Wariant A jest już w specyfikacji. Wybraliście inny? Skopiujcie jego zdanie i wklejcie w pliku `scenarios/s07/spec/s07-002-szukaj-rekordow.md` w miejsce zdania reguły 1 (zostawcie „1. ” na początku). Zapiszcie plik.
 
 ## Krok 2 – wyszukiwarka (endpoint)
 
@@ -77,11 +93,12 @@ Skopiujcie linię wybranego wariantu i wklejcie ją w prompcie kroku 2 zamiast `
 CEL
 Adres, który zwraca rekordy z tabeli `SportsFacilities` pasujące do wpisanej frazy. Odpowiedź to fragment HTML (sama lista), a nie cała strona.
 
-DECYZJA 1: [DECYZJA 1]
-(Jeśli wyżej nadal jest napis w nawiasie kwadratowym, użyj: Szukaj w polu `Facility` (kolumna w pliku: `OBIEKT`), fraza w dowolnym miejscu: `LIKE '%' + @q + '%'`.)
+SPECYFIKACJA
+Reguły tego kroku są w pliku `scenarios/s07/spec/s07-002-szukaj-rekordow.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
 
 DANE
 - Adres: `/?handler=Szukaj&q=<fraza>`.
+- Pole, w którym szukasz, podaje reguła 1. „W dowolnym miejscu pola” to `LIKE '%' + @q + '%'`, a „zaczyna się od frazy” to `LIKE @q + '%'`.
 - Każdy wynik pokazuje „Nr `SourceRow`: `Facility`”.
 
 ZASADY
@@ -90,8 +107,9 @@ ZASADY
 - Wyniki według `SourceRow`, najwyżej 20 (`take` = 20), także dla pustej frazy. `Wyników: N` to liczba wszystkich pasujących rekordów (osobne `COUNT(*)`), lista pokazuje najwyżej 20.
 - Fraza dłuższa niż 100 znaków: odpowiedź 400 z krótkim fragmentem `<p class="alert alert-warning">…</p>`.
 - Handler `OnGetSzukaj(string? q)` w `src/GzmApp/Pages/Index.cshtml.cs` zwraca `Partial("_Lista", wyniki)`.
-- Widok częściowy `src/GzmApp/Pages/Shared/_Lista.cshtml`: `<p id="licznik">Wyników: N</p>` i `<ul>` z jednym `<li>` na rekord. Bez `<html>` i bez layoutu.
+- Widok częściowy `src/GzmApp/Pages/Shared/_Lista.cshtml`: `<p id="licznik">Wyników: N</p>` i `<ul id="lista">` z jednym `<li data-record-id="@r.RecordId">Nr @r.SourceRow: <span class="tytul">…</span></li>` na rekord. Bez `<html>` i bez layoutu.
 - Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
+- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s07-002-szukaj-rekordow`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
 Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
@@ -102,19 +120,20 @@ Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pa
 1. Uruchomcie aplikację i otwórzcie adres `http://localhost:5080/?handler=Szukaj&q=` z dopisanym słowem z wybranej kolumny (dla wariantu A np. `nawierzchnią`). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.
 2. F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie `?handler=Szukaj`: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać np. jak `&#x142;` (to „ł”) – to ten sam znak, zapisany kodem HTML.
 3. W terminalu (log SQL) widać zapytanie z parametrem `q` – to Wasza fraza.
+4. Testing → ▶ „Run Tests”. Zielone są testy kroków 1 i 2. Reguła 5 sprawdza, że fraza `' OR 1=1 --` nic nie znajduje – to ochrona przed atakiem SQL injection.
 
 ### ⏸ Pauza – decyzja 2: co pokazać na liście?
 
 **A – adres i zarządca**
 
 ~~~text
-Na liście przy każdym rekordzie pokaż tytuł `Facility` oraz: `AddressManager`.
+Przy każdym rekordzie lista pokazuje tytuł `Facility` i pola: `AddressManager`.
 ~~~
 
 **B – numer obiektu**
 
 ~~~text
-Na liście przy każdym rekordzie pokaż tytuł `Facility` oraz: `ObjectId`.
+Przy każdym rekordzie lista pokazuje tytuł `Facility` i pola: `ObjectId`.
 ~~~
 
 ### ⏸ Pauza – decyzja 3: jaki kafelek ze statystyką?
@@ -122,16 +141,16 @@ Na liście przy każdym rekordzie pokaż tytuł `Facility` oraz: `ObjectId`.
 **A – 5 najczęstszych rodzajów obiektów**
 
 ~~~text
-Kafelek: 5 najczęstszych wartości pola `Facility` z liczbą rekordów (puste pomijamy). Zapytanie: `SELECT TOP 5 [Facility] AS Value, COUNT(*) AS Count FROM dbo.[SportsFacilities] WHERE [Facility] IS NOT NULL GROUP BY [Facility] ORDER BY COUNT(*) DESC, [Facility]`
+Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `Facility` z liczbą rekordów.
 ~~~
 
 **B – liczba obiektów każdego rodzaju**
 
 ~~~text
-Kafelek: liczba rekordów dla każdej wartości pola `Facility`, od największej (puste pomijamy). Zapytanie: `SELECT [Facility] AS Value, COUNT(*) AS Count FROM dbo.[SportsFacilities] WHERE [Facility] IS NOT NULL GROUP BY [Facility] ORDER BY COUNT(*) DESC, [Facility]`
+Kafelek ze statystyką pokazuje liczbę rekordów dla każdej wartości pola `Facility`.
 ~~~
 
-Wklejcie wybrane linie w prompcie kroku 3 zamiast `[DECYZJA 2]` i `[DECYZJA 3]`.
+Warianty A są już w specyfikacji. Wybraliście inne? Wklejcie ich zdania w pliku `scenarios/s07/spec/s07-003-pokaz-strone.md` w miejsce reguły 4 (lista) i reguły 5 (kafelek). Zapiszcie plik.
 
 ## Krok 3 – strona z wyszukiwarką i kafelkiem (HTMX)
 
@@ -139,20 +158,23 @@ Wklejcie wybrane linie w prompcie kroku 3 zamiast `[DECYZJA 2]` i `[DECYZJA 3]`.
 CEL
 Strona główna aplikacji SportGliwice: wyszukiwarka działająca podczas pisania (HTMX 4), lista wyników i kafelek ze statystyką.
 
-DECYZJA 2: [DECYZJA 2]
-(Jeśli wyżej nadal jest napis w nawiasie kwadratowym, użyj: Na liście przy każdym rekordzie pokaż tytuł `Facility` oraz: `AddressManager`.)
-
-DECYZJA 3: [DECYZJA 3]
-(Jeśli wyżej nadal jest napis w nawiasie kwadratowym, użyj: Kafelek: 5 najczęstszych wartości pola `Facility` z liczbą rekordów (puste pomijamy). Zapytanie: `SELECT TOP 5 [Facility] AS Value, COUNT(*) AS Count FROM dbo.[SportsFacilities] WHERE [Facility] IS NOT NULL GROUP BY [Facility] ORDER BY COUNT(*) DESC, [Facility]`)
+SPECYFIKACJA
+Reguły tego kroku są w pliku `scenarios/s07/spec/s07-003-pokaz-strone.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
 
 ZASADY
 - W `src/GzmApp/Pages/Index.cshtml`: `<input type="search" name="q" hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms" hx-target="#wyniki">` i `<div id="wyniki">` z listą na start (pusta fraza).
 - HTMX 4 jest już w `_Layout.cshtml` (plik lokalny). Nie dodawaj CDN ani innych bibliotek.
 - Metoda `IsHtmx()` sprawdza nagłówek `HX-Request`. W `OnGetSzukaj`: żądanie HTMX dostaje fragment `_Lista`, zwykłe wejście na ten sam adres – całą stronę z wynikami dla frazy `q`.
-- Listę w `_Lista.cshtml` zmień według decyzji 2.
-- Statystykę z decyzji 3 licz w SQL przez `SqlRunner` (nowa metoda w `RecordRepository`). Pokaż ją w `<div id="statystyka">` nad listą; liczby w formacie pl-PL (przecinek dziesiętny).
+- Listę w `_Lista.cshtml` zmień według reguły 4: pola pokaż w tym samym `<li>`, za tytułem. Liczby w formacie pl-PL, daty `yyyy-MM-dd`, pola tak/nie jako „tak” albo „nie”.
+- Statystykę z reguły 5 licz w SQL przez `SqlRunner` (nowa metoda w `RecordRepository`), zapytaniem z listy poniżej, z polem z reguły 5 w miejsce `[Pole]`:
+  - suma: `SELECT SUM([Pole]) FROM dbo.[SportsFacilities]`
+  - średnia: `SELECT ROUND(AVG(CAST([Pole] AS decimal(18,2))), 2) FROM dbo.[SportsFacilities]`
+  - 5 najczęstszych wartości: `SELECT TOP 5 [Pole] AS Value, COUNT(*) AS Count FROM dbo.[SportsFacilities] WHERE [Pole] IS NOT NULL GROUP BY [Pole] ORDER BY COUNT(*) DESC, [Pole]`
+  - liczba rekordów dla każdej wartości: `SELECT [Pole] AS Value, COUNT(*) AS Count FROM dbo.[SportsFacilities] WHERE [Pole] IS NOT NULL GROUP BY [Pole] ORDER BY COUNT(*) DESC, [Pole]`
+- Pokaż ją w `<div id="statystyka">` nad listą: jedną liczbę w `<p data-stat-value>`, a listę wartości jako `<li data-stat>wartość: <strong>liczba</strong></li>`. Liczby w formacie pl-PL (przecinek dziesiętny).
 - W `src/GzmApp/appsettings.json` ustaw `"DataAttribution": "Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0"` (stopka już go pokazuje).
 - Krótkie metody, bez zagnieżdżonych if-ów.
+- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s07-003-pokaz-strone`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
 Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
@@ -164,28 +186,29 @@ Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/In
 2. F12 → Network: przy pisaniu pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Tylko lista wraca z serwera, reszta strony zostaje.
 3. Nad listą jest kafelek ze statystyką, a w stopce – źródło danych.
 4. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
+5. Testing → ▶ „Run Tests”. Zielone są testy kroków 1–3.
 
 ### ⏸ Pauza – decyzja 4: co pokazać w „Moich ulubionych”?
 
 **A – lista tytułów**
 
 ~~~text
-Na stronie „Moje ulubione” pokaż listę tytułów (`Facility`) ulubionych rekordów.
+Strona „Moje ulubione” pokazuje tytuły ulubionych rekordów.
 ~~~
 
 **B – tytuły z datą dodania**
 
 ~~~text
-Na stronie „Moje ulubione” pokaż tytuł (`Facility`) i datę dodania (`CreatedAt`, w bazie UTC – pokaż czas polski jako `dd.MM.yyyy HH:mm`), od najnowszych.
+Strona „Moje ulubione” pokazuje tytuł i datę dodania każdego rekordu, od najnowszych.
 ~~~
 
 **C – tytuły z przyciskiem „Usuń”**
 
 ~~~text
-Na stronie „Moje ulubione” pokaż tytuł (`Facility`) i przycisk „Usuń” (`hx-delete`), który usuwa wiersz z listy bez przeładowania strony.
+Strona „Moje ulubione” pokazuje tytuł i przycisk „Usuń”, który usuwa rekord z listy bez przeładowania strony.
 ~~~
 
-Wklejcie wybraną linię w prompcie kroku 4 zamiast `[DECYZJA 4]`.
+Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `scenarios/s07/spec/s07-004-zapisz-ulubione.md` w miejsce reguły 8. Zapiszcie plik.
 
 ## Krok 4 – logowanie i ulubione
 
@@ -193,8 +216,8 @@ Wklejcie wybraną linię w prompcie kroku 4 zamiast `[DECYZJA 4]`.
 CEL
 Zalogowany użytkownik oznacza rekordy gwiazdką ★ i widzi je na stronie „Moje ulubione”. Ulubione w SportGliwice to obiekty, na których para trenuje.
 
-DECYZJA 4: [DECYZJA 4]
-(Jeśli wyżej nadal jest napis w nawiasie kwadratowym, użyj: Na stronie „Moje ulubione” pokaż listę tytułów (`Facility`) ulubionych rekordów.)
+SPECYFIKACJA
+Reguły tego kroku są w pliku `scenarios/s07/spec/s07-004-zapisz-ulubione.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
 
 DANE
 - Utwórz plik `db/900_favorites.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync` w `src/GzmApp/AppServices.cs`), czytając go z `Path.Combine(AppContext.BaseDirectory, "db", "900_favorites.sql")`:
@@ -215,12 +238,14 @@ CREATE TABLE dbo.Favorites (
 
 ZASADY
 - `IFavoritesRepository` i `FavoritesRepository` w `src/GzmApp/Data/FavoritesRepository.cs`: `Add`, `Remove`, `ListFor(userId)` przez `SqlRunner`. `Add` i `Remove` wykonane dwa razy dają ten sam stan (`IF NOT EXISTS` albo `MERGE` w jednym zapytaniu).
-- Przycisk ★ to widok częściowy `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml` (model: `RecordId` i czy rekord jest w ulubionych): w ulubionych – „★” z `hx-delete="?handler=Ulubione&id=..."`, poza nimi – „☆” z `hx-post="?handler=Ulubione&id=..."`, oba z `hx-swap="outerHTML"`. Używa go `_Lista.cshtml` przy każdym rekordzie.
+- Przycisk ★ to widok częściowy `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml` (model: `RecordId` i czy rekord jest w ulubionych): w ulubionych – „★” z `data-favorite="true"` i `hx-delete="?handler=Ulubione&id=..."`, poza nimi – „☆” z `data-favorite="false"` i `hx-post="?handler=Ulubione&id=..."`, oba z `hx-swap="outerHTML"`. Używa go `_Lista.cshtml` przy każdym rekordzie.
 - Stan ★ `_Lista.cshtml` sprawdza sama: `@inject IFavoritesRepository` i ulubione zalogowanego użytkownika (niezalogowany: wszystkie „☆”). Nie przekazuj tego przez `ViewData` – `Partial(...)` w PageModel go nie kopiuje.
 - Handlery `OnPostUlubione(int id)` i `OnDeleteUlubione(int id)` w `Index.cshtml.cs` zwracają `Partial("_Gwiazdka", …)` z nowym stanem. Niezalogowany: status 401 i fragment „Zaloguj się, aby dodać do ulubionych”.
 - Token antiforgery wysyła już `<body hx-headers:inherited='{"RequestVerificationToken":"..."}'>` w `_Layout.cshtml`. Nie wyłączaj walidacji antiforgery.
-- Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według decyzji 4. Link „Moje ulubione” w menu w `_Layout.cshtml`, widoczny zawsze (niezalogowanego strona przekieruje do logowania).
+- Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według reguły 8: `<ul id="ulubione">`, jeden `<li>` na rekord, tytuł w `<span class="tytul">`. Data dodania to `CreatedAt` (w bazie UTC), pokazana jako czas polski `dd.MM.yyyy HH:mm`. Przycisk „Usuń”: `hx-delete="?handler=Usun&id=..."` z `hx-target="closest li"` i `hx-swap="outerHTML"`, handler `OnDeleteUsun(int id)` w `Ulubione.cshtml.cs` zwraca pustą odpowiedź 200.
+- Link „Moje ulubione” w menu w `_Layout.cshtml`, widoczny zawsze (niezalogowanego strona przekieruje do logowania).
 - Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
+- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s07-004-zapisz-ulubione`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
 Nie zmieniaj plików poza: `db/900_favorites.sql`, `src/GzmApp/Data/FavoritesRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml.cs`, `src/GzmApp/Pages/Shared/_Layout.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
@@ -232,12 +257,13 @@ Nie zmieniaj plików poza: `db/900_favorites.sql`, `src/GzmApp/Data/FavoritesRep
 2. Zarejestrujcie się (Register) i zalogujcie. Kliknijcie ☆ przy kilku rekordach – zmienią się w ★.
 3. F12 → Network: żądanie POST `?handler=Ulubione` ma nagłówek `RequestVerificationToken` – to ochrona przed podszywaniem się pod formularz.
 4. Otwórzcie „Moje ulubione”. W mssql zajrzyjcie do tabeli `Favorites` – tam są Wasze gwiazdki.
+5. Testing → ▶ „Run Tests”. Wszystkie testy są zielone – aplikacja robi wszystko, co obiecuje specyfikacja.
 
 ## Gotowe! Co dalej?
 
 Macie całą aplikację: dane w bazie, wyszukiwarkę, stronę z HTMX, logowanie i ulubione. Jeśli zostało Wam trochę czasu, dodajcie coś od siebie – własnym promptem albo jednym z pomysłów:
 
-1. Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3.
+1. Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3. Najpierw dopiszcie go do specyfikacji jako regułę 7 kroku 3 (zdanie z decyzji 3): test będzie czerwony, dopóki Kilo go nie zrobi.
 2. Sortowanie listy po wybranym polu (przycisk przy nagłówku listy, `hx-get` z parametrem `sort`).
 3. Przycisk „Pokaż więcej” pod listą: kolejne 20 rekordów doklejane na końcu (`hx-swap="beforeend"`).
 4. Opis rekordu przez model SOL-6. Zadanie dla modelu: Napisz w jednym zdaniu, co to za obiekt, gdzie jest i kto nim zarządza. Prompt na start:

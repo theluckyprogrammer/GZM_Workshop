@@ -150,6 +150,12 @@ try {
         $LASTEXITCODE -eq 0
     }
 
+    # Every sentence of the specification has a step; no database needed. Proves that Test Explorer will show the tests.
+    Test-Step 'Testy specyfikacji (tests/GzmApp.Specs: build + test kontrolny)' 'Uruchom raz z internetem: dotnet restore tests/GzmApp.Specs; potem build i testy działają offline.' {
+        dotnet test (Join-Path $repo 'tests/GzmApp.Specs') --filter 'Capability=kontrola' -v q -nologo 2>&1 | Out-Null
+        $LASTEXITCODE -eq 0
+    }
+
     Test-Step "Połączenie HTTPS z Kilo ($KiloEndpoint)" 'Sprawdź sieć szkolną / proxy; adres usługi ustaw w KILO_ENDPOINT.' {
         try { $response = Invoke-WebRequest -Uri $KiloEndpoint -Method Head -UseBasicParsing -TimeoutSec 15; $response.StatusCode -lt 500 }
         catch { $null -ne $_.Exception.Response -and [int]$_.Exception.Response.StatusCode -lt 500 }

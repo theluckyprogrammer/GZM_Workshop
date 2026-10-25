@@ -2,6 +2,9 @@
 
 Ten folder (`zadanie/`) zawiera zadanie do wykonania w tym repozytorium. Projekt warsztatu (kod, dane, scenariusze, materiały) budujesz w **katalogu głównym repo**, obok `zadanie/`. Folderu `zadanie/` nie modyfikuj. Wyjątki: poprawki promptów uczniów robisz w szablonach `tools/Cards/templates/` (i generujesz `scenarios/`), nie tutaj; 20.10.2026 prowadzący zmienił podejście warsztatu (gotowe prompty z pauzami zamiast sprawdzania wiedzy) i na jego polecenie dostosowano prompty 00, 04–08, 10, 11, 20, 22 i 24.
 
+## Specyfikacja w ćwiczeniach (od 25.10.2026)
+Uczniowie pracują według zasady „najpierw specyfikacja, potem testy, na końcu kod”: `scenarios/sNN/spec/` i testy `tests/GzmApp.Specs`. Praca nad tym repo tej metody nie wymaga. Przy zmianie materiałów uczniów pamiętaj tylko, że każde zdanie reguły (także wariant decyzji) musi mieć definicję kroku – pilnuje tego test kontrolny. Jak to działa i jak zmienić zdanie: `docs/SPECTREE.md`.
+
 ## Jak pracować
 1. Prompty leżą w `zadanie/prompts/` i są ponumerowane w kolejności wykonania (01–25).
 2. Plik `zadanie/prompts/00-KONTEKST-wspolny.md` to wspólny kontekst: stos, zasady kodu, zasady testów i oszczędzania tokenów. Każdy prompt wskazuje, które sekcje przeczytać. Nie uruchamiaj go jako osobnego kroku.

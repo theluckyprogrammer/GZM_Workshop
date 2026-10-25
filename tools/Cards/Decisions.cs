@@ -2,7 +2,8 @@ using Expect;
 
 namespace Cards;
 
-// The four decisions of prompty.md. Each variant is one line the pair pastes into the next prompt instead of [DECYZJA n].
+// The four decisions of prompty.md. Each variant is one rule sentence of the specification (scenarios/sNN/spec/*.md):
+// variant A is already in the spec file, another variant replaces that rule. Every sentence has a [Step] in tests/GzmApp.Specs.
 public sealed record Variant(string Letter, string Label, string Line);
 
 public static class Decisions
@@ -18,24 +19,33 @@ public static class Decisions
         return
         [
             Letters(text.Search.Select(o => (o.Label, SearchLine(mapping, o)))),
-            Letters(text.ListFields.Select(o => (o.Label, $"Na liście przy każdym rekordzie pokaż tytuł `{mapping.TitleField}` oraz: {Fields(o.Fields)}."))),
-            Letters(text.Stats.Select(o => (o.Label, StatLine(mapping, o)))),
-            Letters(FavoriteViews(mapping)),
+            Letters(text.ListFields.Select(o => (o.Label, $"Przy każdym rekordzie lista pokazuje tytuł `{mapping.TitleField}` i pola: {Fields(o.Fields)}."))),
+            Letters(text.Stats.Select(o => (o.Label, StatLine(o)))),
+            Letters(FavoriteViews()),
         ];
     }
 
-    private static string SearchLine(ScenarioMapping mapping, SearchOption option) =>
-        $"Szukaj w polu `{option.Field}` (kolumna w pliku: `{mapping.Imported.First(c => c.Field == option.Field).Csv}`), "
-        + (option.Match == "prefix" ? "wartość ma się zaczynać od frazy: `LIKE @q + '%'`." : "fraza w dowolnym miejscu: `LIKE '%' + @q + '%'`.");
+    private static string SearchLine(ScenarioMapping mapping, SearchOption option)
+    {
+        var csv = mapping.Imported.First(c => c.Field == option.Field).Csv;
+        return option.Match == "prefix"
+            ? $"Wyszukiwarka pokazuje rekordy, w których pole `{option.Field}` (kolumna w pliku: `{csv}`) zaczyna się od frazy."
+            : $"Wyszukiwarka szuka frazy w dowolnym miejscu pola `{option.Field}` (kolumna w pliku: `{csv}`).";
+    }
 
-    private static string StatLine(ScenarioMapping mapping, StatOption option) =>
-        $"Kafelek: {SqlText.Description(option.Kind, option.Field)} Zapytanie: `{SqlText.Statistic(option.Kind, option.Field, mapping.Table)}`";
+    private static string StatLine(StatOption option) => option.Kind switch
+    {
+        "sum" => $"Kafelek ze statystyką pokazuje sumę pola `{option.Field}`.",
+        "avg" => $"Kafelek ze statystyką pokazuje średnią pola `{option.Field}` z 2 miejscami po przecinku.",
+        "top5" => $"Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `{option.Field}` z liczbą rekordów.",
+        _ => $"Kafelek ze statystyką pokazuje liczbę rekordów dla każdej wartości pola `{option.Field}`.",
+    };
 
-    private static IEnumerable<(string, string)> FavoriteViews(ScenarioMapping mapping) =>
+    private static IEnumerable<(string, string)> FavoriteViews() =>
     [
-        ("lista tytułów", $"Na stronie „Moje ulubione” pokaż listę tytułów (`{mapping.TitleField}`) ulubionych rekordów."),
-        ("tytuły z datą dodania", $"Na stronie „Moje ulubione” pokaż tytuł (`{mapping.TitleField}`) i datę dodania (`CreatedAt`, w bazie UTC – pokaż czas polski jako `dd.MM.yyyy HH:mm`), od najnowszych."),
-        ("tytuły z przyciskiem „Usuń”", $"Na stronie „Moje ulubione” pokaż tytuł (`{mapping.TitleField}`) i przycisk „Usuń” (`hx-delete`), który usuwa wiersz z listy bez przeładowania strony."),
+        ("lista tytułów", "Strona „Moje ulubione” pokazuje tytuły ulubionych rekordów."),
+        ("tytuły z datą dodania", "Strona „Moje ulubione” pokazuje tytuł i datę dodania każdego rekordu, od najnowszych."),
+        ("tytuły z przyciskiem „Usuń”", "Strona „Moje ulubione” pokazuje tytuł i przycisk „Usuń”, który usuwa rekord z listy bez przeładowania strony."),
     ];
 
     private static List<Variant> Letters(IEnumerable<(string Label, string Line)> options) =>

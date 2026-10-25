@@ -3,6 +3,7 @@
     <Project Path="src/GzmApp/GzmApp.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/GzmApp.Specs/GzmApp.Specs.csproj" />
     <Project Path="tests/GzmApp.Tests/GzmApp.Tests.csproj" />
   </Folder>
   <Folder Name="/tools/">
@@ -10,5 +11,7 @@
     <Project Path="tools/CodeRules/CodeRules.csproj" />
     <Project Path="tools/Expect/Expect.csproj" />
     <Project Path="tools/Fetch/Fetch.csproj" />
+    <Project Path="tools/Spectree/Spectree.csproj" />
+    <Project Path="tools/Spectree.Generator/Spectree.Generator.csproj" />
   </Folder>
 </Solution>

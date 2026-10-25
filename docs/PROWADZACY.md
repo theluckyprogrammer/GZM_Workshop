@@ -2,6 +2,8 @@
 
 30 minut, 15 par, 28.10.2026. Pary dostają gotowe prompty (`scenarios/sNN/prompty.md`) i budują całą aplikację w 4 krokach: dane w bazie → wyszukiwarka → strona HTMX z kafelkiem → logowanie i ulubione. Po każdym kroku jest pauza: patrzą, co powstało, i wybierają wariant dalszej budowy (A/B/C). Nikt nie jest sprawdzany.
 
+Metoda pracy: **najpierw specyfikacja, potem testy, na końcu kod**. Każdy krok ma swój plik specyfikacji w `scenarios/sNN/spec/` z ponumerowanymi zdaniami „Reguły”. Każde zdanie to jeden test w `tests/GzmApp.Specs` (ikona kolby w VS Code), a nazwa testu to to zdanie. Na starcie wszystkie testy są czerwone. Krok jest gotowy, gdy jego testy są zielone. Decyzja A/B/C to wybór zdania do specyfikacji (wariant A jest już wpisany). Testy generuje `tools/Spectree.Generator`, a definicje kroków są w `tests/GzmApp.Specs/Steps`. Jak to działa i jak zmienić zdanie: `docs/SPECTREE.md`.
+
 Materiały: karta pary `print/karta-pary-sNN.html` (druk), ściąga `print/sciaga-prowadzacego.html` (tylko dla Ciebie), przy każdym scenariuszu `scenarios/sNN/prowadzacy.md` (wartości dla wariantów A i pułapki w danych).
 
 ## 1. Dzień przed – admin szkolny (uprawnienia administratora)
@@ -26,7 +28,7 @@ Materiały: karta pary `print/karta-pary-sNN.html` (druk), ściąga `print/sciag
    cd GZM_Workshop
    ```
 3. `kilo.jsonc`, `.kilo/` i `.kilocode/` są w repo – sklonuj PRZED pierwszym otwarciem folderu w VS Code, bo Kilo zapamiętuje konfigurację przy pierwszym otwarciu.
-4. Pakiety NuGet do cache (z internetem): `dotnet restore src/GzmApp`, potem `dotnet build src/GzmApp`.
+4. Pakiety NuGet do cache (z internetem): `dotnet restore src/GzmApp` i `dotnet restore tests/GzmApp.Specs`, potem `dotnet build src/GzmApp` i `dotnet build tests/GzmApp.Specs`.
 5. Pierwsze uruchomienie (tworzy bazę `GzmWorkshop` w LocalDB i tabele logowania): `dotnet run --project src/GzmApp`, zamknij Ctrl+C. Jeśli LocalDB nie wstaje: `sqllocaldb create MSSQLLocalDB -s`.
 6. Sprawdzenie komputera: `tools\check.cmd` (dwuklik). Wszystkie punkty OK; SOL-6 może być POMINIĘTO.
 7. Przydział scenariusza: wydrukowana karta `print/karta-pary-sNN.html` leży przy stanowisku. Para sama wpisze swój scenariusz w kroku 1 (prompt ustawia `"Scenario"` w `src/GzmApp/appsettings.json`).
@@ -56,8 +58,9 @@ Materiały: karta pary `print/karta-pary-sNN.html` (druk), ściąga `print/sciag
 | Minuty | Co się dzieje |
 |---|---|
 | 0–2 | Otwarcie (tekst niżej). Pary wpisują imiona na karcie i otwierają `scenarios/sNN/prompty.md`. |
-| 2–8 | Krok 1 – dane z pliku do bazy. Pauza: tabela w rozszerzeniu mssql; decyzja 1 (po czym szukać). |
-| 8–14 | Krok 2 – wyszukiwarka (endpoint). Pauza: fragment HTML w zakładce Network; decyzje 2 i 3. |
+| 2–4 | Krok 0 – scenariusz w `appsettings.json`, czytają specyfikację kroku 1, uruchamiają testy: wszystkie czerwone. |
+| 4–9 | Krok 1 – dane z pliku do bazy. Pauza: tabela w rozszerzeniu mssql, zielone testy kroku 1; decyzja 1 (po czym szukać). |
+| 9–14 | Krok 2 – wyszukiwarka (endpoint). Pauza: fragment HTML w zakładce Network; decyzje 2 i 3. |
 | 14 | Decyzja ratunkowa: pary bez kroku 2 → `tools\ratunek.ps1 -Etap 2 -Scenariusz sNN`. |
 | 14–20 | Krok 3 – strona z wyszukiwarką i kafelkiem (HTMX). Pauza: żądania przy pisaniu; decyzja 4. |
 | 20 | Decyzja: pary bez kroku 3 → `tools\ratunek.ps1 -Etap 3 -Scenariusz sNN`. |
@@ -66,11 +69,11 @@ Materiały: karta pary `print/karta-pary-sNN.html` (druk), ściąga `print/sciag
 
 **Wariant skrócony** (opóźnienie ponad 4 minuty): krok 4 tylko jako demo na rzutniku – stanowisko prowadzącego po `tools\ratunek.ps1 -Etap 4 -Scenariusz s02`.
 
-`ratunek.ps1` ustawia gotowy etap z wariantami A. Zmiany pary idą do schowka (`git stash list`), a para kontynuuje od następnego kroku w `prompty.md`. Uruchamiaj w terminalu VS Code: `powershell -ExecutionPolicy Bypass -File tools\ratunek.ps1 -Etap 3 -Scenariusz s06`.
+`ratunek.ps1` ustawia gotowy etap z wariantami A (scenariusz w `appsettings.Development.json` – testy specyfikacji też go biorą; po ratunku przebuduj projekt, a testy kroków 1..N będą zielone). Zmiany pary idą do schowka (`git stash list`), a para kontynuuje od następnego kroku w `prompty.md`. Uruchamiaj w terminalu VS Code: `powershell -ExecutionPolicy Bypass -File tools\ratunek.ps1 -Etap 3 -Scenariusz s06`.
 
 ## 4. Teksty
 
-**Otwarcie (do 60 s):** „Dzisiaj w 30 minut postawicie całą aplikację internetową na prawdziwych otwartych danych z Metropolii GZM – od pliku CSV, przez bazę danych, po stronę z wyszukiwarką i logowaniem. Kod napisze AI – Kilo Code. Wy jesteście szefami projektu: wklejacie gotowe prompty, a w pauzach decydujecie, jak ma wyglądać Wasza aplikacja – po czym szukać, co pokazać, jaką statystykę. Nie ma złych decyzji i nikt Was nie sprawdza. Pilot wkleja prompt i akceptuje zmiany, Nawigator prowadzi pauzy. Po każdym kroku zamieniacie się. Każda para ma inny zbiór danych – na koniec zobaczymy 15 różnych aplikacji.”
+**Otwarcie (do 60 s):** „Dzisiaj w 30 minut postawicie całą aplikację internetową na prawdziwych otwartych danych z Metropolii GZM – od pliku CSV, przez bazę danych, po stronę z wyszukiwarką i logowaniem. Kod napisze AI – Kilo Code. Wy jesteście szefami projektu i pracujecie jak zawodowcy: najpierw specyfikacja – zdania, co aplikacja ma robić – potem testy, które to sprawdzają, na końcu kod. Każde zdanie specyfikacji to test: na początku wszystkie są czerwone, a Waszym zadaniem jest zamienić je w zielone. W pauzach decydujecie, jak ma wyglądać Wasza aplikacja – po czym szukać, co pokazać, jaką statystykę – i wpisujecie to zdanie do specyfikacji. Nie ma złych decyzji i nikt Was nie sprawdza. Pilot wkleja prompt i akceptuje zmiany, Nawigator prowadzi pauzy. Po każdym kroku zamieniacie się. Każda para ma inny zbiór danych – na koniec zobaczymy 15 różnych aplikacji.”
 
 **Zamknięcie (do 90 s):** „Zbudowaliście aplikację, która ma wszystkie warstwy: dane z pliku w bazie SQL, zapytanie z parametrem, fragment HTML wysyłany przez serwer, stronę, która odświeża się bez przeładowania, logowanie i ulubione zapisane dla każdego użytkownika. AI napisało kod, ale to Wy zdecydowaliście, co ta aplikacja robi. Dane pochodzą z portalu otwartedane.metropoliagzm.pl na licencji CC BY 4.0 – dlatego w stopce jest źródło. Pytanie do sali: co zbudowaliście i co dodalibyście jako następne? Repozytorium zostaje – w `prompty.md` na końcu są pomysły, co dodać samodzielnie.”
 
@@ -85,7 +88,10 @@ Materiały: karta pary `print/karta-pary-sNN.html` (druk), ściąga `print/sciag
 | Zła liczba wierszy | W mssql inna liczba niż w `scenarios/sNN/prowadzacy.md` | Zajrzyj do „Pułapki w danych” w `prowadzacy.md` (kodowanie, separator, nagłówek); jeśli brak czasu – `ratunek.ps1 -Etap 1`. |
 | 400 przy ulubionych | ★ nie działa, Network: status 400 | Brak tokenu antiforgery – sprawdź, czy `<body hx-headers:inherited=...>` w `_Layout.cshtml` nie zostało zmienione; nie wyłączaj walidacji. |
 | Brak żądań w zakładce Network | Lista się nie zmienia przy pisaniu | Odśwież z otwartym F12; sprawdź `hx-get`, `hx-trigger` i `hx-target` w `Index.cshtml` oraz czy strona ładuje `/lib/htmx/4.0.0/htmx.min.js`. |
-| Para nie wkleiła decyzji | W prompcie zostało `[DECYZJA n]` | Nic nie rób: Kilo użyje wariantu A (jest wpisany w prompcie). |
+| Para nie wkleiła decyzji | W specyfikacji jest zdanie wariantu A | Nic nie rób: wariant A jest wpisany w `scenarios/sNN/spec/` i ma swoje testy. |
+| Nie widać testów | Testing (kolba) pusty albo testy innego scenariusza | Sprawdź `"Scenario"` w `src/GzmApp/appsettings.json`, potem Ctrl+Shift+P → „.NET: Build” i ⟳ w panelu Testing. Po `ratunek.ps1` scenariusz jest w `appsettings.Development.json`. |
+| Czerwony test | ✗ przy zdaniu „Reguła N: …” | Kliknij test: komunikat po polsku mówi, czego brakuje (np. „Tabela … jeszcze nie istnieje – tworzy ją krok 1”). Wklej komunikat do Kilo: „Ten test nie przechodzi: …”. Testów kolejnych kroków nie naprawiamy wcześniej. |
+| Kilo zmienia test albo specyfikację | Kilo chce edytować `tests/` albo `scenarios/` | Zablokowane w `kilo.jsonc`. Powiedz parze: test mówi prawdę, poprawiamy kod. |
 | Para skończyła wcześniej | – | „Co dalej?” na końcu `prompty.md` (drugi kafelek, sortowanie, „Pokaż więcej”, opis rekordu przez SOL-6). |
 
 ## 6. Klucze

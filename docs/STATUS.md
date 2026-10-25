@@ -27,6 +27,7 @@
 | 22 | walidacja s02 + propagacja poprawek | OK | 2026-10-21 | Kroki 1–4 (D3 = B działa); 14 wspólnych poprawek w szablonie, Decisions.cs i Variables.cs, materiały 15 scenariuszy i karty do druku wygenerowane ponownie, Cards check bez błędów. |
 | 24 | testy materiałów i SOL-6 | OK | 2026-10-21 | Poziom 9: M-01–M-04 (main), M-05 atrybucja (etap-3, 15/15), AI-01–AI-03 z fałszywym IChatClient (etap-4) zielone; AI-04 (prawdziwe wywołanie SOL-6) pominięte – brak klucza. |
 | 25 | raport końcowy | OK | 2026-10-21 | docs/RAPORT-TESTOW.md; etap-4 bez Playwright: 508/509 zielonych, 1 pominięty (AI-04, brak klucza SOL-6); main: git status czysty, 0 plików baz, 0 sekretów (także hasło bazy testowej w historii). |
+| 26 | specyfikacja i testy w ćwiczeniach (Spectree) | OK (niezacommitowane) | 2026-10-25 | docs/SPECTREE.md; specyfikacja 4 × 15 w scenarios/sNN/spec; tests/GzmApp.Specs: 26 reguł + test kontrolny (155 zdań, 1 krok każde); etap-4: 27/27 dla 15 scenariuszy i wszystkich wariantów decyzji, etap-1/2/3: 7/13/19, main: 1/27 (tylko kontrolny); 6 mutacji wykrytych; GzmApp.Tests poziomy 0/1/8/9: 97/97; Cards check 0 błędów; CodeRules tools+src: 0. Gałęzie ratunek/* jeszcze bez plików Spectree; przejście promptami z modelem (P-05) do wykonania. |
 
 ## Gałęzie do utworzenia lub zmergowania ręcznie
 

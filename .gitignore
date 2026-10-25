@@ -60,3 +60,6 @@ nunit-*.xml
 *.user
 secrets.json
 data/work/
+
+# macOS junk
+.DS_Store

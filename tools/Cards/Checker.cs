@@ -3,21 +3,23 @@ using Expect;
 
 namespace Cards;
 
-// "check": the generated files of a scenario are complete, student files carry no expected values,
-// every prompt ends with the required sentence and every **value** (ID) in prowadzacy.md equals checkpoints.md.
+// "check": the generated files of a scenario are complete, student files (and the specification) carry no expected values,
+// every prompt ends with the required sentence and points to its spec file, and every **value** (ID) in prowadzacy.md
+// equals checkpoints.md.
 public static partial class Checker
 {
     private const string Ending = "Nie dodawaj pakietów.";
-    private static readonly string[] Steps = ["## Krok 1", "## Krok 2", "## Krok 3", "## Krok 4"];
-    private static readonly string[] Placeholders = ["[DECYZJA 1]", "[DECYZJA 2]", "[DECYZJA 3]", "[DECYZJA 4]"];
+    private static readonly string[] Steps = ["## Krok 0", "## Krok 1", "## Krok 2", "## Krok 3", "## Krok 4"];
 
     public static IReadOnlyList<string> Check(string scenarioDirectory, IReadOnlyList<Checkpoint> checkpoints)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(scenarioDirectory);
         ArgumentNullException.ThrowIfNull(checkpoints);
 
-        var missing = Generator.Outputs.Where(f => !File.Exists(Path.Combine(scenarioDirectory, f))).Select(f => $"brak pliku {f}");
-        var present = Generator.Outputs.Where(f => File.Exists(Path.Combine(scenarioDirectory, f)));
+        var scenario = Path.GetFileName(scenarioDirectory);
+        var files = Generator.Outputs.Concat(Generator.SpecTemplates.Select(t => Generator.SpecFile(scenario, t))).ToList();
+        var missing = files.Where(f => !File.Exists(Path.Combine(scenarioDirectory, f))).Select(f => $"brak pliku {f}");
+        var present = files.Where(f => File.Exists(Path.Combine(scenarioDirectory, f)));
         return missing.Concat(present.SelectMany(f => CheckFile(f, File.ReadAllText(Path.Combine(scenarioDirectory, f)), checkpoints))).ToList();
     }
 
@@ -35,7 +37,7 @@ public static partial class Checker
             "prowadzacy.md" => references.Count == 0 ? ["prowadzacy.md: brak wartości z checkpoints.md"] : [],
             _ => [],
         };
-        var values = Generator.StudentOutputs.Contains(name)
+        var values = Generator.StudentOutputs.Contains(name) || name.StartsWith("spec", StringComparison.Ordinal)
             ? references.Select(m => $"{name}: wartość oczekiwana w materiale ucznia: {m.Value}")
             : references.Where(m => !Matches(m, checkpoints)).Select(m => $"{name}: {m.Value} ≠ checkpoints.md");
         return common.OfType<string>().Concat(specific).Concat(values);
@@ -48,8 +50,10 @@ public static partial class Checker
             yield return $"prompty.md: {prompts.Count} bloków promptu, oczekiwano co najmniej {Steps.Length}";
         foreach (var index in prompts.Select((p, i) => (p, i + 1)).Where(x => !EndsCorrectly(x.p)).Select(x => x.Item2))
             yield return $"prompty.md: prompt nr {index} nie kończy się zdaniem „Nie zmieniaj plików poza: … {Ending}”";
-        foreach (var missing in Steps.Concat(Placeholders).Where(s => !text.Contains(s, StringComparison.Ordinal)))
+        foreach (var missing in Steps.Where(s => !text.Contains(s, StringComparison.Ordinal)))
             yield return $"prompty.md: brak „{missing}”";
+        foreach (var index in prompts.Take(4).Select((p, i) => (p, i)).Where(x => !x.p.Contains($"-{Generator.SpecTemplates[x.i]}`", StringComparison.Ordinal)).Select(x => x.i + 1))
+            yield return $"prompty.md: prompt kroku {index} nie wskazuje pliku specyfikacji {Generator.SpecTemplates[index - 1]}";
     }
 
     private static bool EndsCorrectly(string prompt) =>

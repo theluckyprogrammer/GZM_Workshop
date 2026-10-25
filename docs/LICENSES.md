@@ -23,6 +23,18 @@ Dozwolone: MIT, Apache-2.0, MS-PL, BSD (w tym 0BSD).
 |---|---|---|
 | CsvHelper | 33.1.0 | MS-PL OR Apache-2.0 |
 
+## Pakiety NuGet (`tools/Spectree.Generator`)
+
+Generator testów ze specyfikacji (analizator Roslyn, tylko przy kompilacji – nie trafia do aplikacji).
+
+| Pakiet | Wersja | Licencja |
+|---|---|---|
+| Microsoft.CodeAnalysis.CSharp | 4.12.0 | MIT |
+
+## Pakiety NuGet (`tests/GzmApp.Specs`)
+
+Te same pakiety i wersje co `tests/GzmApp.Tests` (niżej): AngleSharp, Microsoft.AspNetCore.Mvc.Testing, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio.
+
 ## Pakiety NuGet (`tools/Expect`)
 
 | Pakiet | Wersja | Licencja |
@@ -56,8 +68,10 @@ Bez pakietów NuGet (referencja do projektu `tools/Expect`).
 |---|---|---|---|
 | Microsoft.Data.SqlClient.SNI.runtime | 6.0.3 | Microsoft Software License Terms (komponent redystrybuowalny) | zależność `Microsoft.Data.SqlClient` (natywny SNI na Windows) |
 | Microsoft.Identity.Client.NativeInterop | 0.20.6 | Microsoft Software License Terms (komponent redystrybuowalny) | zależność `Microsoft.Data.SqlClient` (MSAL) |
+| Microsoft.NETCore.Platforms | 1.1.0 | Microsoft .NET Library License (go.microsoft.com/fwlink/?LinkId=329770) | zależność `NETStandard.Library` w `tools/Spectree.Generator` (netstandard2.0) |
 
-Oba przychodzą z `Microsoft.Data.SqlClient`, którego wymaga stos (Dapper + SQL Server); bez nich nie ma połączenia z bazą. Uzasadnienie w `findings.md` (krok 23).
+Dwa pierwsze przychodzą z `Microsoft.Data.SqlClient`, którego wymaga stos (Dapper + SQL Server); bez nich nie ma połączenia z bazą. Uzasadnienie w `findings.md` (krok 23).
+`Microsoft.NETCore.Platforms` nie ma kodu (tylko graf identyfikatorów platform `runtime.json`). Wymaga go cel `netstandard2.0`, w którym musi być każdy generator Roslyn. Używany tylko przy kompilacji – nie trafia do aplikacji ani do testów. Pozostałe stare pakiety .NET generatora (`NETStandard.Library`, `System.Memory`, `System.Buffers`, …) mają licencję MIT podaną adresem `dotnet/corefx` albo `dotnet/standard`.
 
 ## Dane
 

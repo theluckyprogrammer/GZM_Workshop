@@ -52,8 +52,20 @@
 </div>
 <p><strong>Klawisze:</strong> F5 – start aplikacji · Shift+F5 – stop · F12 – narzędzia przeglądarki (zakładka Network) · Ctrl+Shift+P – paleta poleceń VS Code.</p>
 <p>Prompty kopiujecie z pliku <code>scenarios/s14/prompty.md</code> w VS Code. Ta karta to mapa drogi: zaznaczajcie swoje decyzje.</p>
+<p><strong>Najpierw specyfikacja, potem testy, na końcu kod.</strong> Specyfikacja: <code>scenarios/s14/spec/</code>. Każde zdanie w „Reguły” to jeden test (ikona kolby). Krok jest gotowy, gdy jego testy są zielone. Decyzję wklejacie do specyfikacji.</p>
 
-<h2>Droga przez 4 kroki</h2>
+<h2>Droga: krok 0 i 4 kroki</h2>
+<section class="krok">
+  <h3>Krok 0 – specyfikacja i czerwone testy</h3>
+  <p><strong>Zanim zaczniecie:</strong></p>
+  <ul>
+    <li>Otw&#243;rzcie <code>src/GzmApp/appsettings.json</code> i wpiszcie sw&#243;j scenariusz: <code>&quot;Scenario&quot;: &quot;s14&quot;</code>. Zapiszcie (Ctrl+S).</li>
+    <li>Otw&#243;rzcie folder <code>scenarios/s14/spec/</code> i przeczytajcie plik kroku 1. Sekcja „Co się dzieje” opisuje krok słowami, a „Reguły” – co dokładnie ma działać.</li>
+    <li>Ikona kolby po lewej (Testing) → <code>GzmApp.Specs</code> → ▶ „Run Tests”. Każdy test nazywa się tak jak zdanie ze specyfikacji, np. „Reguła 1: …”. Wszystkie są czerwone – aplikacja jeszcze nic nie umie.</li>
+    <li>Wasz cel: zamienić czerwone testy w zielone, krok po kroku.</li>
+  </ul>
+
+</section>
 <section class="krok">
   <h3>Krok 1 – dane z pliku do bazy</h3>
   <p><strong>Zobaczcie, co powstało:</strong></p>
@@ -61,6 +73,7 @@
     <li>Uruchomcie aplikację (F5). W terminalu pojawia się wpis z liczbą zaimportowanych wierszy.</li>
     <li>Rozszerzenie mssql (ikona bazy po lewej): serwer <code>(localdb)\MSSQLLocalDB</code>, baza <code>GzmWorkshop</code>, tabela <code>TicketMachines</code> → prawy klik → „Select Top 1000”. To Wasze dane z pliku – już w bazie.</li>
     <li>Zatrzymajcie aplikację (Shift+F5).</li>
+    <li>Testing → ▶ „Run Tests”. Testy kroku 1 (<code>s14-001-importuj-dane</code>) są zielone. Czerwony test? Kliknijcie go: komunikat m&#243;wi, czego brakuje. Wklejcie ten komunikat do Kilo.</li>
   </ul>
   <div class="decyzja">
     <p><strong>Decyzja 1:</strong> po czym użytkownik będzie szukał?</p>
@@ -76,6 +89,7 @@
     <li>Uruchomcie aplikację i otw&#243;rzcie adres <code>http://localhost:5080/?handler=Szukaj&amp;q=</code> z dopisanym słowem z wybranej kolumny (dla wariantu A np. <code>bryn&#243;w</code>). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.</li>
     <li>F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie <code>?handler=Szukaj</code>: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać np. jak <code>&amp;#x142;</code> (to „ł”) – to ten sam znak, zapisany kodem HTML.</li>
     <li>W terminalu (log SQL) widać zapytanie z parametrem <code>q</code> – to Wasza fraza.</li>
+    <li>Testing → ▶ „Run Tests”. Zielone są testy krok&#243;w 1 i 2. Reguła 5 sprawdza, że fraza <code>&#39; OR 1=1 --</code> nic nie znajduje – to ochrona przed atakiem SQL injection.</li>
   </ul>
   <div class="decyzja">
     <p><strong>Decyzja 2:</strong> co pokazać na liście?</p>
@@ -97,6 +111,7 @@
     <li>F12 → Network: przy pisaniu pojawiają się żądania <code>?handler=Szukaj</code> z nagł&#243;wkiem <code>HX-Request: true</code>. Tylko lista wraca z serwera, reszta strony zostaje.</li>
     <li>Nad listą jest kafelek ze statystyką, a w stopce – źr&#243;dło danych.</li>
     <li>Adres <code>?handler=Szukaj&amp;q=…</code> otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.</li>
+    <li>Testing → ▶ „Run Tests”. Zielone są testy krok&#243;w 1–3.</li>
   </ul>
   <div class="decyzja">
     <p><strong>Decyzja 4:</strong> co pokazać w „Moich ulubionych”?</p>
@@ -113,6 +128,7 @@
     <li>Zarejestrujcie się (Register) i zalogujcie. Kliknijcie ☆ przy kilku rekordach – zmienią się w ★.</li>
     <li>F12 → Network: żądanie POST <code>?handler=Ulubione</code> ma nagł&#243;wek <code>RequestVerificationToken</code> – to ochrona przed podszywaniem się pod formularz.</li>
     <li>Otw&#243;rzcie „Moje ulubione”. W mssql zajrzyjcie do tabeli <code>Favorites</code> – tam są Wasze gwiazdki.</li>
+    <li>Testing → ▶ „Run Tests”. Wszystkie testy są zielone – aplikacja robi wszystko, co obiecuje specyfikacja.</li>
   </ul>
 
 </section>
@@ -138,7 +154,7 @@
 <div class="ramka">
   <h3>Gotowe? Co dalej</h3>
   <ol>
-    <li>Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3.</li>
+    <li>Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3. Najpierw dopiszcie go do specyfikacji jako regułę 7 kroku 3 (zdanie z decyzji 3): test będzie czerwony, dop&#243;ki Kilo go nie zrobi.</li>
     <li>Sortowanie listy po wybranym polu (przycisk przy nagł&#243;wku listy, <code>hx-get</code> z parametrem <code>sort</code>).</li>
     <li>Przycisk „Pokaż więcej” pod listą: kolejne 20 rekord&#243;w doklejane na końcu (<code>hx-swap=&quot;beforeend&quot;</code>).</li>
     <li>Opis rekordu przez model SOL-6. Zadanie dla modelu: Napisz w jednym zdaniu, gdzie dokładnie stoi ten automat (przystanek i opis lokalizacji).</li>

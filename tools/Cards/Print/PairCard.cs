@@ -27,7 +27,7 @@ public static class PairCard
         $"""
         <section class="krok">
           <h3>Krok {step.Number} – {InlineHtml.Encode(step.Title)}</h3>
-          <p><strong>Zobaczcie, co powstało:</strong></p>
+          <p><strong>{(step.Number == 0 ? "Zanim zaczniecie" : "Zobaczcie, co powstało")}:</strong></p>
           <ul>
         {string.Join("\n", step.Look.Select(l => $"    <li>{InlineHtml.FromMarkdown(l)}</li>"))}
           </ul>

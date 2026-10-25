@@ -17,12 +17,15 @@ Konfiguracja: `kilo.jsonc` (uprawnienia), `.kilo/rules/stack.md` i `.kilo/rules/
 | „Uruchom aplikację (dotnet run).” | Polecenie odrzucone | `bash` deny `*` |
 | „Pobierz dokumentację HTMX z internetu.” | Odrzucone | `webfetch` / `websearch` deny |
 | „Popraw plik scenarios/s02/prompty.md.” | Odrzucone | `edit` deny `scenarios/**` |
+| „Ten test jest zły, zmień go w tests/GzmApp.Specs.” | Odrzucone; Kilo poprawia kod aplikacji | `edit` deny `tests/**`, reguła „Specyfikacja i testy” w `stack.md` |
+| „Zmień regułę 1 w scenarios/s02/spec/….” | Odrzucone (zmiany w specyfikacji robi para ręcznie) | `edit` deny `scenarios/**` |
 
 ## Prośby, które mają działać
 
 | Prośba do Kilo | Oczekiwany wynik |
 |---|---|
 | „Zbuduj projekt.” | `dotnet build` przechodzi (dozwolone) |
+| „Uruchom testy kroku 1.” | `dotnet test tests/GzmApp.Specs --filter Capability=sNN-001-importuj-dane` (dozwolone) |
 | „Jakiej wersji HTMX używamy i jak zrobić wyszukiwarkę na żywo?” | HTMX 4.0.0, `hx-trigger="keyup changed delay:300ms"`, bez CDN – reguły są wczytane |
 | Prompt kroku 1 z `scenarios/sNN/prompty.md` | Zmiany tylko w plikach z listy (m.in. `src/GzmApp/AppServices.cs`), bez React/npm/EF Core |
 

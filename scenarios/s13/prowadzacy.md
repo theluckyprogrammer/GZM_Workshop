@@ -1,6 +1,8 @@
 # SekcjaSCK (s13) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md` i `prompty.md`.
+Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok).
+
+Każde zdanie z sekcji „Reguły” w `spec/` to test w `tests/GzmApp.Specs` (generator `tools/Spectree.Generator`, kroki w `tests/GzmApp.Specs/Steps`). Testy liczą wartości oczekiwane z bazy i z `checkpoints.md`, więc działają dla każdego wariantu decyzji. Testy biorą scenariusz z `"Scenario"` w `src/GzmApp/appsettings.json` (po `ratunek.ps1` – z `appsettings.Development.json`); po zmianie trzeba przebudować projekt.
 
 - **Pomysł:** Zajęcia w Siemianowickim Centrum Kultury: znajdź sekcję dla siebie albo rodzeństwa.
 - **Dane:** „SCK Siemianowice: zajęcia sekcyjne”, plik `data/raw/s13_sck-zajecia-sekcyjne.csv`, tabela `CultureClasses`.

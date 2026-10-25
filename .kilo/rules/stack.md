@@ -21,6 +21,12 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 - Zero zagnieżdżonych if-ów i pętli: wczesny `return`, LINQ, małe metody. Metody do 20 linii, klasy do 150 linii.
 - Nazwy w kodzie po angielsku, komunikaty dla użytkownika po polsku.
 
+## Specyfikacja i testy – najpierw zdania, potem kod
+- Każdy krok ma plik specyfikacji `scenarios/sNN/spec/sNN-NNN-*.md`. Przeczytaj go, zanim napiszesz kod: „Co się dzieje” opisuje krok, a „Reguły” mówią, co dokładnie ma działać.
+- Każda ponumerowana reguła to jeden test w `tests/GzmApp.Specs` (nazwa testu = zdanie reguły). Krok jest gotowy, gdy wszystkie jego testy są zielone.
+- Zrób to, co mówią reguły i prompt – nie mniej i nie więcej.
+- Nie zmieniaj specyfikacji, testów ani narzędzi (`scenarios/`, `tests/`, `tools/`). Czerwony test naprawiasz w kodzie aplikacji, nigdy w teście.
+- Sprawdzenie kroku: `dotnet test tests/GzmApp.Specs --filter Capability=<capability z nagłówka pliku>`. Komunikat czerwonego testu mówi po polsku, czego brakuje.
+
 ## Pliki
 - Zmieniaj tylko pliki z listy „Nie zmieniaj plików poza: …” w prompcie. Jeśli potrzebny jest inny plik – zatrzymaj się i zapytaj.
-- Jeśli w prompcie zostało `[DECYZJA n]` bez wklejonej linii, użyj wariantu podanego w nawiasie zaraz pod nim.
