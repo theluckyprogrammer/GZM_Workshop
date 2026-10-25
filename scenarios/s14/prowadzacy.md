@@ -1,6 +1,6 @@
 # BiletBot (s14) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok).
+Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
 
 Każde zdanie z sekcji „Reguły” w `spec/` to test w `tests/GzmApp.Specs` (generator `tools/Spectree.Generator`, kroki w `tests/GzmApp.Specs/Steps`). Testy liczą wartości oczekiwane z bazy i z `checkpoints.md`, więc działają dla każdego wariantu decyzji. Testy biorą scenariusz z `"Scenario"` w `src/GzmApp/appsettings.json` (po `ratunek.ps1` – z `appsettings.Development.json`); po zmianie trzeba przebudować projekt.
 
@@ -24,7 +24,8 @@ Gałęzie `ratunek/etap-1..4` realizują warianty A wszystkich decyzji i dają d
    - GLIWICE: **18** (E3.group.3)
    - BYTOM: **13** (E3.group.4)
    - ZABRZE: **13** (E3.group.5)
-- Krok 4: tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): **Stroszek Osiedle** (E4.title).
+- Krok 4: karta „✨ Analiza AI” z odpowiedzią modelu SOL-6 (treść za każdym razem trochę inna – nie ma wartości kontrolnej). Wariant A zadania: Wskaż gminy z największą liczbą automatów i przystanki, na których jest więcej niż jeden automat. Bez pliku `src/GzmApp/appsettings.Local.json` karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”.
+- Dodatkowo (ulubione): tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): **Stroszek Osiedle** (E4.title).
 
 Pełna lista wartości: `checkpoints.md` (generuje `tools/Expect`).
 
@@ -63,7 +64,16 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 | Statystyka liczona z listy wyników | Lista pokazuje najwyżej 20 rekordów. Statystyka ma objąć całą tabelę – licz ją w SQL. | log SQL: zapytanie statystyki bez `TOP 20` |
 | Wielkość liter i spacje w grupach | SQL (collation bez wielkości liter) łączy „Abc” i „abc” w jedną grupę, a `GroupBy` w C# nie. Licz w SQL. | Watch na liście grup + log SQL |
 
-### Krok 4 – ulubione
+### Krok 4 – analiza AI
+
+| Pułapka | Co się stanie | Narzędzie |
+|---|---|---|
+| Brak pliku `src/GzmApp/appsettings.Local.json` (klucz SOL-6) | Karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”, testy przechodzą (używają udawanego modelu). | terminal: wpis kategorii `AI`; skopiuj plik z pendrive'a i uruchom aplikację ponownie |
+| Model odpowiada kilka sekund | Bez wskaźnika „AI analizuje…” uczniowie klikają kilka razy – każde kliknięcie to osobne zapytanie (i tokeny). | terminal: wpisy `SOL-6 (…): wysyłam…` i `odpowiedź po … s` |
+| Model coś zmyśla albo myli numery rekordów | To nie błąd kodu – tak działa AI. Porównajcie odpowiedź z listą wyników („Co poszło do modelu?”). | karta analizy: rozwijane „Co poszło do modelu?” |
+| Odpowiedź modelu wstawiona jako HTML (`@Html.Raw`) | Model może odesłać znaczniki HTML i zepsuć stronę – reguła 7 jest wtedy czerwona. | F12 → Elements: karta `#analiza` |
+
+### Dodatkowo – ulubione
 
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|

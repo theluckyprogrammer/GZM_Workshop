@@ -109,7 +109,7 @@ ZASADY
 - Wyniki według `SourceRow`, najwyżej 20 (`take` = 20), także dla pustej frazy. `Wyników: N` to liczba wszystkich pasujących rekordów (osobne `COUNT(*)`), lista pokazuje najwyżej 20.
 - Fraza dłuższa niż 100 znaków: odpowiedź 400 z krótkim fragmentem `<p class="alert alert-warning">…</p>`.
 - Handler `OnGetSzukaj(string? q)` w `src/GzmApp/Pages/Index.cshtml.cs` zwraca `Partial("_Lista", wyniki)`.
-- Widok częściowy `src/GzmApp/Pages/Shared/_Lista.cshtml`: `<p id="licznik">Wyników: N</p>` i `<ul id="lista">` z jednym `<li data-record-id="@r.RecordId">Nr @r.SourceRow: <span class="tytul">…</span></li>` na rekord. Bez `<html>` i bez layoutu.
+- Widok częściowy `src/GzmApp/Pages/Shared/_Lista.cshtml` (klasy CSS z biblioteki Tabler, która jest już w `_Layout.cshtml`): `<p id="licznik" class="text-secondary px-3 pt-3 mb-2">Wyników: N</p>` i `<ul id="lista" class="list-group list-group-flush">` z jednym `<li class="list-group-item" data-record-id="@r.RecordId"><span class="badge bg-blue-lt me-2">Nr @r.SourceRow:</span> <span class="tytul fw-bold">…</span></li>` na rekord. Bez `<html>` i bez layoutu.
 - Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
 - Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s05-002-szukaj-rekordow`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
@@ -120,7 +120,7 @@ Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pa
 ### ⏸ Pauza – zobaczcie, co powstało
 
 1. Uruchomcie aplikację i otwórzcie adres `http://localhost:5080/?handler=Szukaj&q=` z dopisanym słowem z wybranej kolumny (dla wariantu A np. `zawartością`). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.
-2. F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie `?handler=Szukaj`: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać np. jak `&#x142;` (to „ł”) – to ten sam znak, zapisany kodem HTML.
+2. F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie `?handler=Szukaj`: status 200, a w „Response” jest tylko lista.
 3. W terminalu (log SQL) widać zapytanie z parametrem `q` – to Wasza fraza.
 4. Testing → ▶ „Run Tests”. Zielone są testy kroków 1 i 2. Reguła 5 sprawdza, że fraza `' OR 1=1 --` nic nie znajduje – to ochrona przed atakiem SQL injection.
 
@@ -164,16 +164,38 @@ SPECYFIKACJA
 Reguły tego kroku są w pliku `scenarios/s05/spec/s05-003-pokaz-strone.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
 
 ZASADY
-- W `src/GzmApp/Pages/Index.cshtml`: `<input type="search" name="q" hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms" hx-target="#wyniki">` i `<div id="wyniki">` z listą na start (pusta fraza).
-- HTMX 4 jest już w `_Layout.cshtml` (plik lokalny). Nie dodawaj CDN ani innych bibliotek.
+- `src/GzmApp/Pages/Index.cshtml` – układ z klasami Tablera (biblioteka CSS jest już w `_Layout.cshtml`), który dobrze wygląda też na telefonie:
+
+```html
+<div class="page-header mb-4">
+  <h1 class="page-title">ZgubaDąbrowa</h1>
+  <div class="text-secondary">Rzeczy znalezione w Dąbrowie Górniczej: co znaleziono i do kiedy można to odebrać.</div>
+</div>
+<div class="row g-3">
+  <div class="col-12 col-lg-4">
+    <div id="statystyka" class="card"><div class="card-body"><!-- kafelek: tytuł w <div class="subheader">, wartość niżej --></div></div>
+  </div>
+  <div class="col-12 col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <input type="search" name="q" class="form-control" placeholder="Szukaj…" autocomplete="off"
+               hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms" hx-target="#wyniki">
+      </div>
+      <div id="wyniki"><!-- lista na start (pusta fraza) --></div>
+    </div>
+  </div>
+</div>
+```
+
+- HTMX 4 i Tabler są już w `_Layout.cshtml` (pliki lokalne). Nie dodawaj CDN ani innych bibliotek. Teksty na stronie po polsku.
 - Metoda `IsHtmx()` sprawdza nagłówek `HX-Request`. W `OnGetSzukaj`: żądanie HTMX dostaje fragment `_Lista`, zwykłe wejście na ten sam adres – całą stronę z wynikami dla frazy `q`.
-- Listę w `_Lista.cshtml` zmień według reguły 4: pola pokaż w tym samym `<li>`, za tytułem. Liczby w formacie pl-PL, daty `yyyy-MM-dd`, pola tak/nie jako „tak” albo „nie”.
+- Listę w `_Lista.cshtml` zmień według reguły 4: pola pokaż w tym samym `<li>`, za tytułem, w `<div class="text-secondary small">` jako „pole: wartość · pole: wartość” (polskie nazwy pól). Liczby w formacie pl-PL, daty `yyyy-MM-dd`, pola tak/nie jako „tak” albo „nie”.
 - Statystykę z reguły 5 licz w SQL przez `SqlRunner` (nowa metoda w `RecordRepository`), zapytaniem z listy poniżej, z polem z reguły 5 w miejsce `[Pole]`:
   - suma: `SELECT SUM([Pole]) FROM dbo.[DabrowaLostItems]`
   - średnia: `SELECT ROUND(AVG(CAST([Pole] AS decimal(18,2))), 2) FROM dbo.[DabrowaLostItems]`
   - 5 najczęstszych wartości: `SELECT TOP 5 [Pole] AS Value, COUNT(*) AS Count FROM dbo.[DabrowaLostItems] WHERE [Pole] IS NOT NULL GROUP BY [Pole] ORDER BY COUNT(*) DESC, [Pole]`
   - liczba rekordów dla każdej wartości: `SELECT [Pole] AS Value, COUNT(*) AS Count FROM dbo.[DabrowaLostItems] WHERE [Pole] IS NOT NULL GROUP BY [Pole] ORDER BY COUNT(*) DESC, [Pole]`
-- Pokaż ją w `<div id="statystyka">` nad listą: jedną liczbę w `<p data-stat-value>`, a listę wartości jako `<li data-stat>wartość: <strong>liczba</strong></li>`. Liczby w formacie pl-PL (przecinek dziesiętny).
+- Pokaż ją w karcie `<div id="statystyka">`: opis w `<div class="subheader">`, jedną liczbę w `<p data-stat-value class="h1 mb-0">`, a listę wartości jako `<ul class="list-unstyled mb-0">` z `<li data-stat class="d-flex justify-content-between">wartość: <strong>liczba</strong></li>`. Liczby w formacie pl-PL (przecinek dziesiętny).
 - W `src/GzmApp/appsettings.json` ustaw `"DataAttribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0"` (stopka już go pokazuje).
 - Krótkie metody, bez zagnieżdżonych if-ów.
 - Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s05-003-pokaz-strone`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
@@ -186,11 +208,91 @@ Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/In
 
 1. Otwórzcie `http://localhost:5080` i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.
 2. F12 → Network: przy pisaniu pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Tylko lista wraca z serwera, reszta strony zostaje.
-3. Nad listą jest kafelek ze statystyką, a w stopce – źródło danych.
+3. Obok listy jest kafelek ze statystyką, a w stopce – źródło danych. Zwęźcie okno przeglądarki (albo F12 → ikona telefonu): kafelek przesuwa się nad listę – strona działa też na telefonie.
 4. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
 5. Testing → ▶ „Run Tests”. Zielone są testy kroków 1–3.
 
-### ⏸ Pauza – decyzja 4: co pokazać w „Moich ulubionych”?
+### ⏸ Pauza – decyzja 4: co ma przeanalizować AI?
+
+**A – co odebrać najpierw**
+
+~~~text
+Model dostaje zadanie: Pogrupuj znalezione rzeczy w kategorie i wskaż te, których termin odbioru mija najwcześniej.
+~~~
+
+**B – 3 ciekawostki**
+
+~~~text
+Model dostaje zadanie: Znajdź w tych rekordach 3 ciekawostki i krótko je opisz.
+~~~
+
+**C – kontrola jakości danych**
+
+~~~text
+Model dostaje zadanie: Sprawdź jakość tych danych: wskaż puste pola, literówki i różne zapisy tej samej wartości.
+~~~
+
+Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `scenarios/s05/spec/s05-004-analiza-ai.md` w miejsce reguły 3. Zapiszcie plik.
+
+## Krok 4 – analiza AI
+
+~~~~text
+CEL
+Przycisk „✨ Analizuj z AI”: rekordy z listy wyników idą do modelu sztucznej inteligencji SOL-6, a jego analiza pojawia się na stronie w karcie, która mówi wprost, że ten tekst napisała AI.
+
+SPECYFIKACJA
+Reguły tego kroku są w pliku `scenarios/s05/spec/s05-004-analiza-ai.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
+
+DANE
+- Model SOL-6 jest już podłączony w `Program.cs`: z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`, nazwa modelu w `Model`). Klucz jest w pliku `src/GzmApp/appsettings.Local.json` od prowadzącego. Nie twórz własnego klienta AI i nie wpisuj klucza w kod.
+- Zadanie dla modelu to zdanie z reguły 3 specyfikacji, bez początku „Model dostaje zadanie: ”.
+- Rekordy: te same co na liście dla frazy `q` – `Search(q, 20)` z `RecordRepository`. Do modelu wyślij pola: `CollectionDate`, `FoundDate`, `Id`, `ItemName`. Jedna linia na rekord: `Nr <SourceRow>: Pole=wartość; Pole=wartość`.
+
+ZASADY
+- `IAiAnalyzer` i `AiAnalyzer` w `src/GzmApp/Ai/AiAnalyzer.cs`: metoda `AnalyzeAsync(string? q, CancellationToken ct)` zwraca `AiAnalysis(string Text, string Model, int RecordCount, string Prompt)`; `Prompt` to tekst wysłany do modelu.
+- Dwie wiadomości: `new ChatMessage(ChatRole.System, "Jesteś analitykiem danych. Odpowiadaj po polsku, krótko (najwyżej 8 punktów zaczynających się od „- ”), tylko na podstawie przekazanych rekordów. Nie wymyślaj faktów. Podawaj numery rekordów (Nr).")` i `new ChatMessage(ChatRole.User, zadanie + "\n\nRekordy:\n" + linie)`. Jedno wywołanie na kliknięcie: `var response = await chat.GetResponseAsync(messages, cancellationToken: ct);`, odpowiedź to `response.Text`.
+- Wyjątek `Sol6Exception` (brak klucza albo model nie odpowiada) złap i pokaż jego `Message` w `<div class="alert alert-warning">` – bez strony błędu.
+- Handler `OnGetAnalizuj(string? q)` w `src/GzmApp/Pages/Index.cshtml.cs` zwraca `Partial("_Analiza", analiza)`.
+- W `src/GzmApp/Pages/Index.cshtml`, w karcie pod polem wyszukiwania:
+
+```html
+<div class="card-body border-top">
+  <button type="button" class="btn btn-purple" hx-get="?handler=Analizuj" hx-include="[name=q]"
+          hx-target="#analiza" hx-indicator="#analiza-czeka" hx-disable="this">✨ Analizuj z AI</button>
+  <span id="analiza-czeka" class="htmx-indicator align-items-center text-secondary ms-2">
+    <span class="spinner-border spinner-border-sm me-2"></span>AI analizuje dane…</span>
+  <div id="analiza" class="mt-3"></div>
+</div>
+```
+
+- Widok częściowy `src/GzmApp/Pages/Shared/_Analiza.cshtml`: `<div class="card card-ai" data-ai>` z nagłówkiem `<div class="card-header"><h3 class="card-title">✨ Analiza AI</h3><span class="badge bg-purple-lt ms-auto">model …</span></div>`, odpowiedzią w `<div class="card-body ai-text">@Model.Text</div>` (zwykłe `@`, nigdy `Html.Raw` – odpowiedź modelu to tekst, nie HTML) i stopką `<div class="card-footer text-secondary small">`: „Ten tekst wygenerowała sztuczna inteligencja (model …) na podstawie N rekordów z Waszej bazy. AI może się mylić – sprawdźcie w danych.” oraz `<details><summary>Co poszło do modelu?</summary><pre class="small">@Model.Prompt</pre></details>`. Bez `<html>` i bez layoutu.
+- Rejestracja `AiAnalyzer` w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
+- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s05-004-analiza-ai`. Testy używają udawanego modelu (bez klucza i bez tokenów). Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
+- Na koniec napisz w 3 punktach, co zrobiłeś.
+
+Nie zmieniaj plików poza: `src/GzmApp/Ai/AiAnalyzer.cs`, `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Analiza.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
+~~~~
+
+### ⏸ Pauza – zobaczcie, co powstało
+
+1. Otwórzcie `http://localhost:5080`, wpiszcie frazę i kliknijcie „✨ Analizuj z AI”. Po kilku sekundach pojawia się fioletowa karta. Ten tekst napisał model AI, a nie Wasz kod.
+2. Rozwińcie „Co poszło do modelu?”: zadanie i Wasze rekordy. Model widzi tylko to – nic więcej o Waszej bazie nie wie.
+3. Terminal: wpisy `SOL-6 (…): wysyłam do modelu … znaków` i `odpowiedź po … s, tokeny: …`. Tokeny to „waluta” AI – każde kliknięcie kosztuje.
+4. Sprawdźcie AI: czy numery „Nr” i liczby zgadzają się z listą wyników? Kliknijcie jeszcze raz – odpowiedź może być trochę inna. AI może się mylić, dlatego karta to mówi.
+5. F12 → Network: żądanie `?handler=Analizuj&q=…`. Z modelem rozmawia serwer – klucz nie trafia do przeglądarki.
+6. Testing → ▶ „Run Tests”. Wszystkie testy kroków 1–4 są zielone. Testy kroku 4 używają udawanego modelu: nie zużywają tokenów i zawsze dostają tę samą odpowiedź.
+
+## Gotowe! Co dalej?
+
+Macie całą aplikację: dane w bazie, wyszukiwarkę, stronę z HTMX i analizę AI. Jeśli zostało Wam trochę czasu, dodajcie coś od siebie – własnym promptem albo jednym z pomysłów:
+
+1. Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3. Najpierw dopiszcie go do specyfikacji jako regułę 7 kroku 3 (zdanie z decyzji 3): test będzie czerwony, dopóki Kilo go nie zrobi.
+2. Drugie zadanie dla AI – weźcie inny wariant z decyzji 4 i dodajcie drugi przycisk (np. „🔎 Sprawdź jakość danych”).
+3. Sortowanie listy po wybranym polu (przycisk przy nagłówku listy, `hx-get` z parametrem `sort`).
+4. Przycisk „Pokaż więcej” pod listą: kolejne 20 rekordów doklejane na końcu (`hx-swap="beforeend"`).
+5. Logowanie i ulubione: zalogowany użytkownik oznacza rekordy gwiazdką ★. Ulubione w ZgubaDąbrowa to rzeczy podobne do zgubionej, które para chce śledzić. Specyfikacja czeka w `scenarios/s05/spec/dodatkowe/s05-005-zapisz-ulubione.md` – przenieście ten plik do `scenarios/s05/spec/` i przebudujcie projekt: pojawi się 8 nowych czerwonych testów.
+
+### ⏸ Pauza – decyzja 5: co pokazać w „Moich ulubionych”?
 
 **A – lista tytułów**
 
@@ -210,16 +312,14 @@ Strona „Moje ulubione” pokazuje tytuł i datę dodania każdego rekordu, od 
 Strona „Moje ulubione” pokazuje tytuł i przycisk „Usuń”, który usuwa rekord z listy bez przeładowania strony.
 ~~~
 
-Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `scenarios/s05/spec/s05-004-zapisz-ulubione.md` w miejsce reguły 8. Zapiszcie plik.
-
-## Krok 4 – logowanie i ulubione
+Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `s05-005-zapisz-ulubione.md` w miejsce reguły 8. Zapiszcie plik.
 
 ~~~~text
 CEL
 Zalogowany użytkownik oznacza rekordy gwiazdką ★ i widzi je na stronie „Moje ulubione”. Ulubione w ZgubaDąbrowa to rzeczy podobne do zgubionej, które para chce śledzić.
 
 SPECYFIKACJA
-Reguły tego kroku są w pliku `scenarios/s05/spec/s05-004-zapisz-ulubione.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
+Reguły tego kroku są w pliku `scenarios/s05/spec/s05-005-zapisz-ulubione.md` (sekcja „Reguły”). Przeczytaj go najpierw. Każda reguła to jeden test w `tests/GzmApp.Specs`. Nie zmieniaj plików specyfikacji ani testów.
 
 DANE
 - Utwórz plik `db/900_favorites.sql` z tym skryptem i uruchamiaj go przy starcie (w `RunAtStartupAsync` w `src/GzmApp/AppServices.cs`), czytając go z `Path.Combine(AppContext.BaseDirectory, "db", "900_favorites.sql")`:
@@ -244,46 +344,11 @@ ZASADY
 - Stan ★ `_Lista.cshtml` sprawdza sama: `@inject IFavoritesRepository` i ulubione zalogowanego użytkownika (niezalogowany: wszystkie „☆”). Nie przekazuj tego przez `ViewData` – `Partial(...)` w PageModel go nie kopiuje.
 - Handlery `OnPostUlubione(int id)` i `OnDeleteUlubione(int id)` w `Index.cshtml.cs` zwracają `Partial("_Gwiazdka", …)` z nowym stanem. Niezalogowany: status 401 i fragment „Zaloguj się, aby dodać do ulubionych”.
 - Token antiforgery wysyła już `<body hx-headers:inherited='{"RequestVerificationToken":"..."}'>` w `_Layout.cshtml`. Nie wyłączaj walidacji antiforgery.
-- Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według reguły 8: `<ul id="ulubione">`, jeden `<li>` na rekord, tytuł w `<span class="tytul">`. Data dodania to `CreatedAt` (w bazie UTC), pokazana jako czas polski `dd.MM.yyyy HH:mm`. Przycisk „Usuń”: `hx-delete="?handler=Usun&id=..."` z `hx-target="closest li"` i `hx-swap="outerHTML"`, handler `OnDeleteUsun(int id)` w `Ulubione.cshtml.cs` zwraca pustą odpowiedź 200.
+- Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według reguły 8 (strona „Moje ulubione”): `<ul id="ulubione">`, jeden `<li>` na rekord, tytuł w `<span class="tytul">`. Data dodania to `CreatedAt` (w bazie UTC), pokazana jako czas polski `dd.MM.yyyy HH:mm`. Przycisk „Usuń”: `hx-delete="?handler=Usun&id=..."` z `hx-target="closest li"` i `hx-swap="outerHTML"`, handler `OnDeleteUsun(int id)` w `Ulubione.cshtml.cs` zwraca pustą odpowiedź 200.
 - Link „Moje ulubione” w menu w `_Layout.cshtml`, widoczny zawsze (niezalogowanego strona przekieruje do logowania).
 - Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
-- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s05-004-zapisz-ulubione`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
+- Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s05-005-zapisz-ulubione`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
 Nie zmieniaj plików poza: `db/900_favorites.sql`, `src/GzmApp/Data/FavoritesRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml.cs`, `src/GzmApp/Pages/Shared/_Layout.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
-~~~~
-
-### ⏸ Pauza – zobaczcie, co powstało
-
-1. Kliknijcie ☆ bez logowania: pojawia się „Zaloguj się, aby dodać do ulubionych”.
-2. Zarejestrujcie się (Register) i zalogujcie. Kliknijcie ☆ przy kilku rekordach – zmienią się w ★.
-3. F12 → Network: żądanie POST `?handler=Ulubione` ma nagłówek `RequestVerificationToken` – to ochrona przed podszywaniem się pod formularz.
-4. Otwórzcie „Moje ulubione”. W mssql zajrzyjcie do tabeli `Favorites` – tam są Wasze gwiazdki.
-5. Testing → ▶ „Run Tests”. Wszystkie testy są zielone – aplikacja robi wszystko, co obiecuje specyfikacja.
-
-## Gotowe! Co dalej?
-
-Macie całą aplikację: dane w bazie, wyszukiwarkę, stronę z HTMX, logowanie i ulubione. Jeśli zostało Wam trochę czasu, dodajcie coś od siebie – własnym promptem albo jednym z pomysłów:
-
-1. Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3. Najpierw dopiszcie go do specyfikacji jako regułę 7 kroku 3 (zdanie z decyzji 3): test będzie czerwony, dopóki Kilo go nie zrobi.
-2. Sortowanie listy po wybranym polu (przycisk przy nagłówku listy, `hx-get` z parametrem `sort`).
-3. Przycisk „Pokaż więcej” pod listą: kolejne 20 rekordów doklejane na końcu (`hx-swap="beforeend"`).
-4. Opis rekordu przez model SOL-6. Zadanie dla modelu: Opisz w jednym zdaniu tę rzecz znalezioną: co to jest, kiedy ją znaleziono i do kiedy można ją odebrać. Prompt na start:
-
-~~~~text
-CEL
-Przycisk „✨ Opisz” przy rekordzie na liście. Po kliknięciu pod rekordem pojawia się opis od modelu SOL-6: Opisz w jednym zdaniu tę rzecz znalezioną: co to jest, kiedy ją znaleziono i do kiedy można ją odebrać.
-
-DANE
-- Rekord z tabeli `DabrowaLostItems` wybrany po `RecordId`. Do modelu wyślij pola: `CollectionDate`, `FoundDate`, `Id`, `ItemName`.
-- Konfiguracja w `src/GzmApp/appsettings.json`: `Sol6:Endpoint`, `Sol6:Model`, `Sol6:Kind` (`openai` albo `azure`) – wartości poda prowadzący. Klucz `Sol6:ApiKey` tylko w `dotnet user-secrets`, nigdy w pliku w repozytorium.
-
-ZASADY
-- `IAiSummarizer` i `AiSummarizer` w `src/GzmApp/Ai/AiSummarizer.cs` na `IChatClient`: pakiety `OpenAI` i `Microsoft.Extensions.AI.OpenAI` (`AsIChatClient()`), dla `azure` – `AzureOpenAIClient` z `AzureKeyCredential`. Pakiety są już w projekcie.
-- Jedno wywołanie modelu na kliknięcie. Prompt systemowy: „Odpowiadaj tylko na podstawie przekazanych rekordów, nie wymyślaj faktów.”
-- Handler `OnGetPodsumuj(int id)` w `Index.cshtml.cs` zwraca fragment `<p>` z opisem. Przycisk w `_Lista.cshtml`: `hx-get="?handler=Podsumuj&id=@r.RecordId" hx-target="#opis-@r.RecordId"`.
-- Brak klucza: fragment „Brak klucza SOL-6 – poproś prowadzącego”, bez wyjątku.
-- Rejestracja i konfiguracja `Sol6` w `AddAppServices` w `src/GzmApp/AppServices.cs`.
-
-Nie zmieniaj plików poza: `src/GzmApp/Ai/AiSummarizer.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/AppServices.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
 ~~~~

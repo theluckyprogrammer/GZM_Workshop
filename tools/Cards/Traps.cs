@@ -16,6 +16,7 @@ public static class Traps
         return ImportTraps.For(mapping, checkpoints)
             .Concat(Search(mapping, checkpoints))
             .Concat(Statistic(mapping, checkpoints))
+            .Concat(Ai())
             .Concat(Favorites(mapping, checkpoints))
             .Concat(text.Traps.Select(t => new Trap(t.Stage, t.Trap, t.Effect, t.Tool)))
             .ToList();
@@ -44,12 +45,20 @@ public static class Traps
             yield return new(3, $"Puste wartości w polu `{mapping.Statistic.Field}`: {nulls}", "NULL nie wchodzi do statystyki. Zamiana pustych na 0 albo „” da inny wynik niż na karcie.", $"{Mssql}: `SELECT COUNT(*) FROM {mapping.Table} WHERE {mapping.Statistic.Field} IS NULL`");
     }
 
+    private static IEnumerable<Trap> Ai()
+    {
+        yield return new(4, "Brak pliku `src/GzmApp/appsettings.Local.json` (klucz SOL-6)", "Karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”, testy przechodzą (używają udawanego modelu).", "terminal: wpis kategorii `AI`; skopiuj plik z pendrive'a i uruchom aplikację ponownie");
+        yield return new(4, "Model odpowiada kilka sekund", "Bez wskaźnika „AI analizuje…” uczniowie klikają kilka razy – każde kliknięcie to osobne zapytanie (i tokeny).", "terminal: wpisy `SOL-6 (…): wysyłam…` i `odpowiedź po … s`");
+        yield return new(4, "Model coś zmyśla albo myli numery rekordów", "To nie błąd kodu – tak działa AI. Porównajcie odpowiedź z listą wyników („Co poszło do modelu?”).", "karta analizy: rozwijane „Co poszło do modelu?”");
+        yield return new(4, "Odpowiedź modelu wstawiona jako HTML (`@Html.Raw`)", "Model może odesłać znaczniki HTML i zepsuć stronę – reguła 7 jest wtedy czerwona.", "F12 → Elements: karta `#analiza`");
+    }
+
     private static IEnumerable<Trap> Favorites(ScenarioMapping mapping, IReadOnlyList<Checkpoint> checkpoints)
     {
         foreach (var empty in EmptyCount(checkpoints, mapping.TitleField).Where(n => n > 0))
-            yield return new(4, $"Rekordy bez tytułu (`{mapping.TitleField}` puste: {empty})", "Na liście ulubionych pojawi się pusta pozycja. Pokaż np. „(bez nazwy)”.", $"{Mssql}: `SELECT COUNT(*) FROM {mapping.Table} WHERE {mapping.TitleField} IS NULL`");
-        yield return new(4, "Dwa kliknięcia ★ w dwóch kartach", "Bez klucza `PK_Favorites` w tabeli są dwa takie same wiersze.", $"{Mssql}: `SELECT COUNT(*) FROM Favorites`");
-        yield return new(4, "Brak tokenu antiforgery", "Żądanie POST/DELETE dostaje status 400, a handler się nie uruchamia.", "Network: nagłówek `RequestVerificationToken`");
+            yield return new(5, $"Rekordy bez tytułu (`{mapping.TitleField}` puste: {empty})", "Na liście ulubionych pojawi się pusta pozycja. Pokaż np. „(bez nazwy)”.", $"{Mssql}: `SELECT COUNT(*) FROM {mapping.Table} WHERE {mapping.TitleField} IS NULL`");
+        yield return new(5, "Dwa kliknięcia ★ w dwóch kartach", "Bez klucza `PK_Favorites` w tabeli są dwa takie same wiersze.", $"{Mssql}: `SELECT COUNT(*) FROM Favorites`");
+        yield return new(5, "Brak tokenu antiforgery", "Żądanie POST/DELETE dostaje status 400, a handler się nie uruchamia.", "Network: nagłówek `RequestVerificationToken`");
     }
 
     // E1.weird.<Field> = "empty / unparsable".

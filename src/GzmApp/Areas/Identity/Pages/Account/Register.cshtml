@@ -1,0 +1,38 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Rejestracja";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+        <div class="card card-md">
+            <div class="card-body">
+                <h1 class="h2 text-center mb-4">Rejestracja</h1>
+                <form method="post" asp-route-returnUrl="@Model.ReturnUrl" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Input.Email">E-mail</label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="ty@example.com" />
+                        <span asp-validation-for="Input.Email" class="invalid-feedback d-block"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Input.Password">Hasło</label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
+                        <small class="form-hint">Co najmniej 6 znaków, w tym wielka litera, cyfra i znak specjalny, np. <code>Haslo123!</code></small>
+                        <span asp-validation-for="Input.Password" class="invalid-feedback d-block"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Input.ConfirmPassword">Powtórz hasło</label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="invalid-feedback d-block"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Załóż konto</button>
+                </form>
+            </div>
+        </div>
+        <p class="text-center text-secondary mt-3">
+            Masz już konto? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Zaloguj się</a>
+        </p>
+    </div>
+</div>

@@ -4,5 +4,17 @@
     ViewData["Title"] = "Start";
 }
 
-<h1>Scenariusz: <span id="scenario-code">@Model.Scenario</span></h1>
-<p class="lead">Tu pojawi się Twoja aplikacja</p>
+<div class="page-header mb-4">
+    <div class="page-pretitle">Scenariusz <span id="scenario-code">@Model.Scenario</span></div>
+    <h1 class="page-title">Tu pojawi się Twoja aplikacja</h1>
+</div>
+
+<div class="card">
+    <div class="empty">
+        <p class="empty-title">Na razie pusto</p>
+        <p class="empty-subtitle text-secondary">
+            Otwórzcie <code>scenarios/@Model.Scenario/prompty.md</code> i zacznijcie od kroku 0.
+            Kilo Code napisze kod, a testy powiedzą, czy działa.
+        </p>
+    </div>
+</div>

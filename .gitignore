@@ -63,3 +63,6 @@ data/work/
 
 # macOS junk
 .DS_Store
+
+# Klucz SOL-6 (Azure AI Foundry) – tylko lokalnie, nigdy w repozytorium
+appsettings.Local.json

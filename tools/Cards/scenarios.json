@@ -3,7 +3,8 @@
     "app": "PamięćZabrze",
     "idea": "Wyszukiwarka tablic i miejsc pamięci w Zabrzu z informacją, w której dzielnicy jest ich najwięcej.",
     "favorites": "miejsca pamięci, które para chce odwiedzić na wycieczce po Zabrzu",
-    "starTask": "Opisz w jednym zdaniu to miejsce pamięci: co upamiętnia i gdzie jest. Korzystaj tylko z opisu i napisu z rekordu.",
+    "aiLabel": "trasa po miejscach pamięci",
+    "aiTask": "Pogrupuj te miejsca pamięci według tego, kogo albo co upamiętniają, i zaproponuj spacer po 3 z nich.",
     "traps": [
       {
         "stage": 3,
@@ -72,10 +73,11 @@
     "app": "StacjaFinder",
     "idea": "Znajdź stację Metroroweru w swojej gminie i sprawdź, ile ma stojaków.",
     "favorites": "stacje Metroroweru, z których para korzysta najczęściej",
-    "starTask": "Opisz w jednym zdaniu tę stację: w jakiej jest gminie, ile ma stojaków i czy jest dostępna.",
+    "aiLabel": "gdzie dostawić rowery",
+    "aiTask": "Wskaż stacje z największą i najmniejszą liczbą stojaków i zaproponuj, gdzie warto dostawić rowery.",
     "traps": [
       {
-        "stage": 4,
+        "stage": 5,
         "trap": "Kolumna „Nazwa” zawiera numer stacji (np. 27007), a nie nazwę",
         "effect": "Tytuł ulubionego wygląda jak liczba. To nie błąd importu.",
         "tool": "rozszerzenie mssql: `SELECT TOP 5 Name, Number FROM BikeStations`"
@@ -138,7 +140,8 @@
     "app": "RowerStat",
     "idea": "Ile rowerów miejskich jest dostępnych w każdej gminie GZM i gdzie jest ich za mało.",
     "favorites": "gminy, które para obserwuje",
-    "starTask": "Napisz w jednym zdaniu, czy w tej gminie rowerów jest wystarczająco: porównaj liczbę dostępnych z wymaganą.",
+    "aiLabel": "gdzie brakuje rowerów",
+    "aiTask": "Wskaż dni i gminy, w których dostępnych rowerów było mniej niż wymaganych, i napisz, co z tego wynika.",
     "traps": [
       {
         "stage": 1,
@@ -202,7 +205,8 @@
     "app": "ZgubaBytom",
     "idea": "Sprawdź, czy ktoś znalazł Twoją zgubę w Bytomiu i czy sprawa jest jeszcze otwarta.",
     "favorites": "rzeczy podobne do zgubionej, które para chce śledzić",
-    "starTask": "Opisz w jednym zdaniu tę rzecz znalezioną: co to jest, kiedy wpisano ją do rejestru i jaki ma status.",
+    "aiLabel": "czego ludzie gubią najwięcej",
+    "aiTask": "Pogrupuj zgubione rzeczy w kategorie, np. dokumenty, klucze, elektronika, i napisz, czego ludzie gubią najwięcej.",
     "traps": [
       {
         "stage": 1,
@@ -266,7 +270,8 @@
     "app": "ZgubaDąbrowa",
     "idea": "Rzeczy znalezione w Dąbrowie Górniczej: co znaleziono i do kiedy można to odebrać.",
     "favorites": "rzeczy podobne do zgubionej, które para chce śledzić",
-    "starTask": "Opisz w jednym zdaniu tę rzecz znalezioną: co to jest, kiedy ją znaleziono i do kiedy można ją odebrać.",
+    "aiLabel": "co odebrać najpierw",
+    "aiTask": "Pogrupuj znalezione rzeczy w kategorie i wskaż te, których termin odbioru mija najwcześniej.",
     "traps": [
       {
         "stage": 1,
@@ -319,7 +324,8 @@
     "app": "DrzewoRekord",
     "idea": "Pomniki przyrody Dąbrowy Górniczej: jakie to drzewa i jaki mają obwód.",
     "favorites": "drzewa, które para chce zobaczyć na spacerze",
-    "starTask": "Opisz w jednym zdaniu to drzewo: gatunek, obwód i miejsce. Nie wymyślaj faktów spoza rekordu.",
+    "aiLabel": "3 drzewa na spacer",
+    "aiTask": "Wybierz 3 drzewa najbardziej warte zobaczenia na spacerze i uzasadnij wybór obwodem i opisem.",
     "traps": [
       {
         "stage": 1,
@@ -394,7 +400,8 @@
     "app": "SportGliwice",
     "idea": "Obiekty sportowe w Gliwicach: hale, boiska, baseny – gdzie są i kto nimi zarządza.",
     "favorites": "obiekty, na których para trenuje",
-    "starTask": "Napisz w jednym zdaniu, co to za obiekt, gdzie jest i kto nim zarządza.",
+    "aiLabel": "rodzaje obiektów i zarządcy",
+    "aiTask": "Pogrupuj obiekty według rodzaju, np. hala, boisko, basen, i napisz, kto zarządza większością z nich.",
     "traps": [
       {
         "stage": 1,
@@ -452,7 +459,8 @@
     "app": "RezerwacjaRadar",
     "idea": "Ostatnie rezerwacje Metroroweru: które kończą się wypożyczeniem, a które wygasają albo są anulowane.",
     "favorites": "stacje, których rezerwacje para obserwuje",
-    "starTask": "Opisz w jednym zdaniu tę rezerwację: kiedy była, na której stacji i jak się skończyła. Czas w rekordzie jest w UTC.",
+    "aiLabel": "jak kończą się rezerwacje",
+    "aiTask": "Policz, ile rezerwacji zakończyło się wypożyczeniem, a ile wygasło albo zostało anulowanych, i wskaż stację z największą liczbą rezerwacji.",
     "traps": [
       {
         "stage": 2,
@@ -522,7 +530,8 @@
     "app": "ArcheoDąbrowa",
     "idea": "Stanowiska archeologiczne Dąbrowy Górniczej: co znaleziono i z jakiej epoki.",
     "favorites": "stanowiska, które para chce odwiedzić",
-    "starTask": "Opisz w jednym zdaniu to stanowisko i jego chronologię. Korzystaj tylko z rekordu.",
+    "aiLabel": "stanowiska według epok",
+    "aiTask": "Pogrupuj stanowiska według epoki (chronologii) i wskaż najstarsze.",
     "traps": [
       {
         "stage": 1,
@@ -591,7 +600,8 @@
     "app": "BoiskoMap",
     "idea": "Boiska i stadiony w Gliwicach: znajdź boisko przy swojej szkole.",
     "favorites": "boiska, na których para gra",
-    "starTask": "Napisz w jednym zdaniu, jakie to boisko i pod jakim adresem jest.",
+    "aiLabel": "boiska na szkolny turniej",
+    "aiTask": "Pogrupuj boiska według rodzaju i zaproponuj 3 miejsca na szkolny turniej.",
     "traps": [
       {
         "stage": 1,
@@ -661,10 +671,11 @@
     "app": "PamięćKatowic",
     "idea": "Tablice, pomniki i groby pamięci narodowej w Katowicach.",
     "favorites": "miejsca na lekcję historii w terenie",
-    "starTask": "Opisz w jednym zdaniu to miejsce pamięci. Nie dodawaj faktów spoza rekordu.",
+    "aiLabel": "trasa po miejscach pamięci",
+    "aiTask": "Pogrupuj miejsca pamięci według rodzaju obiektu i zaproponuj spacer po 3 z nich.",
     "traps": [
       {
-        "stage": 4,
+        "stage": 5,
         "trap": "Tytuł rekordu to długi opis (nawet 390 znaków)",
         "effect": "Lista ulubionych robi się szeroka – skróć tekst w widoku CSS-em, nie w bazie.",
         "tool": "rozszerzenie mssql: `SELECT MAX(LEN(Description)) FROM KatowiceMemorials`"
@@ -714,7 +725,8 @@
     "app": "ZabytkiBytom",
     "idea": "Zabytki Bytomia: wyszukaj budynek i sprawdź jego styl.",
     "favorites": "zabytki na trasie spaceru po Bytomiu",
-    "starTask": "Opisz w jednym zdaniu ten zabytek: co to jest, gdzie stoi i w jakim stylu. Nie wymyślaj faktów spoza rekordu.",
+    "aiLabel": "style i wycieczka",
+    "aiTask": "Policz zabytki w każdym stylu architektonicznym i wybierz 3 do zobaczenia na wycieczce.",
     "traps": [
       {
         "stage": 3,
@@ -772,7 +784,8 @@
     "app": "SekcjaSCK",
     "idea": "Zajęcia w Siemianowickim Centrum Kultury: znajdź sekcję dla siebie albo rodzeństwa.",
     "favorites": "zajęcia, na które para chce się zapisać",
-    "starTask": "Napisz w dwóch zdaniach, dla kogo są te zajęcia i kiedy się odbywają.",
+    "aiLabel": "zajęcia dla rodzeństwa",
+    "aiTask": "Dopasuj zajęcia do trzech osób: 7-latka, 12-latka i 16-latka. Podaj dzień i godzinę.",
     "traps": [
       {
         "stage": 1,
@@ -843,7 +856,8 @@
     "app": "BiletBot",
     "idea": "Gdzie kupisz bilet ZTM: automaty biletowe na przystankach w Twojej gminie.",
     "favorites": "automaty przy przystankach, z których korzysta para",
-    "starTask": "Napisz w jednym zdaniu, gdzie dokładnie stoi ten automat (przystanek i opis lokalizacji).",
+    "aiLabel": "gdzie jest najwięcej automatów",
+    "aiTask": "Wskaż gminy z największą liczbą automatów i przystanki, na których jest więcej niż jeden automat.",
     "traps": [
       {
         "stage": 1,
@@ -914,10 +928,11 @@
     "app": "KlubKatowice",
     "idea": "Uczniowskie kluby sportowe w Katowicach: znajdź klub w swojej okolicy.",
     "favorites": "kluby, do których para chce dołączyć",
-    "starTask": "Opisz w jednym zdaniu ten klub: nazwa, ulica i status w rejestrze.",
+    "aiLabel": "kluby według statusu",
+    "aiTask": "Policz kluby według statusu w rejestrze i wskaż najstarsze.",
     "traps": [
       {
-        "stage": 4,
+        "stage": 5,
         "trap": "Nazwa klubu w wierszu 7 ma znak nowej linii w środku",
         "effect": "W przeglądarce widać spację, na karcie zapis `\\n`. To ta sama wartość.",
         "tool": "rozszerzenie mssql: `SELECT Name FROM SchoolSportsClubs WHERE SourceRow = 7`"

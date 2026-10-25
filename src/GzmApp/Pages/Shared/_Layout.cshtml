@@ -8,36 +8,45 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - GZM warsztat</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] – GZM otwarte dane</title>
+    <link rel="stylesheet" href="~/lib/tabler/1.6.1/css/tabler.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="~/lib/htmx/4.0.0/htmx.min.js"></script>
 </head>
-<body hx-headers:inherited='{"RequestVerificationToken":"@antiforgeryToken"}'>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">GZM warsztat</a>
-                <div class="d-flex justify-content-end flex-grow-1">
-                    <partial name="_LoginPartial" />
-                </div>
+<body class="d-flex flex-column min-vh-100" hx-headers:inherited='{"RequestVerificationToken":"@antiforgeryToken"}'>
+    <header class="navbar navbar-expand-md d-print-none border-bottom">
+        <div class="container-xl">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                    aria-controls="menu" aria-expanded="false" aria-label="Pokaż menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand pe-md-3" asp-area="" asp-page="/Index">
+                <span class="brand-mark me-2" aria-hidden="true">GZM</span> otwarte dane
+            </a>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Index">Strona główna</a>
+                    </li>
+                </ul>
+                <partial name="_LoginPartial" />
             </div>
-        </nav>
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container" id="data-attribution">
+    <main role="main" class="page-body flex-grow-1 my-4">
+        <div class="container-xl">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="footer footer-transparent d-print-none border-top py-3">
+        <div class="container-xl text-secondary small" id="data-attribution">
             @Configuration["DataAttribution"]
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/tabler/1.6.1/js/tabler.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

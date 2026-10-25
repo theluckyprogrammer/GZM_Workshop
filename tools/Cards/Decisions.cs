@@ -2,7 +2,7 @@ using Expect;
 
 namespace Cards;
 
-// The four decisions of prompty.md. Each variant is one rule sentence of the specification (scenarios/sNN/spec/*.md):
+// The five decisions of prompty.md (decision 5 belongs to the extra step "favorites" in "Co dalej?"). Each variant is one rule sentence of the specification (scenarios/sNN/spec/*.md):
 // variant A is already in the spec file, another variant replaces that rule. Every sentence has a [Step] in tests/GzmApp.Specs.
 public sealed record Variant(string Letter, string Label, string Line);
 
@@ -21,6 +21,7 @@ public static class Decisions
             Letters(text.Search.Select(o => (o.Label, SearchLine(mapping, o)))),
             Letters(text.ListFields.Select(o => (o.Label, $"Przy każdym rekordzie lista pokazuje tytuł `{mapping.TitleField}` i pola: {Fields(o.Fields)}."))),
             Letters(text.Stats.Select(o => (o.Label, StatLine(o)))),
+            Letters(AiTasks(text)),
             Letters(FavoriteViews()),
         ];
     }
@@ -40,6 +41,21 @@ public static class Decisions
         "top5" => $"Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `{option.Field}` z liczbą rekordów.",
         _ => $"Kafelek ze statystyką pokazuje liczbę rekordów dla każdej wartości pola `{option.Field}`.",
     };
+
+    // Variant A fits the data set; B and C work for every data set.
+    private static IEnumerable<(string, string)> AiTasks(ScenarioText text) =>
+    [
+        (text.AiLabel, AiLine(text.AiTask)),
+        ("3 ciekawostki", AiLine("Znajdź w tych rekordach 3 ciekawostki i krótko je opisz.")),
+        ("kontrola jakości danych", AiLine("Sprawdź jakość tych danych: wskaż puste pola, literówki i różne zapisy tej samej wartości.")),
+    ];
+
+    public static string AiLine(string task)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(task);
+
+        return $"Model dostaje zadanie: {task}";
+    }
 
     private static IEnumerable<(string, string)> FavoriteViews() =>
     [

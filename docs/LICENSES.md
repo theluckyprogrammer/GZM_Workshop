@@ -82,7 +82,7 @@ Zbiory z otwartedane.metropoliagzm.pl: licencja i wymagana atrybucja każdego zb
 | Biblioteka | Wersja | Licencja |
 |---|---|---|
 | htmx | 4.0.0 | BSD-0-Clause |
-| Bootstrap | v5.3.3 | MIT |
+| Tabler (`tabler/1.6.1`, zawiera Bootstrap 5) | 1.6.1 | MIT (`tabler/1.6.1/LICENSE`) |
 | jQuery | v3.7.1 | MIT |
 | jquery-validation | z szablonu .NET 10 | MIT |
 | jquery-validation-unobtrusive | z szablonu .NET 10 | MIT |

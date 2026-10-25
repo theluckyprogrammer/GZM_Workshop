@@ -17,7 +17,8 @@ public static partial class Checker
         ArgumentNullException.ThrowIfNull(checkpoints);
 
         var scenario = Path.GetFileName(scenarioDirectory);
-        var files = Generator.Outputs.Concat(Generator.SpecTemplates.Select(t => Generator.SpecFile(scenario, t))).ToList();
+        var specs = Generator.SpecTemplates.Concat(Generator.ExtraSpecTemplates).Select(t => Generator.SpecFile(scenario, t));
+        var files = Generator.Outputs.Concat(specs).ToList();
         var missing = files.Where(f => !File.Exists(Path.Combine(scenarioDirectory, f))).Select(f => $"brak pliku {f}");
         var present = files.Where(f => File.Exists(Path.Combine(scenarioDirectory, f)));
         return missing.Concat(present.SelectMany(f => CheckFile(f, File.ReadAllText(Path.Combine(scenarioDirectory, f)), checkpoints))).ToList();

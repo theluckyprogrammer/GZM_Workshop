@@ -1,6 +1,6 @@
 # {{app}} ({{code}}) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok).
+Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
 
 Każde zdanie z sekcji „Reguły” w `spec/` to test w `tests/GzmApp.Specs` (generator `tools/Spectree.Generator`, kroki w `tests/GzmApp.Specs/Steps`). Testy liczą wartości oczekiwane z bazy i z `checkpoints.md`, więc działają dla każdego wariantu decyzji. Testy biorą scenariusz z `"Scenario"` w `src/GzmApp/appsettings.json` (po `ratunek.ps1` – z `appsettings.Development.json`); po zmianie trzeba przebudować projekt.
 
@@ -16,7 +16,8 @@ Gałęzie `ratunek/etap-1..4` realizują warianty A wszystkich decyzji i dają d
 {{cpList:E2.result}}
 - Krok 3: kafelek – {{statDescription}}
 {{cpStat}}
-- Krok 4: tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): {{cp:E4.title}}.
+- Krok 4: karta „✨ Analiza AI” z odpowiedzią modelu SOL-6 (treść za każdym razem trochę inna – nie ma wartości kontrolnej). Wariant A zadania: {{aiTask}} Bez pliku `src/GzmApp/appsettings.Local.json` karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”.
+- Dodatkowo (ulubione): tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): {{cp:E4.title}}.
 
 Pełna lista wartości: `checkpoints.md` (generuje `tools/Expect`).
 
@@ -36,6 +37,10 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 
 {{traps:3}}
 
-### Krok 4 – ulubione
+### Krok 4 – analiza AI
 
 {{traps:4}}
+
+### Dodatkowo – ulubione
+
+{{traps:5}}

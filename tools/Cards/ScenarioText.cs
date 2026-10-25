@@ -4,9 +4,9 @@ namespace Cards;
 
 // Hand-written texts per scenario (tools/Cards/scenarios.json): everything that cannot be derived from the data.
 // Search, ListFields and Stats are the variants of the decisions in prompty.md; variant A (first) is what mapping.json
-// and the rescue branches use.
+// and the rescue branches use. AiTask is variant A of decision 4: what the AI model analyses in step 4.
 public sealed record ScenarioText(
-    string App, string Idea, string Favorites, string StarTask, IReadOnlyList<ExtraTrap> Traps,
+    string App, string Idea, string Favorites, string AiLabel, string AiTask, IReadOnlyList<ExtraTrap> Traps,
     IReadOnlyList<SearchOption> Search, IReadOnlyList<ListOption> ListFields, IReadOnlyList<StatOption> Stats);
 
 public sealed record ExtraTrap(int Stage, string Trap, string Effect, string Tool);

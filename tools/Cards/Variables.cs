@@ -24,7 +24,7 @@ public static class Variables
         new()
         {
             ["code"] = mapping.Scenario, ["app"] = text.App, ["idea"] = text.Idea, ["favorites"] = text.Favorites,
-            ["starTask"] = text.StarTask, ["dataset"] = mapping.Dataset, ["attribution"] = mapping.Attribution,
+            ["aiTask"] = text.AiTask, ["dataset"] = mapping.Dataset, ["attribution"] = mapping.Attribution,
             ["sourceUrl"] = mapping.SourceUrl, ["file"] = mapping.Source.File, ["encoding"] = mapping.Source.Encoding,
             ["separatorText"] = SeparatorText(mapping.Source.Separator), ["headerText"] = HeaderText(mapping.Source.HeaderLine),
             ["table"] = mapping.Table, ["columnsTable"] = ColumnsTable(mapping),
@@ -33,7 +33,7 @@ public static class Variables
             ["filterField"] = mapping.Filter.Field, ["filterCsv"] = CsvName(mapping, mapping.Filter.Field),
             ["titleField"] = mapping.TitleField, ["phrase"] = checkpoints.Value("E2.phrase"),
             ["statDescription"] = SqlText.Description(mapping.Statistic.Kind, mapping.Statistic.Field),
-            ["starFields"] = string.Join(", ", mapping.Imported.Select(c => $"`{c.Field}`")),
+            ["aiFields"] = string.Join(", ", mapping.Imported.Select(c => $"`{c.Field}`")),
             ["statQueries"] = StatQueries(mapping.Table),
         };
 

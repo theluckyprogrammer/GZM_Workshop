@@ -31,7 +31,7 @@
 <body>
 <h1>{{app}} <small>– scenariusz {{code}}</small></h1>
 <p class="meta"><strong>Pomysł:</strong> {{idea}}</p>
-<p class="meta"><strong>Ulubione:</strong> {{favorites}}.</p>
+<p class="meta"><strong>Analiza AI (krok 4):</strong> {{aiTask}}</p>
 <p class="meta"><strong>Dane:</strong> „{{dataset}}”. <strong>Atrybucja:</strong> {{attribution}}</p>
 
 <h2>Role w parze</h2>
@@ -66,7 +66,9 @@
       <li><code>htmx.logAll()</code> (w HTMX 4 tego nie ma),</li>
       <li>skrypt z unpkg albo CDN bez wersji,</li>
       <li><code>float</code> dla pieniędzy lub pomiarów,</li>
-      <li><code>DateTime.Parse</code> bez kultury.</li>
+      <li><code>DateTime.Parse</code> bez kultury,</li>
+      <li>klucz AI wpisany w kod albo w <code>appsettings.json</code>,</li>
+      <li><code>Html.Raw</code> z odpowiedzią modelu.</li>
     </ul>
   </div>
   <div class="ramka">

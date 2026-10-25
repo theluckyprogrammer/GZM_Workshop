@@ -1,6 +1,6 @@
 # PamięćZabrze (s01) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok).
+Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
 
 Każde zdanie z sekcji „Reguły” w `spec/` to test w `tests/GzmApp.Specs` (generator `tools/Spectree.Generator`, kroki w `tests/GzmApp.Specs/Steps`). Testy liczą wartości oczekiwane z bazy i z `checkpoints.md`, więc działają dla każdego wariantu decyzji. Testy biorą scenariusz z `"Scenario"` w `src/GzmApp/appsettings.json` (po `ratunek.ps1` – z `appsettings.Development.json`); po zmianie trzeba przebudować projekt.
 
@@ -24,7 +24,8 @@ Gałęzie `ratunek/etap-1..4` realizują warianty A wszystkich decyzji i dają d
    - Zabrze – Kończyce: **2** (E3.group.3)
    - Zabrze-Mikulczyce: **2** (E3.group.4)
    - Zabrze-Rokitnica: **2** (E3.group.5)
-- Krok 4: tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): **budynek MPWiK** (E4.title).
+- Krok 4: karta „✨ Analiza AI” z odpowiedzią modelu SOL-6 (treść za każdym razem trochę inna – nie ma wartości kontrolnej). Wariant A zadania: Pogrupuj te miejsca pamięci według tego, kogo albo co upamiętniają, i zaproponuj spacer po 3 z nich. Bez pliku `src/GzmApp/appsettings.Local.json` karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”.
+- Dodatkowo (ulubione): tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): **budynek MPWiK** (E4.title).
 
 Pełna lista wartości: `checkpoints.md` (generuje `tools/Expect`).
 
@@ -60,7 +61,16 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 | Puste wartości w polu `City`: 6 | NULL nie wchodzi do statystyki. Zamiana pustych na 0 albo „” da inny wynik niż na karcie. | rozszerzenie mssql: `SELECT COUNT(*) FROM ZabrzeMemorials WHERE City IS NULL` |
 | Ta sama dzielnica zapisana różnie: „Zabrze-Biskupice”, „Zabrze – Biskupice”, „Zabrze - Mikulczyce” | W top 5 to osobne grupy. Tak jest w danych – nie poprawiaj ich. | rozszerzenie mssql: `SELECT DISTINCT City FROM ZabrzeMemorials` |
 
-### Krok 4 – ulubione
+### Krok 4 – analiza AI
+
+| Pułapka | Co się stanie | Narzędzie |
+|---|---|---|
+| Brak pliku `src/GzmApp/appsettings.Local.json` (klucz SOL-6) | Karta pokazuje „Brak klucza SOL-6 – poproś prowadzącego.”, testy przechodzą (używają udawanego modelu). | terminal: wpis kategorii `AI`; skopiuj plik z pendrive'a i uruchom aplikację ponownie |
+| Model odpowiada kilka sekund | Bez wskaźnika „AI analizuje…” uczniowie klikają kilka razy – każde kliknięcie to osobne zapytanie (i tokeny). | terminal: wpisy `SOL-6 (…): wysyłam…` i `odpowiedź po … s` |
+| Model coś zmyśla albo myli numery rekordów | To nie błąd kodu – tak działa AI. Porównajcie odpowiedź z listą wyników („Co poszło do modelu?”). | karta analizy: rozwijane „Co poszło do modelu?” |
+| Odpowiedź modelu wstawiona jako HTML (`@Html.Raw`) | Model może odesłać znaczniki HTML i zepsuć stronę – reguła 7 jest wtedy czerwona. | F12 → Elements: karta `#analiza` |
+
+### Dodatkowo – ulubione
 
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|

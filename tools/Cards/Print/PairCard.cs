@@ -15,7 +15,7 @@ public static class PairCard
         var variables = new Dictionary<string, string>
         {
             ["app"] = InlineHtml.Encode(text.App), ["code"] = InlineHtml.Encode(mapping.Scenario),
-            ["idea"] = InlineHtml.Encode(text.Idea), ["favorites"] = InlineHtml.Encode(text.Favorites),
+            ["idea"] = InlineHtml.Encode(text.Idea), ["aiTask"] = InlineHtml.Encode(text.AiTask),
             ["dataset"] = InlineHtml.Encode(mapping.Dataset), ["attribution"] = InlineHtml.Encode(mapping.Attribution),
             ["steps"] = string.Join("\n", outline.Steps.Select(StepHtml)),
             ["next"] = string.Join("\n", outline.Next.Select(n => $"    <li>{InlineHtml.FromMarkdown(Shorten(n))}</li>")),

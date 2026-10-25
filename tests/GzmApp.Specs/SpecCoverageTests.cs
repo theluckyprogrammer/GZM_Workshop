@@ -4,7 +4,8 @@ using Spectree;
 
 namespace GzmApp.Specs;
 
-// Every sentence of the specification has exactly one step: the rules of all 15 scenarios (scenarios/*/spec/*.md)
+// Every sentence of the specification has exactly one step: the rules of all 15 scenarios (scenarios/*/spec/**/*.md,
+// also the extra step in spec/dodatkowe/)
 // and every variant of the decisions in prompty.md, also those not chosen. No app and no database.
 public partial class SpecCoverageTests
 {
@@ -21,7 +22,7 @@ public partial class SpecCoverageTests
 
     private static IEnumerable<string> Sentences(string scenario)
     {
-        var rules = Directory.GetFiles(Path.Combine(scenario, "spec"), "*.md").SelectMany(File.ReadLines).Select(l => Rule().Match(l)).Where(m => m.Success);
+        var rules = Directory.GetFiles(Path.Combine(scenario, "spec"), "*.md", SearchOption.AllDirectories).SelectMany(File.ReadLines).Select(l => Rule().Match(l)).Where(m => m.Success);
         var variants = Variant().Matches(File.ReadAllText(Path.Combine(scenario, "prompty.md")));
         return rules.Select(m => m.Groups[1].Value.Trim()).Concat(variants.Select(m => m.Groups[1].Value.Trim()));
     }

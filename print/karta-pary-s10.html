@@ -31,7 +31,7 @@
 <body>
 <h1>BoiskoMap <small>– scenariusz s10</small></h1>
 <p class="meta"><strong>Pomysł:</strong> Boiska i stadiony w Gliwicach: znajdź boisko przy swojej szkole.</p>
-<p class="meta"><strong>Ulubione:</strong> boiska, na kt&#243;rych para gra.</p>
+<p class="meta"><strong>Analiza AI (krok 4):</strong> Pogrupuj boiska według rodzaju i zaproponuj 3 miejsca na szkolny turniej.</p>
 <p class="meta"><strong>Dane:</strong> „Gliwice: boiska i stadiony”. <strong>Atrybucja:</strong> Źr&#243;dło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0</p>
 
 <h2>Role w parze</h2>
@@ -87,7 +87,7 @@
   <p><strong>Zobaczcie, co powstało:</strong></p>
   <ul>
     <li>Uruchomcie aplikację i otw&#243;rzcie adres <code>http://localhost:5080/?handler=Szukaj&amp;q=</code> z dopisanym słowem z wybranej kolumny (dla wariantu A np. <code>śląska</code>). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.</li>
-    <li>F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie <code>?handler=Szukaj</code>: status 200, a w „Response” jest tylko lista. Polskie litery mogą tam wyglądać np. jak <code>&amp;#x142;</code> (to „ł”) – to ten sam znak, zapisany kodem HTML.</li>
+    <li>F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie <code>?handler=Szukaj</code>: status 200, a w „Response” jest tylko lista.</li>
     <li>W terminalu (log SQL) widać zapytanie z parametrem <code>q</code> – to Wasza fraza.</li>
     <li>Testing → ▶ „Run Tests”. Zielone są testy krok&#243;w 1 i 2. Reguła 5 sprawdza, że fraza <code>&#39; OR 1=1 --</code> nic nie znajduje – to ochrona przed atakiem SQL injection.</li>
   </ul>
@@ -110,26 +110,27 @@
   <ul>
     <li>Otw&#243;rzcie <code>http://localhost:5080</code> i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.</li>
     <li>F12 → Network: przy pisaniu pojawiają się żądania <code>?handler=Szukaj</code> z nagł&#243;wkiem <code>HX-Request: true</code>. Tylko lista wraca z serwera, reszta strony zostaje.</li>
-    <li>Nad listą jest kafelek ze statystyką, a w stopce – źr&#243;dło danych.</li>
+    <li>Obok listy jest kafelek ze statystyką, a w stopce – źr&#243;dło danych. Zwęźcie okno przeglądarki (albo F12 → ikona telefonu): kafelek przesuwa się nad listę – strona działa też na telefonie.</li>
     <li>Adres <code>?handler=Szukaj&amp;q=…</code> otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.</li>
     <li>Testing → ▶ „Run Tests”. Zielone są testy krok&#243;w 1–3.</li>
   </ul>
   <div class="decyzja">
-    <p><strong>Decyzja 4:</strong> co pokazać w „Moich ulubionych”?</p>
-    <span class="opcja">☐ A – lista tytuł&#243;w</span>
-    <span class="opcja">☐ B – tytuły z datą dodania</span>
-    <span class="opcja">☐ C – tytuły z przyciskiem „Usuń”</span>
+    <p><strong>Decyzja 4:</strong> co ma przeanalizować AI?</p>
+    <span class="opcja">☐ A – boiska na szkolny turniej</span>
+    <span class="opcja">☐ B – 3 ciekawostki</span>
+    <span class="opcja">☐ C – kontrola jakości danych</span>
   </div>
 </section>
 <section class="krok">
-  <h3>Krok 4 – logowanie i ulubione</h3>
+  <h3>Krok 4 – analiza AI</h3>
   <p><strong>Zobaczcie, co powstało:</strong></p>
   <ul>
-    <li>Kliknijcie ☆ bez logowania: pojawia się „Zaloguj się, aby dodać do ulubionych”.</li>
-    <li>Zarejestrujcie się (Register) i zalogujcie. Kliknijcie ☆ przy kilku rekordach – zmienią się w ★.</li>
-    <li>F12 → Network: żądanie POST <code>?handler=Ulubione</code> ma nagł&#243;wek <code>RequestVerificationToken</code> – to ochrona przed podszywaniem się pod formularz.</li>
-    <li>Otw&#243;rzcie „Moje ulubione”. W mssql zajrzyjcie do tabeli <code>Favorites</code> – tam są Wasze gwiazdki.</li>
-    <li>Testing → ▶ „Run Tests”. Wszystkie testy są zielone – aplikacja robi wszystko, co obiecuje specyfikacja.</li>
+    <li>Otw&#243;rzcie <code>http://localhost:5080</code>, wpiszcie frazę i kliknijcie „✨ Analizuj z AI”. Po kilku sekundach pojawia się fioletowa karta. Ten tekst napisał model AI, a nie Wasz kod.</li>
+    <li>Rozwińcie „Co poszło do modelu?”: zadanie i Wasze rekordy. Model widzi tylko to – nic więcej o Waszej bazie nie wie.</li>
+    <li>Terminal: wpisy <code>SOL-6 (…): wysyłam do modelu … znak&#243;w</code> i <code>odpowiedź po … s, tokeny: …</code>. Tokeny to „waluta” AI – każde kliknięcie kosztuje.</li>
+    <li>Sprawdźcie AI: czy numery „Nr” i liczby zgadzają się z listą wynik&#243;w? Kliknijcie jeszcze raz – odpowiedź może być trochę inna. AI może się mylić, dlatego karta to m&#243;wi.</li>
+    <li>F12 → Network: żądanie <code>?handler=Analizuj&amp;q=…</code>. Z modelem rozmawia serwer – klucz nie trafia do przeglądarki.</li>
+    <li>Testing → ▶ „Run Tests”. Wszystkie testy krok&#243;w 1–4 są zielone. Testy kroku 4 używają udawanego modelu: nie zużywają token&#243;w i zawsze dostają tę samą odpowiedź.</li>
   </ul>
 
 </section>
@@ -143,7 +144,9 @@
       <li><code>htmx.logAll()</code> (w HTMX 4 tego nie ma),</li>
       <li>skrypt z unpkg albo CDN bez wersji,</li>
       <li><code>float</code> dla pieniędzy lub pomiarów,</li>
-      <li><code>DateTime.Parse</code> bez kultury.</li>
+      <li><code>DateTime.Parse</code> bez kultury,</li>
+      <li>klucz AI wpisany w kod albo w <code>appsettings.json</code>,</li>
+      <li><code>Html.Raw</code> z odpowiedzią modelu.</li>
     </ul>
   </div>
   <div class="ramka">
@@ -156,9 +159,10 @@
   <h3>Gotowe? Co dalej</h3>
   <ol>
     <li>Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3. Najpierw dopiszcie go do specyfikacji jako regułę 7 kroku 3 (zdanie z decyzji 3): test będzie czerwony, dop&#243;ki Kilo go nie zrobi.</li>
+    <li>Drugie zadanie dla AI – weźcie inny wariant z decyzji 4 i dodajcie drugi przycisk (np. „&#128270; Sprawdź jakość danych”).</li>
     <li>Sortowanie listy po wybranym polu (przycisk przy nagł&#243;wku listy, <code>hx-get</code> z parametrem <code>sort</code>).</li>
     <li>Przycisk „Pokaż więcej” pod listą: kolejne 20 rekord&#243;w doklejane na końcu (<code>hx-swap=&quot;beforeend&quot;</code>).</li>
-    <li>Opis rekordu przez model SOL-6. Zadanie dla modelu: Napisz w jednym zdaniu, jakie to boisko i pod jakim adresem jest.</li>
+    <li>Logowanie i ulubione: zalogowany użytkownik oznacza rekordy gwiazdką ★. Ulubione w BoiskoMap to boiska, na kt&#243;rych para gra. Specyfikacja czeka w <code>scenarios/s10/spec/dodatkowe/s10-005-zapisz-ulubione.md</code> – przenieście ten plik do <code>scenarios/s10/spec/</code> i przebudujcie projekt: pojawi się 8 nowych czerwonych test&#243;w.</li>
   </ol>
 </div>
 <p class="stopka">Dane: Źr&#243;dło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0</p>
