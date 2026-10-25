@@ -56,8 +56,10 @@ CREATE TABLE dbo.[SchoolSportsClubs] (
 ZASADY
 - W `src/GzmApp/appsettings.json` ustaw `"Scenario": "s15"`.
 - Plik czytaj pakietem CsvHelper (jest już w projekcie) z `CultureInfo("pl-PL")`. Uwaga: ta kultura sama ustawia domyślny separator „;” – jeśli DANE mówią o innym, wskaż go jawnie w konfiguracji: `new CsvConfiguration(CultureInfo("pl-PL")) { Delimiter = "," }`. Nie dziel linii przez `Split`.
+- Pola odczytuj po nazwie kolumny z pliku: najpierw `csv.Read()` i `csv.ReadHeader()` (w CsvHelper 33 nie ma `ReadHeaderAsync`), potem `while (csv.Read())` i `csv.GetField("Kolumna")`. Nie mapuj wiersza na klasę – nazwy w pliku różnią się od nazw pól w tabeli.
 - Liczby i daty odczytuj z kulturą i formatem z tabeli kolumn. Puste pole albo wartość, której nie da się odczytać, w kolumnie z „Może być puste: tak” zapisz jako NULL. W kolumnie z „nie” taki wiersz pomiń i zapisz jego numer w logu. Bez wyjątku.
-- `SourceRow` = numer wiersza danych w pliku, od 1, bez nagłówka. Tekst przytnij (`Trim`).
+- `SourceRow` = numer wiersza danych w pliku, od 1, bez nagłówka. Licz go sam (licznik zwiększany przy każdym wierszu danych, także pominiętym) – `csv.Parser.Row` liczy razem z nagłówkiem. Tekst przytnij (`Trim`).
+- Bez `if` wewnątrz pętli: jeden wiersz odczytuje i sprawdza osobna metoda, która zwraca gotowy wiersz albo `null`; pętla tylko zbiera wyniki, a pominięte wiersze odfiltruj LINQ (`Where`).
 - Zapytania wysyłaj przez istniejącą klasę `SqlRunner`, parametry przez Dappera.
 - Po imporcie zapisz w logu liczbę wierszy w tabeli i czas importu. Gdy tabela nie jest pusta, zapisz w logu „Import pominięty – w tabeli jest N wierszy”.
 - Klasa `CsvImporter` z interfejsem `ICsvImporter`. Rejestracja w metodzie `AddAppServices`, a skrypt tabeli i import w `RunAtStartupAsync` – obie w `src/GzmApp/AppServices.cs`. `Program.cs` już je wywołuje, nie zmieniaj go.
@@ -106,12 +108,14 @@ DANE
 - Każdy wynik pokazuje „Nr `SourceRow`: `Name`”.
 
 ZASADY
-- `IRecordRepository` i `RecordRepository` w `src/GzmApp/Data/RecordRepository.cs`, metoda `Search(string? q, int take)`. Zapytanie przez `SqlRunner`, fraza jako parametr `@q` – bez sklejania tekstu SQL.
+- `IRecordRepository` i `RecordRepository` w `src/GzmApp/Data/RecordRepository.cs`, metoda `Search(string? q, int take)` (może być asynchroniczna, jak metody `SqlRunner`). Zapytanie przez `SqlRunner`, fraza jako parametr `@q` – bez sklejania tekstu SQL.
+- `Search` zwraca cały wiersz: `RecordId`, `SourceRow` i wszystkie zaimportowane pola (`Id`, `Name`, `RegisteredOn`, `Street`, `Status`) – przydadzą się w krokach 3 i 4. Wiersz to klasa z właściwościami (`public int SourceRow { get; init; }`): Dapper dopasowuje je po nazwach kolumn. Pozycyjny `record` działa tylko wtedy, gdy kolejność kolumn w `SELECT` jest dokładnie taka jak kolejność jego parametrów.
 - Porównanie bez rozróżniania wielkości liter i ogonków: `COLLATE Latin1_General_CI_AI`.
 - Wyniki według `SourceRow`, najwyżej 20 (`take` = 20), także dla pustej frazy. `Wyników: N` to liczba wszystkich pasujących rekordów (osobne `COUNT(*)`), lista pokazuje najwyżej 20.
 - Fraza dłuższa niż 100 znaków: odpowiedź 400 z krótkim fragmentem `<p class="alert alert-warning">…</p>`.
 - Handler `OnGetSzukaj(string? q)` w `src/GzmApp/Pages/Index.cshtml.cs` zwraca `Partial("_Lista", wyniki)`. Liczbę „Wyników: N” przekaż razem z listą jako jeden model (np. rekord `RecordList(int Count, …)`), bo `ViewData` nie przechodzi przez `Partial(...)`.
-- Widok częściowy `src/GzmApp/Pages/Shared/_Lista.cshtml` (klasy CSS z biblioteki Tabler, która jest już w `_Layout.cshtml`): `<p id="licznik" class="text-secondary px-3 pt-3 mb-2">Wyników: N</p>` i `<ul id="lista" class="list-group list-group-flush">` z jednym `<li class="list-group-item" data-record-id="@r.RecordId"><span class="badge bg-blue-lt me-2">Nr @r.SourceRow:</span> <span class="tytul fw-bold">…</span></li>` na rekord. Bez `<html>` i bez layoutu.
+- W `IndexModel` zostaw właściwość `Scenario` i metodę `OnGet()` – używa ich obecny `Index.cshtml`, który zmienicie dopiero w kroku 3.
+- Widok częściowy `src/GzmApp/Pages/Shared/_Lista.cshtml` (bez `@page` w pierwszej linii – to nie jest strona; klasy CSS z biblioteki Tabler, która jest już w `_Layout.cshtml`): `<p id="licznik" class="text-secondary px-3 pt-3 mb-2">Wyników: N</p>` i `<ul id="lista" class="list-group list-group-flush">` z jednym `<li class="list-group-item" data-record-id="@r.RecordId"><span class="badge bg-blue-lt me-2">Nr @r.SourceRow:</span> <span class="tytul fw-bold">…</span></li>` na rekord. Bez `<html>` i bez layoutu.
 - Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
 - Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s15-002-szukaj-rekordow`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
@@ -190,8 +194,9 @@ ZASADY
 ```
 
 - HTMX 4 i Tabler są już w `_Layout.cshtml` (pliki lokalne). Nie dodawaj CDN ani innych bibliotek. Teksty na stronie po polsku.
-- Metoda `IsHtmx()` sprawdza nagłówek `HX-Request`. W `OnGetSzukaj`: żądanie HTMX dostaje fragment `_Lista`, zwykłe wejście na ten sam adres – całą stronę z wynikami dla frazy `q`.
-- Listę w `_Lista.cshtml` zmień według reguły 4: pola pokaż w tym samym `<li>`, za tytułem, w `<div class="text-secondary small">` jako „nazwa: wartość · nazwa: wartość” z polskimi nazwami pól: `Id` – nr, `Name` – nazwa, `RegisteredOn` – data rejestracji, `Street` – ulica, `Status` – status. Liczby w formacie pl-PL, daty `yyyy-MM-dd`, pola tak/nie jako „tak” albo „nie”.
+- Dane na start strony ładuj w istniejącej metodzie `OnGet` – zmień ją na `public async Task OnGetAsync()` w tym samym miejscu, nie dodawaj drugiej obok (dwie metody GET bez nazwy handlera to błąd 500 „Multiple handlers matched”).
+- Prywatna metoda `IsHtmx()` w `Index.cshtml.cs` sprawdza nagłówek: `Request.Headers["HX-Request"] == "true"`. W `OnGetSzukaj`: żądanie HTMX dostaje fragment `_Lista`, zwykłe wejście na ten sam adres – całą stronę z wynikami dla frazy `q`.
+- Listę w `_Lista.cshtml` zmień według reguły 4: pola pokaż w tym samym `<li>`, za tytułem, w `<div class="text-secondary small">` jako „nazwa: wartość · nazwa: wartość” z polskimi nazwami pól: `Id` – nr, `Name` – nazwa, `RegisteredOn` – data rejestracji, `Street` – ulica, `Status` – status. Liczby w formacie pl-PL, daty `yyyy-MM-dd` (gdy w danych jest też godzina: `yyyy-MM-dd HH:mm`), pola tak/nie jako „tak” albo „nie”.
 - Statystykę z reguły 5 licz w SQL przez `SqlRunner` (nowa metoda w `RecordRepository`), zapytaniem z listy poniżej, z polem z reguły 5 w miejsce `[Pole]`:
   - suma: `SELECT SUM([Pole]) FROM dbo.[SchoolSportsClubs]`
   - średnia: `SELECT ROUND(AVG(CAST([Pole] AS decimal(18,2))), 2) FROM dbo.[SchoolSportsClubs]`
@@ -248,13 +253,13 @@ Reguły tego kroku są w pliku `scenarios/s15/spec/s15-004-analiza-ai.md` (sekcj
 DANE
 - Model AI (GPT-6 Luna) jest już podłączony w `Program.cs`: z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`, nazwa modelu w `Model`). Klucz jest w pliku `src/GzmApp/appsettings.Local.json` od prowadzącego. Nie twórz własnego klienta AI i nie wpisuj klucza w kod.
 - Zadanie dla modelu to zdanie z reguły 3 specyfikacji, bez początku „Model dostaje zadanie: ”.
-- Rekordy: te same co na liście dla frazy `q` – `Search(q, 20)` z `RecordRepository`. Do modelu wyślij pola: `Id`, `Name`, `RegisteredOn`, `Street`, `Status`. Jedna linia na rekord: `Nr <SourceRow>: Pole=wartość; Pole=wartość`.
+- Rekordy: te same co na liście dla frazy `q` – `Search(q, 20)` z `RecordRepository`. Do modelu wyślij pola: `Id`, `Name`, `RegisteredOn`, `Street`, `Status`. Jedna linia na rekord: `Nr <SourceRow>: Pole=wartość; Pole=wartość`. Wartości w tych samych formatach co na liście (liczby pl-PL, daty `yyyy-MM-dd`, tak/nie), puste pole jako „brak”. Jeśli `Search` nie zwraca któregoś pola, dopisz je w `RecordRepository.cs`.
 
 ZASADY
 - `IAiAnalyzer` i `AiAnalyzer` w `src/GzmApp/Ai/AiAnalyzer.cs`: metoda `AnalyzeAsync(string? q, CancellationToken ct)` zwraca `AiAnalysis(string Text, string Model, int RecordCount, string Prompt)`; `Prompt` to tekst wysłany do modelu.
 - Dwie wiadomości: `new ChatMessage(ChatRole.System, "Jesteś analitykiem danych. Odpowiadaj po polsku, krótko (najwyżej 8 punktów zaczynających się od „- ”), tylko na podstawie przekazanych rekordów. Nie wymyślaj faktów. Podawaj numery rekordów (Nr). Pisz zwykłym tekstem, bez Markdown (bez ** i #).")` i `new ChatMessage(ChatRole.User, zadanie + "\n\nRekordy:\n" + linie)`. Jedno wywołanie na kliknięcie: `var response = await chat.GetResponseAsync(messages, cancellationToken: ct);`, odpowiedź to `response.Text`.
 - Wyjątek `Sol6Exception` (brak klucza albo model nie odpowiada) złap i pokaż jego `Message` w `<div class="alert alert-warning">` – bez strony błędu.
-- Odpowiedź modelu zawiera polskie znaki i znaki typograficzne (np. półpaużę „–”). Żeby trafiły na stronę dosłownie, a nie jako encje numeryczne (`&#8211;`), dodaj w `AddAppServices` rejestrację `services.AddWebEncoders(o => o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));` – widoki użyją wtedy enkodera z DI, który zostawia te znaki (usingi: `System.Text.Encodings.Web`, `System.Text.Unicode`).
+- Odpowiedź modelu zawiera polskie znaki i znaki typograficzne (np. półpaużę „–”). Enkoder, który zostawia je dosłownie, jest już zarejestrowany w `Program.cs` (`AddWebEncoders` z `UnicodeRanges.All`) – nie rejestruj go drugi raz. Tekst pokazuj w widoku przez zwykłe `@` i nie koduj go ręcznie (`WebUtility.HtmlEncode`, `HtmlEncoder.Default`): one zamieniają te znaki na encje (`&#8211;`).
 - Handler `OnGetAnalizuj(string? q)` w `src/GzmApp/Pages/Index.cshtml.cs` zwraca `Partial("_Analiza", analiza)`.
 - W `src/GzmApp/Pages/Index.cshtml`, w karcie pod polem wyszukiwania:
 
@@ -273,7 +278,7 @@ ZASADY
 - Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s15-004-analiza-ai`. Reguły 1–8 sprawdza udawany model (bez tokenów), a reguła 9 – jedno zapytanie do prawdziwego modelu. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
-Nie zmieniaj plików poza: `src/GzmApp/Ai/AiAnalyzer.cs`, `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Analiza.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
+Nie zmieniaj plików poza: `src/GzmApp/Ai/AiAnalyzer.cs`, `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Analiza.cshtml`, `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
 ### ⏸ Pauza – zobaczcie, co powstało
@@ -293,7 +298,7 @@ Macie całą aplikację: dane w bazie, wyszukiwarkę, stronę z HTMX i analizę 
 2. Drugie zadanie dla AI – weźcie inny wariant z decyzji 4 i dodajcie drugi przycisk (np. „🔎 Sprawdź jakość danych”).
 3. Sortowanie listy po wybranym polu (przycisk przy nagłówku listy, `hx-get` z parametrem `sort`).
 4. Przycisk „Pokaż więcej” pod listą: kolejne 20 rekordów doklejane na końcu (`hx-swap="beforeend"`).
-5. Logowanie i ulubione: zalogowany użytkownik oznacza rekordy gwiazdką ★. Ulubione w KlubKatowice to kluby, do których para chce dołączyć. Specyfikacja czeka w `scenarios/s15/spec/dodatkowe/s15-005-zapisz-ulubione.md` – przenieście ten plik do `scenarios/s15/spec/` i przebudujcie projekt: pojawi się 8 nowych czerwonych testów.
+5. Logowanie i ulubione: zalogowany użytkownik oznacza rekordy gwiazdką ★. Ulubione w KlubKatowice to kluby, do których para chce dołączyć. Specyfikacja czeka w `scenarios/s15/spec/dodatkowe/s15-005-zapisz-ulubione.md` – przenieście ten plik do `scenarios/s15/spec/` i przebudujcie testy od zera (terminal: `dotnet build --no-incremental tests/GzmApp.Specs`): pojawi się 8 nowych czerwonych testów. Zwykłe „Build” nowego pliku nie zauważy.
 
 ### ⏸ Pauza – decyzja 5: co pokazać w „Moich ulubionych”?
 
@@ -342,10 +347,11 @@ CREATE TABLE dbo.Favorites (
 - `Scenario` = `s15` (klucz `Scenario` w `appsettings.json`). `UserId` = identyfikator zalogowanego użytkownika.
 
 ZASADY
-- `IFavoritesRepository` i `FavoritesRepository` w `src/GzmApp/Data/FavoritesRepository.cs`: `Add`, `Remove`, `ListFor(userId)` przez `SqlRunner`. `Add` i `Remove` wykonane dwa razy dają ten sam stan (`IF NOT EXISTS` albo `MERGE` w jednym zapytaniu).
+- `IFavoritesRepository` i `FavoritesRepository` w `src/GzmApp/Data/FavoritesRepository.cs`: `Add`, `Remove`, `ListFor(userId)` przez `SqlRunner`. `Add` i `Remove` wykonane dwa razy dają ten sam stan (`IF NOT EXISTS` albo `MERGE` w jednym zapytaniu). Każda publiczna metoda z `userId` zaczyna się od `ArgumentException.ThrowIfNullOrWhiteSpace(userId);`. Klasy pomocnicze (np. wiersz ulubionego: `RecordId`, tytuł, `CreatedAt`) trzymaj w tym samym pliku, jako klasy z właściwościami (Dapper dopasowuje po nazwach kolumn).
+- `UserId` zalogowanego: `User.FindFirstValue(ClaimTypes.NameIdentifier)` w PageModel (`using System.Security.Claims;`), a w widoku `User.FindFirst(ClaimTypes.NameIdentifier)?.Value`.
 - Przycisk ★ to widok częściowy `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml` (model: `RecordId` i czy rekord jest w ulubionych): w ulubionych – „★” z `data-favorite="true"` i `hx-delete="?handler=Ulubione&id=..."`, poza nimi – „☆” z `data-favorite="false"` i `hx-post="?handler=Ulubione&id=..."`, oba z `hx-swap="outerHTML"`. Używa go `_Lista.cshtml` przy każdym rekordzie.
 - Stan ★ `_Lista.cshtml` sprawdza sama: `@inject IFavoritesRepository` i ulubione zalogowanego użytkownika (niezalogowany: wszystkie „☆”). Nie przekazuj tego przez `ViewData` – `Partial(...)` w PageModel go nie kopiuje.
-- Handlery `OnPostUlubione(int id)` i `OnDeleteUlubione(int id)` w `Index.cshtml.cs` zwracają `Partial("_Gwiazdka", …)` z nowym stanem. Niezalogowany: status 401 i fragment „Zaloguj się, aby dodać do ulubionych” (np. przez `ContentResult` ze `StatusCode = 401`).
+- Handlery `OnPostUlubione(int id)` i `OnDeleteUlubione(int id)` w `Index.cshtml.cs` zwracają `Partial("_Gwiazdka", …)` z nowym stanem. Niezalogowany: status 401 i fragment „Zaloguj się, aby dodać do ulubionych” – sprawdź `User.Identity?.IsAuthenticated` w handlerze i zwróć `new ContentResult { StatusCode = 401, ContentType = "text/html; charset=utf-8", Content = "<p class=\"alert alert-warning\">Zaloguj się, aby dodać do ulubionych</p>" }`. Nie dawaj `[Authorize]` na `IndexModel` ani na handlerach: wtedy niezalogowany dostaje przekierowanie 302 do logowania zamiast 401.
 - Token antiforgery wysyła już `<body hx-headers:inherited='{"RequestVerificationToken":"..."}'>` w `_Layout.cshtml`. Nie wyłączaj walidacji antiforgery.
 - Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według reguły 8 (strona „Moje ulubione”): `<ul id="ulubione">`, jeden `<li>` na rekord, tytuł w `<span class="tytul">`. Pokazuj tylko to, co obejmuje wybrany wariant reguły 8: **A** – same tytuły; **B** – dodatkowo data dodania: `CreatedAt` (w bazie UTC), czas polski `dd.MM.yyyy HH:mm`; **C** – dodatkowo przycisk „Usuń”: `hx-delete="?handler=Usun&id=..."` z `hx-target="closest li"` i `hx-swap="outerHTML"`, a handler `OnDeleteUsun(int id)` w `Ulubione.cshtml.cs` zwraca pustą odpowiedź 200.
 - Link „Moje ulubione” w menu w `_Layout.cshtml`, widoczny zawsze (niezalogowanego strona przekieruje do logowania).

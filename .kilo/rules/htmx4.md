@@ -23,3 +23,6 @@
 8. **Nagłówki żądań:** `HX-Request` (zawsze `true`), `HX-Request-Type` (`full` / `partial`), `HX-Source` (zamiast `HX-Trigger`, format `tag#id`), `HX-Target`, `HX-Current-URL`. Rozpoznawaj żądanie HTMX po `HX-Request: true`.
 9. **Usunięte:** `hx-vars` (zamiast tego `hx-vals` z `js:`), `hx-params`, `hx-ext`, `hx-disinherit`, `hx-inherit`, modyfikator `queue` w `hx-trigger` (zamiast tego `hx-sync`).
 10. **Wyszukiwarka na żywo:** `hx-trigger="keyup changed delay:300ms"`.
+11. **`hx-disable` zmienił znaczenie.** W 4.x `hx-disable="this"` blokuje przycisk na czas żądania (dawne `hx-disabled-elt`). Wyłączenie HTMX dla fragmentu strony to teraz `hx-ignore`.
+   - Źle: usuwać `hx-disable="this"` z przycisku „Analizuj”, bo „wyłącza HTMX”.
+   - Dobrze: zostawić – chroni przed podwójnym kliknięciem i drugim zapytaniem do AI.
