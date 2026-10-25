@@ -170,7 +170,7 @@ Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `ItemName` z lic
 Kafelek ze statystyką pokazuje liczbę rekordów dla każdej wartości pola `Year`.
 ~~~
 
-Warianty A są już w specyfikacji. Wybraliście inne? Wklejcie ich zdania w pliku `scenarios/s04/spec/s04-003-pokaz-strone.md` w miejsce reguły 4 (lista) i reguły 5 (kafelek). Zapiszcie plik.
+Warianty A są już w specyfikacji. Wybraliście inne? Wklejcie ich zdania w pliku `scenarios/s04/spec/s04-003-pokaz-strone.md` w miejsce reguły 4 (lista) i reguły 5 (kafelek) – zostawcie „4. ” i „5. ” na początku. Zapiszcie plik.
 
 ## Krok 3 – strona z wyszukiwarką i kafelkiem (HTMX)
 
@@ -208,7 +208,7 @@ ZASADY
 - HTMX 4 i Tabler są już w `_Layout.cshtml` (pliki lokalne). Nie dodawaj CDN ani innych bibliotek. Teksty na stronie po polsku.
 - Dane na start strony ładuj w istniejącej metodzie `OnGet` – zmień ją na `public async Task OnGetAsync()` w tym samym miejscu, nie dodawaj drugiej obok (dwie metody GET bez nazwy handlera to błąd 500 „Multiple handlers matched”).
 - Prywatna metoda `IsHtmx()` w `Index.cshtml.cs` sprawdza nagłówek: `Request.Headers["HX-Request"] == "true"`. W `OnGetSzukaj`: żądanie HTMX dostaje fragment `_Lista`, zwykłe wejście na ten sam adres – całą stronę z wynikami dla frazy `q`.
-- Listę w `_Lista.cshtml` zmień według reguły 4: pola pokaż w tym samym `<li>`, za tytułem, w `<div class="text-secondary small">` jako „nazwa: wartość · nazwa: wartość” z polskimi nazwami pól: `EntryDate` – data wpisu, `Id` – nr, `ItemName` – rzecz, `Status` – status, `Year` – rok. Liczby w formacie pl-PL, daty `yyyy-MM-dd` (gdy w danych jest też godzina: `yyyy-MM-dd HH:mm`), pola tak/nie jako „tak” albo „nie”.
+- Listę w `_Lista.cshtml` zmień według reguły 4: pola pokaż w tym samym `<li>`, za tytułem, w `<div class="text-secondary small">` jako „nazwa: wartość · nazwa: wartość” z polskimi nazwami pól: `EntryDate` – data wpisu, `Id` – nr, `ItemName` – rzecz, `Status` – status, `Year` – rok. Liczby w formacie pl-PL (rok i numery/identyfikatory bez separatora tysięcy: „2012”, nie „2 012”), daty `yyyy-MM-dd` (gdy w danych jest też godzina: `yyyy-MM-dd HH:mm`), pola tak/nie jako „tak” albo „nie”.
 - Statystykę z reguły 5 licz w SQL przez `SqlRunner` (nowa metoda w `RecordRepository`), zapytaniem z listy poniżej, z polem z reguły 5 w miejsce `[Pole]`:
   - suma: `SELECT SUM([Pole]) FROM dbo.[BytomLostItems]`
   - średnia: `SELECT ROUND(AVG(CAST([Pole] AS decimal(18,2))), 2) FROM dbo.[BytomLostItems]`
@@ -251,7 +251,7 @@ Model dostaje zadanie: Znajdź w tych rekordach 3 ciekawostki i krótko je opisz
 Model dostaje zadanie: Sprawdź jakość tych danych: wskaż puste pola, literówki i różne zapisy tej samej wartości.
 ~~~
 
-Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `scenarios/s04/spec/s04-004-analiza-ai.md` w miejsce reguły 3. Zapiszcie plik.
+Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `scenarios/s04/spec/s04-004-analiza-ai.md` w miejsce reguły 3 (zostawcie „3. ” na początku). Zapiszcie plik.
 
 ## Krok 4 – analiza AI
 
@@ -270,10 +270,10 @@ DANE
 ZASADY
 - `IAiAnalyzer` i `AiAnalyzer` w `src/GzmApp/Ai/AiAnalyzer.cs`: metoda `AnalyzeAsync(string? q, CancellationToken ct)` zwraca `AiAnalysis(string Text, string Model, int RecordCount, string Prompt)`; `Prompt` to tekst wysłany do modelu.
 - Dwie wiadomości: `new ChatMessage(ChatRole.System, "Jesteś analitykiem danych. Odpowiadaj po polsku, krótko (najwyżej 8 punktów zaczynających się od „- ”), tylko na podstawie przekazanych rekordów. Nie wymyślaj faktów. Podawaj numery rekordów (Nr). Pisz zwykłym tekstem, bez Markdown (bez ** i #).")` i `new ChatMessage(ChatRole.User, zadanie + "\n\nRekordy:\n" + linie)`. Jedno wywołanie na kliknięcie: `var response = await chat.GetResponseAsync(messages, cancellationToken: ct);`, odpowiedź to `response.Text`.
-- Wyjątek `Sol6Exception` (brak klucza albo model nie odpowiada) złap i pokaż jego `Message` w `<div class="alert alert-warning">` – bez strony błędu.
+- Wyjątek `Sol6Exception` (brak klucza albo model nie odpowiada) złap w `OnGetAnalizuj` i zwróć krótki fragment ze statusem 200: `Content($"<div class=\"alert alert-warning\">{encoder.Encode(ex.Message)}</div>", "text/html; charset=utf-8")`, gdzie `encoder` to `HtmlEncoder` wstrzyknięty z DI (zostawia polskie znaki i półpauzę) – bez strony błędu.
 - Odpowiedź modelu zawiera polskie znaki i znaki typograficzne (np. półpaużę „–”). Enkoder, który zostawia je dosłownie, jest już zarejestrowany w `Program.cs` (`AddWebEncoders` z `UnicodeRanges.All`) – nie rejestruj go drugi raz. Tekst pokazuj w widoku przez zwykłe `@` i nie koduj go ręcznie (`WebUtility.HtmlEncode`, `HtmlEncoder.Default`): one zamieniają te znaki na encje (`&#8211;`).
 - Handler `OnGetAnalizuj(string? q)` w `src/GzmApp/Pages/Index.cshtml.cs` zwraca `Partial("_Analiza", analiza)`.
-- W `src/GzmApp/Pages/Index.cshtml`, w karcie pod polem wyszukiwania:
+- W `src/GzmApp/Pages/Index.cshtml`, w tej samej karcie: między `card-body` z polem wyszukiwania a `<div id="wyniki">`:
 
 ```html
 <div class="card-body border-top">
@@ -332,7 +332,7 @@ Strona „Moje ulubione” pokazuje tytuł i datę dodania każdego rekordu, od 
 Strona „Moje ulubione” pokazuje tytuł i przycisk „Usuń”, który usuwa rekord z listy bez przeładowania strony.
 ~~~
 
-Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `s04-005-zapisz-ulubione.md` w miejsce reguły 8. Zapiszcie plik.
+Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `s04-005-zapisz-ulubione.md` w miejsce reguły 8 (zostawcie „8. ” na początku). Zapiszcie plik.
 
 ~~~~text
 CEL
@@ -361,7 +361,7 @@ CREATE TABLE dbo.Favorites (
 ZASADY
 - `IFavoritesRepository` i `FavoritesRepository` w `src/GzmApp/Data/FavoritesRepository.cs`: `Add`, `Remove`, `ListFor(userId)` przez `SqlRunner`. `Add` i `Remove` wykonane dwa razy dają ten sam stan (`IF NOT EXISTS` albo `MERGE` w jednym zapytaniu). Każda publiczna metoda z `userId` zaczyna się od `ArgumentException.ThrowIfNullOrWhiteSpace(userId);`. Klasy pomocnicze (np. wiersz ulubionego: `RecordId`, tytuł, `CreatedAt`) trzymaj w tym samym pliku, jako klasy z właściwościami (Dapper dopasowuje po nazwach kolumn).
 - `UserId` zalogowanego: `User.FindFirstValue(ClaimTypes.NameIdentifier)` w PageModel (`using System.Security.Claims;`), a w widoku `User.FindFirst(ClaimTypes.NameIdentifier)?.Value`.
-- Przycisk ★ to widok częściowy `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml` (model: `RecordId` i czy rekord jest w ulubionych): w ulubionych – „★” z `data-favorite="true"` i `hx-delete="?handler=Ulubione&id=..."`, poza nimi – „☆” z `data-favorite="false"` i `hx-post="?handler=Ulubione&id=..."`, oba z `hx-swap="outerHTML"`. Używa go `_Lista.cshtml` przy każdym rekordzie.
+- Przycisk ★ to widok częściowy `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml` (model: `public record StarModel(int RecordId, bool IsFavorite);` w `FavoritesRepository.cs`): w ulubionych – „★” z `data-favorite="true"` i `hx-delete="?handler=Ulubione&id=..."`, poza nimi – „☆” z `data-favorite="false"` i `hx-post="?handler=Ulubione&id=..."`, oba z `hx-swap="outerHTML"`. Używa go `_Lista.cshtml` przy każdym rekordzie.
 - Stan ★ `_Lista.cshtml` sprawdza sama: `@inject IFavoritesRepository` i ulubione zalogowanego użytkownika (niezalogowany: wszystkie „☆”). Nie przekazuj tego przez `ViewData` – `Partial(...)` w PageModel go nie kopiuje.
 - Handlery `OnPostUlubione(int id)` i `OnDeleteUlubione(int id)` w `Index.cshtml.cs` zwracają `Partial("_Gwiazdka", …)` z nowym stanem. Niezalogowany: status 401 i fragment „Zaloguj się, aby dodać do ulubionych” – sprawdź `User.Identity?.IsAuthenticated` w handlerze i zwróć `new ContentResult { StatusCode = 401, ContentType = "text/html; charset=utf-8", Content = "<p class=\"alert alert-warning\">Zaloguj się, aby dodać do ulubionych</p>" }`. Nie dawaj `[Authorize]` na `IndexModel` ani na handlerach: wtedy niezalogowany dostaje przekierowanie 302 do logowania zamiast 401.
 - Token antiforgery wysyła już `<body hx-headers:inherited='{"RequestVerificationToken":"..."}'>` w `_Layout.cshtml`. Nie wyłączaj walidacji antiforgery.
