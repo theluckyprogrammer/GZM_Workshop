@@ -76,34 +76,29 @@ function Get-FileSha256([string]$Path) {
     finally { $stream.Dispose(); $sha.Dispose() }
 }
 
-# The key is read into a variable and used only in the request header – never printed.
-function Get-Sol6Secret {
-    $lines = dotnet user-secrets list --project (Join-Path $repo 'src/GzmApp') 2>$null
-    $line = $lines | Where-Object { $_ -like 'Sol6:ApiKey = *' } | Select-Object -First 1
-    if ($line) { return $line.Substring('Sol6:ApiKey = '.Length) }
-    return $env:SOL6__APIKEY
+# Sol6 settings as the app reads them: Model from appsettings.json, Endpoint and ApiKey from appsettings.Local.json
+# (copied by the teacher, ignored by git), environment variables SOL6__* win. The key is used only in the request header.
+function Get-Sol6Settings {
+    $sol6 = [pscustomobject]@{ Endpoint = ''; Model = ''; ApiKey = '' }
+    foreach ($name in 'appsettings.json', 'appsettings.Local.json') {
+        $file = Join-Path $repo "src/GzmApp/$name"
+        if (-not (Test-Path $file)) { continue }
+        $section = (Get-Content -Raw -Encoding UTF8 $file | ConvertFrom-Json).Sol6
+        foreach ($key in 'Endpoint', 'Model', 'ApiKey') { if ($section -and $section.$key) { $sol6.$key = $section.$key } }
+    }
+    foreach ($key in 'Endpoint', 'Model', 'ApiKey') {
+        $value = [Environment]::GetEnvironmentVariable("SOL6__$($key.ToUpperInvariant())")
+        if ($value) { $sol6.$key = $value }
+    }
+    return $sol6
 }
 
-function Invoke-Sol6Ping([string]$ApiKey) {
-    $settings = Get-Content -Raw -Encoding UTF8 (Join-Path $repo 'src/GzmApp/appsettings.json') | ConvertFrom-Json
-    $sol6 = $settings.Sol6
-    if (-not $sol6) { $sol6 = [pscustomobject]@{ Endpoint = ''; Model = ''; Kind = 'openai' } }
-    # Environment variables win over appsettings.json, as in .NET configuration.
-    if ($env:SOL6__ENDPOINT) { $sol6.Endpoint = $env:SOL6__ENDPOINT }
-    if ($env:SOL6__MODEL) { $sol6.Model = $env:SOL6__MODEL }
-    if ($env:SOL6__KIND) { $sol6.Kind = $env:SOL6__KIND }
-    if (-not $sol6.Endpoint -or -not $sol6.Model) { return $false }
-    $body = @{ messages = @(@{ role = 'user'; content = 'Odpowiedz jednym słowem: OK' }); max_tokens = 5 }
-    if ($sol6.Kind -eq 'azure') {
-        $uri = "$($sol6.Endpoint.TrimEnd('/'))/openai/deployments/$($sol6.Model)/chat/completions?api-version=2024-10-21"
-        $headers = @{ 'api-key' = $ApiKey }
-    }
-    else {
-        $uri = "$($sol6.Endpoint.TrimEnd('/'))/chat/completions"
-        $headers = @{ 'Authorization' = "Bearer $ApiKey" }
-        $body.model = $sol6.Model
-    }
-    $json = $body | ConvertTo-Json -Depth 5
+# Azure AI Foundry, OpenAI-compatible endpoint .../openai/v1/: POST chat/completions with the model name.
+function Invoke-Sol6Ping($Sol6) {
+    if (-not $Sol6.Endpoint -or -not $Sol6.Model) { return $false }
+    $uri = "$($Sol6.Endpoint.TrimEnd('/'))/chat/completions"
+    $headers = @{ 'Authorization' = "Bearer $($Sol6.ApiKey)" }
+    $json = @{ model = $Sol6.Model; messages = @(@{ role = 'user'; content = 'Odpowiedz jednym słowem: OK' }) } | ConvertTo-Json -Depth 5
     $response = Invoke-WebRequest -Uri $uri -Method Post -Headers $headers -Body ([Text.Encoding]::UTF8.GetBytes($json)) -ContentType 'application/json' -UseBasicParsing -TimeoutSec 30
     return $response.StatusCode -eq 200
 }
@@ -161,12 +156,12 @@ try {
         catch { $null -ne $_.Exception.Response -and [int]$_.Exception.Response.StatusCode -lt 500 }
     }
 
-    $secret = Get-Sol6Secret
-    Test-Step 'SOL-6: jedno krótkie wywołanie (opcjonalne)' 'Brak klucza: dotnet user-secrets set "Sol6:ApiKey" "<klucz>" --project src/GzmApp; adres i model w appsettings.json (Sol6).' {
-        if (-not $secret) { return 'skip' }
-        Invoke-Sol6Ping $secret
+    $sol6 = Get-Sol6Settings
+    Test-Step "SOL-6 ($($sol6.Model)): jedno krótkie wywołanie – krok 4 warsztatu" 'Brak klucza albo adresu: skopiuj plik src/GzmApp/appsettings.Local.json od prowadzącego (Sol6:Endpoint i Sol6:ApiKey).' {
+        if (-not $sol6.ApiKey) { return $false }
+        Invoke-Sol6Ping $sol6
     }
-    Remove-Variable secret -ErrorAction SilentlyContinue
+    Remove-Variable sol6 -ErrorAction SilentlyContinue
 }
 finally {
     Pop-Location

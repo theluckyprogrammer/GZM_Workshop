@@ -25,6 +25,7 @@
     {
       "csv": "entryDate",
       "field": "EntryDate",
+      "label": "data wpisu",
       "sqlType": "date",
       "culture": "pl-PL",
       "format": "unix-ms",
@@ -41,6 +42,7 @@
     {
       "csv": "id",
       "field": "Id",
+      "label": "nr",
       "sqlType": "decimal(10,1)",
       "culture": "invariant",
       "format": null,
@@ -53,6 +55,7 @@
     {
       "csv": "itemName",
       "field": "ItemName",
+      "label": "rzecz",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,
@@ -69,6 +72,7 @@
     {
       "csv": "status",
       "field": "Status",
+      "label": "status",
       "sqlType": "nvarchar(20)",
       "culture": "pl-PL",
       "format": null,
@@ -81,6 +85,7 @@
     {
       "csv": "year",
       "field": "Year",
+      "label": "rok",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,

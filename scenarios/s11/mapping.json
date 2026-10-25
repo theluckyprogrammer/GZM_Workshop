@@ -33,6 +33,7 @@
     {
       "csv": "addressstreetName",
       "field": "Street",
+      "label": "ulica",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,
@@ -73,6 +74,7 @@
     {
       "csv": "description",
       "field": "Description",
+      "label": "opis",
       "sqlType": "nvarchar(600)",
       "culture": "pl-PL",
       "format": null,
@@ -101,6 +103,7 @@
     {
       "csv": "recordNumber",
       "field": "RecordNumber",
+      "label": "numer w rejestrze",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -117,6 +120,7 @@
     {
       "csv": "typeOfObject",
       "field": "ObjectType",
+      "label": "rodzaj obiektu",
       "sqlType": "nvarchar(30)",
       "culture": "pl-PL",
       "format": null,

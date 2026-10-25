@@ -13,6 +13,7 @@
     {
       "csv": "FID",
       "field": "Fid",
+      "label": "nr",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -25,6 +26,7 @@
     {
       "csv": "RODZAJ",
       "field": "Kind",
+      "label": "rodzaj",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,
@@ -33,6 +35,7 @@
     {
       "csv": "NAZWA",
       "field": "Name",
+      "label": "nazwa",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,
@@ -45,6 +48,7 @@
     {
       "csv": "ADRES",
       "field": "Address",
+      "label": "adres",
       "sqlType": "nvarchar(50)",
       "culture": "pl-PL",
       "format": null,
@@ -57,6 +61,7 @@
     {
       "csv": "x",
       "field": "X",
+      "label": "X",
       "sqlType": "decimal(20,10)",
       "culture": "invariant",
       "format": null,
@@ -65,6 +70,7 @@
     {
       "csv": "y",
       "field": "Y",
+      "label": "Y",
       "sqlType": "decimal(20,10)",
       "culture": "invariant",
       "format": null,

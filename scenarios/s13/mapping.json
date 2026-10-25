@@ -21,6 +21,7 @@
     {
       "csv": "classType",
       "field": "ClassType",
+      "label": "rodzaj zajęć",
       "sqlType": "nvarchar(40)",
       "culture": "pl-PL",
       "format": null,
@@ -29,6 +30,7 @@
     {
       "csv": "day",
       "field": "Day",
+      "label": "dzień",
       "sqlType": "nvarchar(40)",
       "culture": "pl-PL",
       "format": null,
@@ -41,6 +43,7 @@
     {
       "csv": "id",
       "field": "Id",
+      "label": "nr",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -53,6 +56,7 @@
     {
       "csv": "minimalAge",
       "field": "MinAge",
+      "label": "wiek od",
       "sqlType": "decimal(4,1)",
       "culture": "invariant",
       "format": null,
@@ -61,6 +65,7 @@
     {
       "csv": "room",
       "field": "Room",
+      "label": "sala",
       "sqlType": "nvarchar(60)",
       "culture": "pl-PL",
       "format": null,
@@ -69,6 +74,7 @@
     {
       "csv": "section",
       "field": "Section",
+      "label": "sekcja",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,
@@ -77,6 +83,7 @@
     {
       "csv": "startHour",
       "field": "StartHour",
+      "label": "godzina",
       "sqlType": "time(0)",
       "culture": "pl-PL",
       "format": "HH:mm|HH.mm",
@@ -85,6 +92,7 @@
     {
       "csv": "unit",
       "field": "Unit",
+      "label": "placówka",
       "sqlType": "nvarchar(30)",
       "culture": "pl-PL",
       "format": null,

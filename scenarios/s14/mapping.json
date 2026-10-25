@@ -13,6 +13,7 @@
     {
       "csv": "L.p.",
       "field": "No",
+      "label": "L.p.",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -21,6 +22,7 @@
     {
       "csv": "Gmina",
       "field": "Commune",
+      "label": "gmina",
       "sqlType": "nvarchar(40)",
       "culture": "pl-PL",
       "format": null,
@@ -29,6 +31,7 @@
     {
       "csv": "Kod automatu",
       "field": "MachineCode",
+      "label": "kod automatu",
       "sqlType": "nvarchar(20)",
       "culture": "pl-PL",
       "format": null,
@@ -37,6 +40,7 @@
     {
       "csv": "NR",
       "field": "StopNumber",
+      "label": "nr przystanku",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -45,6 +49,7 @@
     {
       "csv": "Nazwa przystanku",
       "field": "StopName",
+      "label": "przystanek",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,
@@ -53,6 +58,7 @@
     {
       "csv": "Opis lokalizacji",
       "field": "LocationDescription",
+      "label": "opis lokalizacji",
       "sqlType": "nvarchar(150)",
       "culture": "pl-PL",
       "format": null,
@@ -61,6 +67,7 @@
     {
       "csv": "Nr stanowiska",
       "field": "Platform",
+      "label": "stanowisko",
       "sqlType": "nvarchar(10)",
       "culture": "pl-PL",
       "format": null,
@@ -69,6 +76,7 @@
     {
       "csv": "Współrzędne geograficzne",
       "field": "Coordinates",
+      "label": "współrzędne",
       "sqlType": "nvarchar(60)",
       "culture": "pl-PL",
       "format": null,

@@ -13,6 +13,7 @@
     {
       "csv": "archaeologicalSiteNumberInArea",
       "field": "AzpArea",
+      "label": "nr na obszarze AZP",
       "sqlType": "nvarchar(10)",
       "culture": "pl-PL",
       "format": null,
@@ -21,6 +22,7 @@
     {
       "csv": "archaeologicalSiteNumberInCity",
       "field": "SiteNumberInCity",
+      "label": "nr w mieście",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -29,6 +31,7 @@
     {
       "csv": "azpnumber",
       "field": "AzpNumber",
+      "label": "nr AZP",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -41,6 +44,7 @@
     {
       "csv": "chronology",
       "field": "Chronology",
+      "label": "chronologia",
       "sqlType": "nvarchar(200)",
       "culture": "pl-PL",
       "format": null,
@@ -53,6 +57,7 @@
     {
       "csv": "comment",
       "field": "Comment",
+      "label": "uwagi",
       "sqlType": "nvarchar(400)",
       "culture": "pl-PL",
       "format": null,
@@ -77,6 +82,7 @@
     {
       "csv": "id",
       "field": "Id",
+      "label": "nr",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -85,6 +91,7 @@
     {
       "csv": "localName",
       "field": "LocalName",
+      "label": "nazwa miejscowa",
       "sqlType": "nvarchar(200)",
       "culture": "pl-PL",
       "format": null,

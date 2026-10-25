@@ -21,6 +21,7 @@
     {
       "csv": "addresscity",
       "field": "City",
+      "label": "dzielnica",
       "sqlType": "nvarchar(40)",
       "culture": "pl-PL",
       "format": null,
@@ -37,6 +38,7 @@
     {
       "csv": "addressstreetName",
       "field": "Street",
+      "label": "ulica",
       "sqlType": "nvarchar(60)",
       "culture": "pl-PL",
       "format": null,
@@ -77,6 +79,7 @@
     {
       "csv": "description",
       "field": "Description",
+      "label": "opis",
       "sqlType": "nvarchar(800)",
       "culture": "pl-PL",
       "format": null,
@@ -93,6 +96,7 @@
     {
       "csv": "inscription",
       "field": "Inscription",
+      "label": "napis",
       "sqlType": "nvarchar(1500)",
       "culture": "pl-PL",
       "format": null,
@@ -101,6 +105,7 @@
     {
       "csv": "locationName",
       "field": "LocationName",
+      "label": "miejsce",
       "sqlType": "nvarchar(100)",
       "culture": "pl-PL",
       "format": null,
@@ -113,6 +118,7 @@
     {
       "csv": "recordNumber",
       "field": "RecordNumber",
+      "label": "numer w rejestrze",
       "sqlType": "nvarchar(20)",
       "culture": "pl-PL",
       "format": null,

@@ -13,6 +13,7 @@
     {
       "csv": "Data",
       "field": "ReservedAt",
+      "label": "data rezerwacji",
       "sqlType": "datetime2(0)",
       "culture": "invariant",
       "format": "yyyy-MM-dd'T'HH:mm:ss'Z'",
@@ -21,6 +22,7 @@
     {
       "csv": "Wypożyczono",
       "field": "Rented",
+      "label": "wypożyczono",
       "sqlType": "bit",
       "culture": "pl-PL",
       "format": "true|false",
@@ -29,6 +31,7 @@
     {
       "csv": "Ilość wypożyczonych rowerów",
       "field": "RentedBikes",
+      "label": "wypożyczone rowery",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -37,6 +40,7 @@
     {
       "csv": "Ilość zarezerwowanych rowerów",
       "field": "ReservedBikes",
+      "label": "zarezerwowane rowery",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -45,6 +49,7 @@
     {
       "csv": "Numer stacji rezerwacji",
       "field": "StationNumber",
+      "label": "nr stacji",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -53,6 +58,7 @@
     {
       "csv": "Nazwa stacji rezerwacji",
       "field": "StationName",
+      "label": "stacja",
       "sqlType": "nvarchar(30)",
       "culture": "pl-PL",
       "format": null,
@@ -61,6 +67,7 @@
     {
       "csv": "Kanał",
       "field": "Channel",
+      "label": "kanał",
       "sqlType": "nvarchar(30)",
       "culture": "pl-PL",
       "format": null,
@@ -69,6 +76,7 @@
     {
       "csv": "Status",
       "field": "Status",
+      "label": "status",
       "sqlType": "nvarchar(20)",
       "culture": "pl-PL",
       "format": null,
@@ -77,6 +85,7 @@
     {
       "csv": "Czas wygaśnięcia",
       "field": "ExpiresAt",
+      "label": "wygasa",
       "sqlType": "datetime2(0)",
       "culture": "invariant",
       "format": "yyyy-MM-dd'T'HH:mm:ss'Z'",

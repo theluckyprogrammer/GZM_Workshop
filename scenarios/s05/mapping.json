@@ -13,6 +13,7 @@
     {
       "csv": "collectionDate",
       "field": "CollectionDate",
+      "label": "odbiór do",
       "sqlType": "date",
       "culture": "pl-PL",
       "format": "unix-ms",
@@ -37,6 +38,7 @@
     {
       "csv": "foundDate",
       "field": "FoundDate",
+      "label": "data znalezienia",
       "sqlType": "date",
       "culture": "pl-PL",
       "format": "unix-ms",
@@ -49,6 +51,7 @@
     {
       "csv": "id",
       "field": "Id",
+      "label": "nr",
       "sqlType": "nvarchar(30)",
       "culture": "pl-PL",
       "format": null,
@@ -61,6 +64,7 @@
     {
       "csv": "itemName",
       "field": "ItemName",
+      "label": "rzecz",
       "sqlType": "nvarchar(60)",
       "culture": "pl-PL",
       "format": null,

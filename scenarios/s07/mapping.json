@@ -13,6 +13,7 @@
     {
       "csv": "OBIEKT",
       "field": "Facility",
+      "label": "obiekt",
       "sqlType": "nvarchar(100)",
       "culture": "pl-PL",
       "format": null,
@@ -21,6 +22,7 @@
     {
       "csv": "ADRES___ZARZĄDZAJĄCY",
       "field": "AddressManager",
+      "label": "adres i zarządca",
       "sqlType": "nvarchar(150)",
       "culture": "pl-PL",
       "format": null,
@@ -29,6 +31,7 @@
     {
       "csv": "ObjectId",
       "field": "ObjectId",
+      "label": "nr",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,

@@ -29,6 +29,7 @@
     {
       "csv": "id",
       "field": "Id",
+      "label": "nr",
       "sqlType": "nvarchar(10)",
       "culture": "pl-PL",
       "format": null,
@@ -37,6 +38,7 @@
     {
       "csv": "name",
       "field": "Name",
+      "label": "nazwa",
       "sqlType": "nvarchar(150)",
       "culture": "pl-PL",
       "format": null,
@@ -49,6 +51,7 @@
     {
       "csv": "registrationDate",
       "field": "RegisteredOn",
+      "label": "data rejestracji",
       "sqlType": "date",
       "culture": "pl-PL",
       "format": "unix-ms",
@@ -81,6 +84,7 @@
     {
       "csv": "residenceAddressstreetName",
       "field": "Street",
+      "label": "ulica",
       "sqlType": "nvarchar(40)",
       "culture": "pl-PL",
       "format": null,
@@ -97,6 +101,7 @@
     {
       "csv": "status",
       "field": "Status",
+      "label": "status",
       "sqlType": "nvarchar(20)",
       "culture": "pl-PL",
       "format": null,

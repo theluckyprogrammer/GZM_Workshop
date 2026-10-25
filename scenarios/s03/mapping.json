@@ -13,6 +13,7 @@
     {
       "csv": "Dzień",
       "field": "Day",
+      "label": "dzień",
       "sqlType": "date",
       "culture": "pl-PL",
       "format": "yyyy-MM-dd",
@@ -21,6 +22,7 @@
     {
       "csv": "Gmina",
       "field": "Commune",
+      "label": "gmina",
       "sqlType": "nvarchar(40)",
       "culture": "pl-PL",
       "format": null,
@@ -29,6 +31,7 @@
     {
       "csv": "Liczba dostępnych rowerów",
       "field": "AvailableBikes",
+      "label": "dostępne rowery",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -37,6 +40,7 @@
     {
       "csv": "Wymagana liczba dostępnych rowerów",
       "field": "RequiredBikes",
+      "label": "wymagane rowery",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -45,6 +49,7 @@
     {
       "csv": "Przekroczono",
       "field": "Exceeded",
+      "label": "przekroczono",
       "sqlType": "bit",
       "culture": "pl-PL",
       "format": "Tak|Nie",

@@ -21,6 +21,7 @@
     {
       "csv": "addressbuildingNumber",
       "field": "BuildingNumber",
+      "label": "nr budynku",
       "sqlType": "nvarchar(10)",
       "culture": "pl-PL",
       "format": null,
@@ -41,6 +42,7 @@
     {
       "csv": "addressstreetName",
       "field": "Street",
+      "label": "ulica",
       "sqlType": "nvarchar(100)",
       "culture": "pl-PL",
       "format": null,
@@ -89,6 +91,7 @@
     {
       "csv": "id",
       "field": "Id",
+      "label": "nr",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -101,6 +104,7 @@
     {
       "csv": "name",
       "field": "Name",
+      "label": "nazwa",
       "sqlType": "nvarchar(1000)",
       "culture": "pl-PL",
       "format": null,
@@ -137,6 +141,7 @@
     {
       "csv": "style",
       "field": "Style",
+      "label": "styl",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,

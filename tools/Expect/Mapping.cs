@@ -8,7 +8,7 @@ public sealed record SourceMapping(string File, string Encoding, string Separato
 // Import = false: the column exists in the file but is not loaded into the table.
 public sealed record ColumnMapping(
     string Csv, string? Field = null, string? SqlType = null, string? Culture = null,
-    string? Format = null, bool Nullable = false, bool Import = true)
+    string? Format = null, bool Nullable = false, bool Import = true, string? Label = null)
 {
     public CultureInfo CultureInfo =>
         Culture == "invariant" ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(Culture!);

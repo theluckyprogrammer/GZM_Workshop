@@ -35,6 +35,7 @@ public static class Variables
             ["statDescription"] = SqlText.Description(mapping.Statistic.Kind, mapping.Statistic.Field),
             ["aiFields"] = string.Join(", ", mapping.Imported.Select(c => $"`{c.Field}`")),
             ["statQueries"] = StatQueries(mapping.Table),
+            ["fieldLabels"] = string.Join(", ", mapping.Imported.Select(c => $"`{c.Field}` – {c.Label ?? c.Field}")),
         };
 
     // All four statistic queries with [Pole] in place of the field: the spec rule says which one and on which field.

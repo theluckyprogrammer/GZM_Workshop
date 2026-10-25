@@ -13,6 +13,7 @@
     {
       "csv": "cadastralDistrict",
       "field": "CadastralDistrict",
+      "label": "obręb",
       "sqlType": "nvarchar(50)",
       "culture": "pl-PL",
       "format": null,
@@ -25,6 +26,7 @@
     {
       "csv": "circumference",
       "field": "Circumference",
+      "label": "obwód (cm)",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -37,6 +39,7 @@
     {
       "csv": "coordinateData",
       "field": "Coordinates",
+      "label": "współrzędne",
       "sqlType": "nvarchar(50)",
       "culture": "pl-PL",
       "format": null,
@@ -45,6 +48,7 @@
     {
       "csv": "description",
       "field": "Description",
+      "label": "opis",
       "sqlType": "nvarchar(600)",
       "culture": "pl-PL",
       "format": null,
@@ -53,6 +57,7 @@
     {
       "csv": "id",
       "field": "Id",
+      "label": "nr",
       "sqlType": "int",
       "culture": "pl-PL",
       "format": null,
@@ -61,6 +66,7 @@
     {
       "csv": "name",
       "field": "Name",
+      "label": "gatunek",
       "sqlType": "nvarchar(80)",
       "culture": "pl-PL",
       "format": null,
