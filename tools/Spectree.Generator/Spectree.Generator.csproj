@@ -1,15 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Console tool (no NuGet packages): writes the test files of the pair's scenario as real *.cs files,
+       so that the Testing panel navigates to normal code. Called on every build by tests/GzmApp.Specs
+       (see the SpectreeSync target there). Usage (two arguments: spec folder, output folder)
+       is documented at the top of Program.cs. -->
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <InvariantGlobalization>true</InvariantGlobalization>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" PrivateAssets="all" />
-  </ItemGroup>
 
 </Project>

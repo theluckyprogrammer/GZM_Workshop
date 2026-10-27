@@ -1,18 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- Tests generated from the specification of the pair's scenario: scenarios/<Scenario>/spec/*.md.
+  <!-- Tests of the pair's scenario: every numbered rule of scenarios/<Scenario>/spec/*.md is one normal xUnit
+       [Fact] in tests/GzmApp.Specs/Specs/*.cs (real files, so the Testing panel navigates to normal code).
+       The files are written by tools/Spectree.Generator on every build (targets below) – never by hand.
        The scenario is "Scenario" from src/GzmApp/appsettings.Development.json, otherwise from
-       src/GzmApp/appsettings.json – written only by scripts (tools/nowy-portal.ps1 in step 0),
-       never by hand. Change it, build, and the tests follow.
+       src/GzmApp/appsettings.json – written only by scripts (tools/nowy-portal.ps1 in step 0), never by hand.
        The project builds both from the repo root (after step 0 copies the skeleton from szkielet/)
-       and straight from szkielet/ – then no scenario is set and the project has no tests.
-       Only the generated specification tests of the pair's scenario (GzmApp.Specs.Spec) are in the project. -->
+       and straight from szkielet/ – then no scenario is set and the project has no tests. -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <RootNamespace>GzmApp.Specs</RootNamespace>
     <ScenarioPattern>(?s)^.*?"Scenario"\s*:\s*"(s\d\d)".*$</ScenarioPattern>
     <AppSettingsDevelopment>$(MSBuildThisFileDirectory)../../src/GzmApp/appsettings.Development.json</AppSettingsDevelopment>
@@ -20,15 +19,17 @@
     <GzmScenario Condition="Exists('$(AppSettingsDevelopment)')">$([System.Text.RegularExpressions.Regex]::Replace($([System.IO.File]::ReadAllText('$(AppSettingsDevelopment)')), '$(ScenarioPattern)', '$1'))</GzmScenario>
     <GzmScenario Condition="'$(GzmScenario.Length)' != '3' And Exists('$(AppSettings)')">$([System.Text.RegularExpressions.Regex]::Replace($([System.IO.File]::ReadAllText('$(AppSettings)')), '$(ScenarioPattern)', '$1'))</GzmScenario>
     <GzmScenario Condition="'$(GzmScenario.Length)' != '3'"></GzmScenario>
+    <SpecTestDir>$(MSBuildThisFileDirectory)Specs</SpecTestDir>
     <!-- tools/ sits next to tests/ at the repo root; from szkielet/tests it is one level higher. -->
     <ToolsDir Condition="Exists('$(MSBuildThisFileDirectory)../../tools/Spectree')">$(MSBuildThisFileDirectory)../../tools</ToolsDir>
     <ToolsDir Condition="'$(ToolsDir)' == '' And Exists('$(MSBuildThisFileDirectory)../../../tools/Spectree')">$(MSBuildThisFileDirectory)../../../tools</ToolsDir>
+    <ScenariosDir Condition="Exists('$(MSBuildThisFileDirectory)../../scenarios')">$(MSBuildThisFileDirectory)../../scenarios</ScenariosDir>
+    <ScenariosDir Condition="'$(ScenariosDir)' == '' And Exists('$(MSBuildThisFileDirectory)../../../scenarios')">$(MSBuildThisFileDirectory)../../../scenarios</ScenariosDir>
+    <SpectreeTool>$(ToolsDir)\Spectree.Generator\bin\$(Configuration)\net10.0\Spectree.Generator.dll</SpectreeTool>
   </PropertyGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-    <AdditionalFiles Include="../../scenarios/$(GzmScenario)/spec/*.md" Condition="'$(GzmScenario)' != ''" />
-    <CompilerVisibleProperty Include="RootNamespace" />
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
       <_Parameter1>GzmScenario</_Parameter1>
       <_Parameter2>$(GzmScenario)</_Parameter2>
@@ -38,7 +39,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\GzmApp\GzmApp.csproj" />
     <ProjectReference Include="$(ToolsDir)\Spectree\Spectree.csproj" />
-    <ProjectReference Include="$(ToolsDir)\Spectree.Generator\Spectree.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,5 +51,27 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <!-- Real test files instead of generated-in-obj: build the tool once (only when its sources change;
+       the build also restores it, because the tool is not a ProjectReference of the test project anymore),
+       then run it before every build – a changed sentence in the specification updates the test file.
+       Design-time builds of the IDE skip both targets. -->
+  <Target Name="SpectreeBuildTool"
+          Condition="'$(GzmScenario)' != '' And '$(DesignTimeBuild)' != 'true' And '$(ToolsDir)' != ''"
+          Inputs="$(ToolsDir)\Spectree.Generator\**\*.cs;$(ToolsDir)\Spectree.Generator\Spectree.Generator.csproj"
+          Outputs="$(SpectreeTool)">
+    <Exec Command="dotnet build &quot;$(ToolsDir)\Spectree.Generator\Spectree.Generator.csproj&quot; -c $(Configuration) -v q -nologo" />
+  </Target>
+
+  <Target Name="SpectreeSync" BeforeTargets="BeforeBuild" DependsOnTargets="SpectreeBuildTool"
+          Condition="'$(GzmScenario)' != '' And '$(DesignTimeBuild)' != 'true' And '$(ToolsDir)' != ''">
+    <!-- StandardErrorImportance=High so the tool's Polish message (e.g. a bad specification file) is
+         visible at the default build verbosity; the Error task fails the build with a clear pointer. -->
+    <Exec Command="dotnet exec &quot;$(SpectreeTool)&quot; &quot;$(ScenariosDir)\$(GzmScenario)\spec&quot; &quot;$(SpecTestDir)&quot;"
+          IgnoreExitCode="true" StandardErrorImportance="High" ConsoleToMsBuild="true">
+      <Output TaskParameter="ExitCode" PropertyName="SpectreeExitCode" />
+    </Exec>
+    <Error Condition="'$(SpectreeExitCode)' != '0'" Text="Spectree nie zapisał testów ze specyfikacji – przeczytaj komunikat powyżej (wskazuje plik i regułę)." />
+  </Target>
 
 </Project>

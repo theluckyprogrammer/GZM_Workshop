@@ -41,6 +41,18 @@ public sealed class CapabilityFile
 
     public IReadOnlyList<Rule> Rules { get; }
 
+    // Null when the pair can run the tests; otherwise the message of the first problem (missing slug,
+    // no rules, repeated rule number) – the caller prefixes the file name.
+    public string? Problem()
+    {
+        if (Capability is null)
+            return "brak nagłówka '---' z linią 'capability: <slug>'";
+        if (Rules.Count == 0)
+            return "brak sekcji '## Reguły' z ponumerowanymi zdaniami (1. …)";
+        var duplicate = Rules.GroupBy(rule => rule.Number).FirstOrDefault(group => group.Count() > 1);
+        return duplicate is null ? null : $"numer reguły {duplicate.Key} występuje więcej niż raz – numerów nie zmienia się ani nie powtarza";
+    }
+
     public static CapabilityFile Parse(string text)
     {
         if (text is null)

@@ -90,14 +90,15 @@ Po zmianie w plikach specyfikacji odświeżcie listę testów ikoną ⟳ w panel
 
 **Przejście do kodu i debugowanie testu.**
 
-Po zbudowaniu projektu każdy krok ma plik `*.g.cs` w
-`tests/GzmApp.Specs/obj/Debug/net10.0/generated/Spectree.Generator/Spectree.Generator.SpecTestGenerator/`.
-W panelu Testing kliknijcie test prawym przyciskiem i wybierzcie **Go to Test**.
-W otwartym pliku ustawcie breakpoint przy `await`, a następnie wybierzcie **Debug Test**.
+Każdy krok ma swój zwykły plik z kodem testów: `tests/GzmApp.Specs/Specs/` – np.
+`S05_001_importuj_dane.cs` dla kroku 1. Pliki tworzą się same ze specyfikacji przy każdej
+kompilacji, więc nie edytujcie ich (naprawia się kod aplikacji, nigdy testu).
+W panelu Testing kliknijcie test prawym przyciskiem i wybierzcie **Go to Test** –
+otworzy się plik kroku na zdaniu-regule. Ustawcie tam breakpoint (klik w puste pole
+przy numerze linii, np. przy `await`), a następnie wybierzcie **Debug Test**.
 Możecie też ustawić breakpoint w metodzie kroku w `tests/GzmApp.Specs/Steps/`
 lub w sprawdzanym kodzie aplikacji. **F11** wchodzi do wywoływanej metody.
-Nie edytujcie plików `*.g.cs` – powstają ponownie ze specyfikacji podczas kompilacji.
-Jeśli VS Code otwiera pusty plik ze starej lokalizacji, wybierzcie
+Jeśli VS Code pokazuje starą wersję pliku, wybierzcie
 **Ctrl + Shift + P** → **Developer: Reload Window**, zbudujcie projekt i odświeżcie testy.
 
 ## 5. Czerwony test – co teraz?

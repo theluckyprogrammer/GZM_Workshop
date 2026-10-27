@@ -61,6 +61,9 @@ nunit-*.xml
 secrets.json
 data/work/
 gzm.db
+# Testy pisane przez tools/Spectree.Generator przy każdej kompilacji (normalne pliki *.cs na dysku,
+# poza gitem – powstają ze specyfikacji scenarios/sNN/spec)
+/tests/GzmApp.Specs/Specs/
 
 # macOS junk
 .DS_Store
