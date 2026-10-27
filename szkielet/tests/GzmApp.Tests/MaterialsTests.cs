@@ -82,7 +82,10 @@ public partial class MaterialsTests
         var paths = RepoPath().Matches(Read("docs", "PROWADZACY.md")).Select(m => m.Value.Replace('\\', '/').TrimEnd('/').Replace("sNN", "s01")).Distinct().ToList();
 
         Assert.True(paths.Count > 10, "za mało ścieżek – sprawdź wzorzec");
-        Assert.All(paths, p => Assert.True(File.Exists(Path.Combine(RepoPaths.Root, p)) || Directory.Exists(Path.Combine(RepoPaths.Root, p)), p));
+        // Paths of the running app (src/…, tests/…) exist after step 0 – in the repository they are in szkielet/.
+        Assert.All(paths, p => Assert.True(
+            File.Exists(Path.Combine(RepoPaths.Root, p)) || Directory.Exists(Path.Combine(RepoPaths.Root, p))
+            || File.Exists(Path.Combine([RepoPaths.Root, "szkielet", .. p.Split('/')])) || Directory.Exists(Path.Combine([RepoPaths.Root, "szkielet", .. p.Split('/')])), p));
     }
 
     private static string CsvOf(Scenario scenario, string field) =>

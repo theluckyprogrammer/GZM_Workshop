@@ -77,11 +77,12 @@ function Get-FileSha256([string]$Path) {
 }
 
 # Sol6 settings as the app reads them: Model from appsettings.json, Endpoint and ApiKey from appsettings.Local.json
-# (copied by the teacher, ignored by git), environment variables SOL6__* win. The key is used only in the request header.
+# (copied by the teacher to szkielet/src/GzmApp, ignored by git; step 0 copies it into the app), environment variables
+# SOL6__* win. The key is used only in the request header.
 function Get-Sol6Settings {
     $sol6 = [pscustomobject]@{ Endpoint = ''; Model = ''; ApiKey = '' }
     foreach ($name in 'appsettings.json', 'appsettings.Local.json') {
-        $file = Join-Path $repo "src/GzmApp/$name"
+        $file = Join-Path $repo "szkielet/src/GzmApp/$name"
         if (-not (Test-Path $file)) { continue }
         $section = (Get-Content -Raw -Encoding UTF8 $file | ConvertFrom-Json).Sol6
         foreach ($key in 'Endpoint', 'Model', 'ApiKey') { if ($section -and $section.$key) { $sol6.$key = $section.$key } }
@@ -135,19 +136,20 @@ try {
         (1..4 | Where-Object { $branches -notcontains "ratunek/etap-$_" }).Count -eq 0
     }
 
-    Test-Step 'HTMX 4.0.0 (plik i SHA-256 z docs/HTMX.md)' 'Przywróć plik: git checkout -- src/GzmApp/wwwroot/lib/htmx/4.0.0/htmx.min.js' {
-        $file = Join-Path $repo 'src/GzmApp/wwwroot/lib/htmx/4.0.0/htmx.min.js'
+    Test-Step 'HTMX 4.0.0 (plik i SHA-256 z docs/HTMX.md)' 'Przywróć plik: git checkout -- szkielet/src/GzmApp/wwwroot/lib/htmx/4.0.0/htmx.min.js' {
+        $file = Join-Path $repo 'szkielet/src/GzmApp/wwwroot/lib/htmx/4.0.0/htmx.min.js'
         (Test-Path $file) -and ((Get-FileSha256 $file) -eq (Get-HtmxExpectedHash))
     }
 
-    Test-Step 'dotnet build (pakiety z cache NuGet)' 'Uruchom raz z internetem: dotnet restore src/GzmApp; potem build działa offline.' {
-        dotnet build (Join-Path $repo 'src/GzmApp') -v q -nologo 2>&1 | Out-Null
+    Test-Step 'dotnet build (pakiety z cache NuGet)' 'Uruchom raz z internetem: dotnet restore szkielet/src/GzmApp; potem build działa offline.' {
+        dotnet build (Join-Path $repo 'szkielet/src/GzmApp') -v q -nologo 2>&1 | Out-Null
         $LASTEXITCODE -eq 0
     }
 
     # Every sentence of the specification has a step; no database needed. Proves that Test Explorer will show the tests.
-    Test-Step 'Testy specyfikacji (tests/GzmApp.Specs: build + test kontrolny)' 'Uruchom raz z internetem: dotnet restore tests/GzmApp.Specs; potem build i testy działają offline.' {
-        dotnet test (Join-Path $repo 'tests/GzmApp.Specs') --filter 'Capability=kontrola' -v q -nologo 2>&1 | Out-Null
+    # Before step 0 the test project lives in szkielet/ (no scenario set: only the control tests run).
+    Test-Step 'Testy specyfikacji (szkielet/tests/GzmApp.Specs: build + test kontrolny)' 'Uruchom raz z internetem: dotnet restore szkielet/tests/GzmApp.Specs; potem build i testy działają offline.' {
+        dotnet test (Join-Path $repo 'szkielet/tests/GzmApp.Specs') --filter 'Capability=kontrola' -v q -nologo 2>&1 | Out-Null
         $LASTEXITCODE -eq 0
     }
 

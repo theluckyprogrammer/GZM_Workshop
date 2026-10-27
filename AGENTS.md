@@ -4,6 +4,10 @@
 
 Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie programują. Na koniec napisz w 3 punktach, co zrobiłeś.
 
+## Start portalu (krok 0)
+- Portal pary powstaje w kroku 0: skrypt `tools/nowy-portal.ps1 -Scenariusz sNN` kopiuje szkielet (`szkielet/` → `src/`, `tests/`, `db/`), pobiera dane z portalu GZM i wpisuje scenariusz. Uruchamiasz go tylko wtedy, gdy poprosi o to prompt kroku 0; plików `szkielet/` nie zmieniasz.
+- `LOG-DECYZJI.md` w głównym katalogu to log decyzji pary: po każdej decyzji dopisujesz jeden wiersz do tabeli (Krok | Pytanie | Wasza decyzja | Dlaczego). Niczego z niego nie usuwasz.
+
 ## Stos – używaj tylko tego
 - .NET 10, jeden projekt ASP.NET Core Razor Pages: `src/GzmApp`. Port 5080.
 - Widok: HTMX 4.0.0 z pliku lokalnego `wwwroot/lib/htmx/4.0.0/htmx.min.js` (już podpięty w `_Layout.cshtml`). Fragmenty HTML zwracają handlery Razor Pages (`Partial(...)`). Zasady HTMX 4: `.kilo/rules/htmx4.md`.
@@ -20,6 +24,7 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 - Entity Framework Core poza folderem `src/GzmApp/Identity/`.
 - Zmiany logowania (Identity, cookie, antiforgery), dodawanie pakietów NuGet, zmiana portu, edycja `launch.json`, `launchSettings.json`, `*.csproj`, `Program.cs`.
 - `htmx.logAll()`, `float`/`double` dla liczb z danych (używaj `decimal`), `DateTime.Parse` bez kultury i formatu.
+- Ręczne wpisywanie scenariusza: klucz `"Scenario"` w `appsettings.json` ustawia wyłącznie skrypt z kroku 0. Ty go nie zmieniasz.
 
 ## Kod
 - Guard clauses na początku publicznych metod (`ArgumentNullException.ThrowIfNull`, `ArgumentException.ThrowIfNullOrWhiteSpace`).
@@ -27,11 +32,16 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 - Nazwy w kodzie po angielsku, komunikaty dla użytkownika po polsku.
 
 ## Specyfikacja i testy – najpierw zdania, potem kod
-- Każdy krok ma plik specyfikacji `scenarios/sNN/spec/sNN-NNN-*.md`. Przeczytaj go, zanim napiszesz kod: „Co się dzieje” opisuje krok, a „Reguły” mówią, co dokładnie ma działać.
+- Każdy krok ma plik specyfikacji `scenarios/sNN/spec/sNN-NNN-*.md` (krok 0 też: `sNN-000-dane.md`). Przeczytaj go, zanim napiszesz kod: „Co się dzieje” opisuje krok, a „Reguły” mówią, co dokładnie ma działać.
 - Każda ponumerowana reguła to jeden test w `tests/GzmApp.Specs` (nazwa testu = zdanie reguły). Krok jest gotowy, gdy wszystkie jego testy są zielone.
 - Zrób to, co mówią reguły i prompt – nie mniej i nie więcej.
 - Nie zmieniaj specyfikacji, testów ani narzędzi (`scenarios/`, `tests/`, `tools/`). Czerwony test naprawiasz w kodzie aplikacji, nigdy w teście.
 - Sprawdzenie kroku: `dotnet test tests/GzmApp.Specs --filter Capability=<capability z nagłówka pliku>`. Komunikat czerwonego testu mówi po polsku, czego brakuje.
+
+## Decyzje pary – proponuj i pytaj
+- Gdy para prosi o propozycje decyzji („Zaproponuj nam … warianty decyzji N”), zaproponuj dokładnie 3 różne zdania według wzorców z bloku wklejonego przez parę – podstaw pola z kolumn danych i uwzględnij wcześniejsze decyzje z `LOG-DECYZJI.md`.
+- Przedstaw propozycje krótko po polsku, powiedz, co każda daje, **zapytaj, którą wybierają, i czekaj na odpowiedź**. Nie pisz kodu, dopóki para nie wybierze.
+- Po wyborze przypomnij parze, żeby wybrane zdanie wkleiła do pliku specyfikacji (para to robi ręcznie, nie Ty), i dopisz decyzję do `LOG-DECYZJI.md`.
 
 ## Pliki
 - Zmieniaj tylko pliki z listy „Nie zmieniaj plików poza: …” w prompcie. Jeśli potrzebny jest inny plik – zatrzymaj się i zapytaj.
@@ -61,3 +71,6 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 8. **Nagłówki żądań:** `HX-Request` (zawsze `true`), `HX-Request-Type` (`full` / `partial`), `HX-Source` (zamiast `HX-Trigger`, format `tag#id`), `HX-Target`, `HX-Current-URL`. Rozpoznawaj żądanie HTMX po `HX-Request: true`.
 9. **Usunięte:** `hx-vars` (zamiast tego `hx-vals` z `js:`), `hx-params`, `hx-ext`, `hx-disinherit`, `hx-inherit`, modyfikator `queue` w `hx-trigger` (zamiast tego `hx-sync`).
 10. **Wyszukiwarka na żywo:** `hx-trigger="keyup changed delay:300ms"`.
+11. **`hx-disable` zmienił znaczenie.** W 4.x `hx-disable="this"` blokuje przycisk na czas żądania (dawne `hx-disabled-elt`). Wyłączenie HTMX dla fragmentu strony to teraz `hx-ignore`.
+   - Źle: usuwać `hx-disable="this"` z przycisku „Analizuj”, bo „wyłącza HTMX”.
+   - Dobrze: zostawić – chroni przed podwójnym kliknięciem i drugim zapytaniem do AI.
