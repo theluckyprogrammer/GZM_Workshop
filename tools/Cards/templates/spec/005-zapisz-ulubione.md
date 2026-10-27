@@ -19,7 +19,7 @@ Zalogowany użytkownik oznacza rekordy gwiazdką: ☆ zmienia się w ★. Ulubio
 5. Usunięcie z ulubionych można powtórzyć bez błędu.
 6. Użytkownik nie widzi ulubionych innych użytkowników.
 7. Żądanie bez tokenu antiforgery zostaje odrzucone.
-<!-- DECYZJA 5: wariant A. Inny wariant z prompty.md wklejcie w miejsce zdania po „8. ”. -->
+<!-- DECYZJA 5: zdanie domyślne. Wybrane zdanie (z propozycji Kilo) wklejcie w miejsce zdania po „8. ”. -->
 8. {{rule5}}
 
 ## Czego się nauczyliśmy

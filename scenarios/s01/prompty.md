@@ -1,18 +1,48 @@
 # PamięćZabrze – prompty krok po kroku (s01)
 
 Pilot kopiuje cały blok promptu do Kilo Code i akceptuje zmiany. Nawigator prowadzi pauzy. Po każdym kroku zamieniacie się rolami.
-Aplikację uruchamiacie klawiszem F5 w VS Code. Adres: http://localhost:5080.
+Aplikację uruchamiacie klawiszem **F5** w VS Code albo poleceniem `dotnet run --project src/GzmApp` (adres: http://localhost:5080). Testy – ikoną kolby albo `dotnet test`. Każde „jak to zrobić” jest w **docs/PORADNIK-UCZNIA.md** – zaglądajcie tam w każdej pauzie.
 
-Pracujecie jak zawodowcy: najpierw **specyfikacja**, potem **testy**, na końcu **kod**. Specyfikacja to 4 pliki w `scenarios/s01/spec/` – po jednym na krok. Każde ponumerowane zdanie w sekcji „Reguły” to jeden test. Kilo pisze kod, a testy mówią, czy kod robi to, co obiecuje zdanie.
+Pracujecie jak zawodowcy: najpierw **specyfikacja**, potem **testy**, na końcu **kod**. Specyfikacja to pliki w `scenarios/s01/spec/` – po jednym na krok. Każde ponumerowane zdanie w sekcji „Reguły” to jeden test o tej samej nazwie. Kilo pisze kod, a testy mówią, czy kod robi to, co obiecuje zdanie. W pauzach „decyzja” pytacie Kilo o propozycje i wybieracie, jak ma działać Wasz portal – każda decyzja ląduje w `LOG-DECYZJI.md`.
 
-## Krok 0 – specyfikacja i czerwone testy
+## Krok 0 – powstaje Wasz portal (szkielet i dane)
 
-### ⏸ Pauza – zanim zaczniecie
+Pierwszy prompt stawia fundament: aplikację (serwer, strona startowa, logowanie, baza) i plik z danymi „Zabrze: miejsca pamięci” pobrany prosto z portalu otwartedane.metropoliagzm.pl. Wy jeszcze niczego nie budujecie – najpierw sprawdzacie fundament.
 
-1. Otwórzcie `src/GzmApp/appsettings.json` i wpiszcie swój scenariusz: `"Scenario": "s01"`. Zapiszcie (Ctrl+S).
-2. Otwórzcie folder `scenarios/s01/spec/` i przeczytajcie plik kroku 1. Sekcja „Co się dzieje” opisuje krok słowami, a „Reguły” – co dokładnie ma działać.
-3. Ikona kolby po lewej (Testing) → `GzmApp.Specs` → ▶ „Run Tests”. Każdy test nazywa się tak jak zdanie ze specyfikacji, np. „Reguła 1: …”. Wszystkie są czerwone – aplikacja jeszcze nic nie umie.
-4. Wasz cel: zamienić czerwone testy w zielone, krok po kroku.
+~~~~text
+CEL
+Wasz portal PamięćZabrze zaczyna istnieć. Po tym prompcie na dysku jest aplikacja w src/GzmApp, projekt testów w tests/GzmApp.Specs i plik z danymi data/raw/s01_zabrze-miejsca-pamieci.csv. Scenariusz s01 jest już wpisany w konfigurację – pary nigdy nie wpisują go ręcznie.
+
+WYKONAJ
+1. Uruchom w terminalu (VS Code: Ctrl + `) polecenie:
+   powershell -ExecutionPolicy Bypass -File tools/nowy-portal.ps1 -Scenariusz s01
+   Skrypt tworzy src/, tests/ i db/, pobiera dane z portalu GZM i zakłada LOG-DECYZJI.md. Poczekaj na napis „GOTOWE”.
+2. Zbuduj aplikację: dotnet build src/GzmApp
+3. Sprawdź dane: dotnet test tests/GzmApp.Specs --filter Capability=s01-000-dane
+4. Sprawdź całość: dotnet test tests/GzmApp.Specs
+   Zielone mają być testy kroku 0 (dane) i test kontrolny; reguły kroków 1–4 są czerwone – tak ma być, to lista zadań pary.
+
+SPECYFIKACJA
+Ten krok nie buduje funkcji, ale ma swoją specyfikację: reguły pliku `scenarios/s01/spec/s01-000-dane.md` sprawdzają, że dane naprawdę są i są kompletne.
+
+ZASADY
+- Nie zmieniaj plików – wszystko tworzy skrypt. Gdy polecenie z punktu 1 się nie powiedzie, przeczytaj komunikat skryptu i powiedz parze, co zrobić dalej (np. brak internetu: poproś o plik z danych od prowadzącego i uruchom polecenie ponownie – skrypt pomija pobieranie, gdy plik już jest).
+- Po każdym poleceniu krótko napisz, co z niego wynikło.
+- Na koniec napisz w 3 punktach, co powstało.
+
+Nie zmieniaj plików poza: niczym – w tym kroku wszystko tworzy skrypt. Nie dodawaj pakietów.
+~~~~
+
+### ⏸ Pauza – zobaczcie, co powstało: fundament
+
+1. **Dane**: w Eksploratorze VS Code (Ctrl+Shift+E) znajdźcie `data/raw/s01_zabrze-miejsca-pamieci.csv` i otwórzcie. Pierwsza linia to nazwy kolumn – porównajcie je z tabelą „Kolumny do importu” w prompcie kroku 1. Kliknijcie test reguły 2 kroku 0 w panelu Testing: komunikat mówi, ile wierszy ma plik. Zamknijcie plik bez zapisywania.
+2. **Aplikacja**: naciśnijcie F5. Edge otworzy http://localhost:5080 – strona „Tu pojawi się Twoja aplikacja” z Waszym scenariuszem s01. W terminalu (zakładka z `dotnet`) widać wpisy startowe. Zatrzymajcie: Shift+F5 (poradnik, §2–3).
+3. **Logowanie**: na stronie kliknijcie „Zaloguj się” – Wasz portal ma już konta (przydadzą się w „Co dalej?”). Wróćcie na stronę główną.
+4. **Testy**: ikona kolby → ▶ „Run Tests”. Zielone: kontrola i kroku 0. Czerwone: kroki 1–4. Kliknijcie czerwony test – komunikat po polsku mówi, czego brakuje. To właśnie będziecie budować (poradnik §4–5).
+5. **Baza**: ikona bazy danych (SQL Server) → `GzmWorkshop` → `Tables` – są już tabele logowania (AspNet…). Wasza tabela z danymi powstanie w kroku 1 (poradnik §8).
+6. Przeczytajcie specyfikację kroku 1: `scenarios/s01/spec/s01-001-importuj-dane.md`. „Co się dzieje” opisuje krok słowami, a „Reguły” – co dokładnie ma działać.
+
+Wasz cel: zamienić czerwone testy w zielone, krok po kroku.
 
 ## Krok 1 – dane z pliku do bazy
 
@@ -56,7 +86,6 @@ CREATE TABLE dbo.[ZabrzeMemorials] (
 ```
 
 ZASADY
-- W `src/GzmApp/appsettings.json` ustaw `"Scenario": "s01"`.
 - Plik czytaj pakietem CsvHelper (jest już w projekcie) z `CultureInfo("pl-PL")`. Uwaga: ta kultura sama ustawia domyślny separator „;” – jeśli DANE mówią o innym, wskaż go jawnie w konfiguracji: `new CsvConfiguration(CultureInfo("pl-PL")) { Delimiter = "," }`. Nie dziel linii przez `Split`.
 - Pola odczytuj po nazwie kolumny z pliku: najpierw `csv.Read()` i `csv.ReadHeader()` (w CsvHelper 33 nie ma `ReadHeaderAsync`), potem `while (csv.Read())` i `csv.GetField("Kolumna")`. Nie mapuj wiersza na klasę – nazwy w pliku różnią się od nazw pól w tabeli.
 - Liczby i daty odczytuj z kulturą i formatem z tabeli kolumn. Puste pole albo wartość, której nie da się odczytać, w kolumnie z „Może być puste: tak” zapisz jako NULL. W kolumnie z „nie” taki wiersz pomiń i zapisz jego numer w logu. Bez wyjątku.
@@ -69,37 +98,38 @@ ZASADY
 - Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s01-001-importuj-dane`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
 - Na koniec napisz w 3 punktach, co zrobiłeś.
 
-Nie zmieniaj plików poza: `db/s01_create.sql`, `src/GzmApp/Data/CsvImporter.cs`, `src/GzmApp/AppServices.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
+Nie zmieniaj plików poza: `db/s01_create.sql`, `src/GzmApp/Data/CsvImporter.cs`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
 ### ⏸ Pauza – zobaczcie, co powstało
 
-1. Uruchomcie aplikację (F5). W terminalu pojawia się wpis z liczbą zaimportowanych wierszy.
-2. Rozszerzenie mssql (ikona bazy po lewej): serwer `(localdb)\MSSQLLocalDB`, baza `GzmWorkshop`, tabela `ZabrzeMemorials` → prawy klik → „Select Top 1000”. To Wasze dane z pliku – już w bazie.
-3. Zatrzymajcie aplikację (Shift+F5).
-4. Testing → ▶ „Run Tests”. Testy kroku 1 (`s01-001-importuj-dane`) są zielone. Czerwony test? Kliknijcie go: komunikat mówi, czego brakuje. Wklejcie ten komunikat do Kilo.
+1. **Co powstało**: nowe pliki `db/s01_create.sql` (tabela w bazie) i `src/GzmApp/Data/CsvImporter.cs` (czytanie pliku) oraz wpisy w `src/GzmApp/AppServices.cs` – tam rejestruje się klasę i uruchamia import.
+2. Uruchomcie aplikację (F5). W terminalu pojawia się wpis z liczbą zaimportowanych wierszy – to log Waszego importu.
+3. Rozszerzenie mssql (ikona bazy po lewej): serwer `(localdb)\MSSQLLocalDB`, baza `GzmWorkshop`, tabela `ZabrzeMemorials` → prawy klik → „Select Top 1000”. To Wasze dane z pliku – już w bazie (poradnik §8).
+4. **Debuger, pierwsze podejście** (poradnik §7): postawcie czerwoną pułapkę obok linii, w której `CsvImporter` odczytuje pole wiersza, uruchomcie F5 i odświeżcie stronę. Aplikacja zatrzyma się na pułapce – w panelu Variables zobaczcie wartości pierwszego wiersza z pliku.
+5. Zatrzymajcie aplikację (Shift+F5).
+6. Testing → ▶ „Run Tests”. Testy kroku 1 (`s01-001-importuj-dane`) są zielone. To samo z terminala: `dotnet test tests/GzmApp.Specs --filter Capability=s01-001-importuj-dane`. Czerwony test? Kliknijcie go: komunikat mówi, czego brakuje. Wklejcie ten komunikat do Kilo.
 
 ### ⏸ Pauza – decyzja 1: po czym użytkownik będzie szukał?
 
-**A – opis miejsca (najwięcej tekstu)**
+Nie ma gotowej listy do odhaczenia – o warianty pyta się **Kilo**, bo zna Wasze dane i wcześniejsze decyzje. Wy wybieracie.
+
+1. Wklejcie Kilo do rozmowy (to nie prompt kroku – zwykła prośba):
 
 ~~~text
-Wyszukiwarka szuka frazy w dowolnym miejscu pola `Description` (kolumna w pliku: `description`).
+Zaproponuj nam 3 różne warianty decyzji 1: „po czym użytkownik będzie szukał” w PamięćZabrze.
+Popatrz na kolumny naszych danych i na nasze dotychczasowe decyzje z LOG-DECYZJI.md.
+Każdy wariant to jedno zdanie według któregoś wzorca poniżej – w miejsce {Pole} i {kolumna} podstaw różne pola z naszych kolumn:
+Wyszukiwarka szuka frazy w dowolnym miejscu pola `{Pole}` (kolumna w pliku: `{kolumna}`).
+Wyszukiwarka pokazuje rekordy, w których pole `{Pole}` (kolumna w pliku: `{kolumna}`) zaczyna się od frazy.
+Przedstaw warianty po polsku, powiedz do czego się nadają, zapytaj nas, który wybieramy, i czekaj na odpowiedź.
 ~~~
 
-**B – nazwa miejsca, np. szkoła albo budynek**
+2. Porozmawiajcie i odpowiedzcie Kilo, który wariant wybieracie. Nie ma złych decyzji.
+3. Wybrane zdanie wklejcie do specyfikacji: plik `scenarios/s01/spec/s01-002-szukaj-rekordow.md`, w miejsce zdania reguły 1 (zostawcie „1. ” na początku). Zapiszcie (Ctrl+S). Potem Ctrl+Shift+P → „.NET: Build”, a w panelu Testing kliknijcie ⟳ – pojawi się test Waszego wariantu.
+4. Napiszcie Kilo: „Zapisz tę decyzję w LOG-DECYZJI.md”.
 
-~~~text
-Wyszukiwarka szuka frazy w dowolnym miejscu pola `LocationName` (kolumna w pliku: `locationName`).
-~~~
-
-**C – napis na tablicy**
-
-~~~text
-Wyszukiwarka szuka frazy w dowolnym miejscu pola `Inscription` (kolumna w pliku: `inscription`).
-~~~
-
-Wariant A jest już w specyfikacji. Wybraliście inny? Skopiujcie jego zdanie i wklejcie w pliku `scenarios/s01/spec/s01-002-szukaj-rekordow.md` w miejsce zdania reguły 1 (zostawcie „1. ” na początku). Zapiszcie plik.
+Bez decyzji też dobrze: w specyfikacji jest już zdanie domyślne i jego test działa.
 
 ## Krok 2 – wyszukiwarka (endpoint)
 
@@ -133,52 +163,49 @@ Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pa
 
 ### ⏸ Pauza – zobaczcie, co powstało
 
-1. Uruchomcie aplikację i otwórzcie adres `http://localhost:5080/?handler=Szukaj&q=` z dopisanym słowem z wybranej kolumny (dla wariantu A np. `którym`). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.
-2. F12 → zakładka Network → odświeżcie stronę. Kliknijcie żądanie `?handler=Szukaj`: status 200, a w „Response” jest tylko lista.
-3. W terminalu (log SQL) widać zapytanie z parametrem `q` – to Wasza fraza.
-4. Testing → ▶ „Run Tests”. Zielone są testy kroków 1 i 2. Reguła 5 sprawdza, że fraza `' OR 1=1 --` nic nie znajduje – to ochrona przed atakiem SQL injection.
+1. **Co powstało**: `src/GzmApp/Data/RecordRepository.cs` (zapytania do bazy z parametrem `@q`) i `src/GzmApp/Pages/Shared/_Lista.cshtml` (fragment listy). Handler `OnGetSzukaj` jest w `src/GzmApp/Pages/Index.cshtml.cs`.
+2. Uruchomcie aplikację i otwórzcie adres `http://localhost:5080/?handler=Szukaj&q=` z dopisanym słowem z wybranej kolumny (dla wariantu domyślnego np. `którym`). Widzicie samą listę – bez menu i stopki. To „fragment HTML”.
+3. **Narzędzia deweloperskie Edge** (poradnik §6): F12 → zakładka Network → odświeżcie stronę (Ctrl+F5). Kliknijcie żądanie `?handler=Szukaj`: status 200, w „Response” jest tylko lista, a w „Headers” parametr `q`. W zakładce Elements kliknijcie `<ul id="lista">` – element podświetla się na stronie.
+4. **Debuger** (poradnik §7): postawcie pułapkę w `OnGetSzukaj` w `Index.cshtml.cs`, uruchomcie F5 i otwórzcie adres z punktu 2. Aplikacja zatrzyma się: w panelu Variables zobaczcie `q` – Waszą frazę tak, jak widzi ją serwer. Shift+F5, żeby skończyć.
+5. W terminalu (log SQL) widać zapytanie z parametrem `q` – to Wasza fraza.
+6. Testing → ▶ „Run Tests”. Zielone są testy kroków 1 i 2. Reguła 5 sprawdza, że fraza `' OR 1=1 --` nic nie znajduje – to ochrona przed atakiem SQL injection.
 
 ### ⏸ Pauza – decyzja 2: co pokazać na liście?
 
-**A – dzielnica i ulica**
+1. Wklejcie Kilo do rozmowy:
 
 ~~~text
-Przy każdym rekordzie lista pokazuje tytuł `LocationName` i pola: `City`, `Street`.
+Zaproponuj nam 3 różne warianty decyzji 2: „co pokazać na liście wyników” w PamięćZabrze.
+Popatrz na kolumny naszych danych i na nasze dotychczasowe decyzje z LOG-DECYZJI.md.
+Każdy wariant to jedno zdanie według wzorca poniżej – w miejsce {Pole} podstaw pole z tytułem, a w miejsce {pola} różne zestawy pól (1–3 pola):
+Przy każdym rekordzie lista pokazuje tytuł `{Pole}` i pola: {pola}.
+Przedstaw warianty po polsku, powiedz, co parę zobaczy dzięki każdemu, zapytaj nas, który wybieramy, i czekaj na odpowiedź.
 ~~~
 
-**B – opis miejsca**
-
-~~~text
-Przy każdym rekordzie lista pokazuje tytuł `LocationName` i pola: `Description`.
-~~~
-
-**C – numer w rejestrze**
-
-~~~text
-Przy każdym rekordzie lista pokazuje tytuł `LocationName` i pola: `RecordNumber`.
-~~~
+2. Wybierzcie wariant i odpowiedzcie Kilo.
+3. Wybrane zdanie wklejcie w pliku `scenarios/s01/spec/s01-003-pokaz-strone.md` w miejsce zdania reguły 4 (zostawcie „4. ”). Zapiszcie, potem Ctrl+Shift+P → „.NET: Build” i ⟳ w panelu Testing.
+4. Napiszcie Kilo: „Zapisz tę decyzję w LOG-DECYZJI.md”.
 
 ### ⏸ Pauza – decyzja 3: jaki kafelek ze statystyką?
 
-**A – 5 dzielnic z największą liczbą miejsc pamięci**
+1. Wklejcie Kilo do rozmowy:
 
 ~~~text
-Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `City` z liczbą rekordów.
+Zaproponuj nam 3 różne warianty decyzji 3: „jaki kafelek ze statystyką” w PamięćZabrze.
+Popatrz na kolumny naszych danych i na nasze dotychczasowe decyzje z LOG-DECYZJI.md.
+Każdy wariant to jedno zdanie według któregoś wzorca poniżej – w miejsce {Pole} podstaw różne pola (sumę i średnią tylko dla pól liczbowych):
+Kafelek ze statystyką pokazuje sumę pola `{Pole}`.
+Kafelek ze statystyką pokazuje średnią pola `{Pole}` z 2 miejscami po przecinku.
+Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `{Pole}` z liczbą rekordów.
+Kafelek ze statystyką pokazuje liczbę rekordów dla każdej wartości pola `{Pole}`.
+Przedstaw warianty po polsku, powiedz, co każda statystyka powie o danych, zapytaj nas, który wybieramy, i czekaj na odpowiedź.
 ~~~
 
-**B – 5 ulic z największą liczbą miejsc pamięci**
+2. Wybierzcie wariant i odpowiedzcie Kilo.
+3. Wybrane zdanie wklejcie w pliku `scenarios/s01/spec/s01-003-pokaz-strone.md` w miejsce zdania reguły 5 (zostawcie „5. ”). Zapiszcie, potem Ctrl+Shift+P → „.NET: Build” i ⟳ w panelu Testing.
+4. Napiszcie Kilo: „Zapisz tę decyzję w LOG-DECYZJI.md”.
 
-~~~text
-Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `Street` z liczbą rekordów.
-~~~
-
-**C – liczba miejsc w każdej dzielnicy**
-
-~~~text
-Kafelek ze statystyką pokazuje liczbę rekordów dla każdej wartości pola `City`.
-~~~
-
-Warianty A są już w specyfikacji. Wybraliście inne? Wklejcie ich zdania w pliku `scenarios/s01/spec/s01-003-pokaz-strone.md` w miejsce reguły 4 (lista) i reguły 5 (kafelek) – zostawcie „4. ” i „5. ” na początku. Zapiszcie plik.
+W specyfikacji są już zdania domyślne (decyzje 2 i 3) – jeśli nie wybierzecie, testy działają dla nich.
 
 ## Krok 3 – strona z wyszukiwarką i kafelkiem (HTMX)
 
@@ -233,33 +260,33 @@ Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/In
 
 ### ⏸ Pauza – zobaczcie, co powstało
 
-1. Otwórzcie `http://localhost:5080` i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.
-2. F12 → Network: przy pisaniu pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Tylko lista wraca z serwera, reszta strony zostaje.
-3. Obok listy jest kafelek ze statystyką, a w stopce – źródło danych. Zwęźcie okno przeglądarki (albo F12 → ikona telefonu): kafelek przesuwa się nad listę – strona działa też na telefonie.
-4. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
-5. Testing → ▶ „Run Tests”. Zielone są testy kroków 1–3.
+1. **Co powstało**: `src/GzmApp/Pages/Index.cshtml` to teraz cała strona PamięćZabrze (wyszukiwarka, kafelek, stopka ze źródłem danych); `_Lista.cshtml` pokazuje pola z Waszej decyzji 2, a statystykę z decyzji 3 liczy nowa metoda w `RecordRepository.cs`.
+2. Otwórzcie http://localhost:5080 i zacznijcie pisać w wyszukiwarce. Lista zmienia się bez przeładowania strony.
+3. F12 → Network (poradnik §6): przy pisaniu co 300 ms pojawiają się żądania `?handler=Szukaj` z nagłówkiem `HX-Request: true`. Kliknijcie jedno: w „Response” jest tylko fragment listy – reszta strony zostaje na miejscu. W Elements zobaczcie, że podmienia się tylko `<div id="wyniki">`.
+4. F12 → ikona telefonu (tryb mobilny): zwęźcie okno – kafelek przesuwa się nad listę, strona działa też na telefonie.
+5. W stopce jest źródło danych z licencją CC BY 4.0 – dane są otwarte, ale autor zbioru chce, żeby było widać, skąd pochodzą.
+6. Adres `?handler=Szukaj&q=…` otwarty wprost w przeglądarce pokazuje teraz całą stronę – sam fragment dostaje tylko HTMX.
+7. Testing → ▶ „Run Tests”. Zielone są testy kroków 1–3. W terminalu to samo: `dotnet test tests/GzmApp.Specs --filter Capability=s01-003-pokaz-strone`.
 
 ### ⏸ Pauza – decyzja 4: co ma przeanalizować AI?
 
-**A – trasa po miejscach pamięci**
+To najciekawsza decyzja – Kilo proponuje zadania dla AI **na podstawie Waszych danych i wszystkich wcześniejszych decyzji**, a nie z gotowej listy.
+
+1. Wklejcie Kilo do rozmowy:
 
 ~~~text
-Model dostaje zadanie: Pogrupuj te miejsca pamięci według tego, kogo albo co upamiętniają, i zaproponuj spacer po 3 z nich.
+Zaproponuj nam 3 różne warianty decyzji 4: „co ma przeanalizować AI” w PamięćZabrze.
+Popatrz na kolumny naszych danych, na to, co już zbudowaliśmy, i na nasze dotychczasowe decyzje z LOG-DECYZJI.md – propozycje mają pasować do tego portalu.
+Każdy wariant to jedno zdanie według wzorca poniżej – w miejsce {zadanie} wstaw konkretne, pożyteczne zadanie analityczne dla naszych danych (nie powtarzaj tych samych pomysłów, jakie już zapisaliśmy w LOG-DECYZJI.md):
+Model dostaje zadanie: {zadanie}
+Przedstaw warianty po polsku, powiedz, czego parę się z nich dowie, zapytaj nas, który wybieramy, i czekaj na odpowiedź.
 ~~~
 
-**B – 3 ciekawostki**
+2. Wybierzcie wariant i odpowiedzcie Kilo.
+3. Wybrane zdanie wklejcie w pliku `scenarios/s01/spec/s01-004-analiza-ai.md` w miejsce zdania reguły 3 (zostawcie „3. ”). Zapiszcie, potem Ctrl+Shift+P → „.NET: Build” i ⟳ w panelu Testing.
+4. Napiszcie Kilo: „Zapisz tę decyzję w LOG-DECYZJI.md”.
 
-~~~text
-Model dostaje zadanie: Znajdź w tych rekordach 3 ciekawostki i krótko je opisz.
-~~~
-
-**C – kontrola jakości danych**
-
-~~~text
-Model dostaje zadanie: Sprawdź jakość tych danych: wskaż puste pola, literówki i różne zapisy tej samej wartości.
-~~~
-
-Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `scenarios/s01/spec/s01-004-analiza-ai.md` w miejsce reguły 3 (zostawcie „3. ” na początku). Zapiszcie plik.
+W specyfikacji jest już zdanie domyślne – bez decyzji testy działają dla niego.
 
 ## Krok 4 – analiza AI
 
@@ -303,44 +330,40 @@ Nie zmieniaj plików poza: `src/GzmApp/Ai/AiAnalyzer.cs`, `src/GzmApp/Pages/Inde
 
 ### ⏸ Pauza – zobaczcie, co powstało
 
-1. Otwórzcie `http://localhost:5080`, wpiszcie frazę i kliknijcie „✨ Analizuj z AI”. Po kilku sekundach pojawia się fioletowa karta. Ten tekst napisał model AI, a nie Wasz kod.
-2. Rozwińcie „Co poszło do modelu?”: zadanie i Wasze rekordy. Model widzi tylko to – nic więcej o Waszej bazie nie wie.
-3. Terminal: wpisy `AI (…): wysyłam do modelu … znaków` i `odpowiedź po … s, tokeny: …`. Tokeny to „waluta” AI – każde kliknięcie kosztuje.
-4. Sprawdźcie AI: czy numery „Nr” i liczby zgadzają się z listą wyników? Kliknijcie jeszcze raz – odpowiedź może być trochę inna. AI może się mylić, dlatego karta to mówi.
-5. F12 → Network: żądanie `?handler=Analizuj&q=…`. Z modelem rozmawia serwer – klucz nie trafia do przeglądarki.
-6. Testing → ▶ „Run Tests”. Wszystkie testy kroków 1–4 są zielone. Reguły 1–8 kroku 4 sprawdza udawany model: zawsze odpowiada tak samo, więc test wie, czego szukać na stronie (np. kodu HTML albo awarii modelu). Reguła 9 pyta prawdziwy model – sprawdza, że u Was AI naprawdę działa.
+1. **Co powstało**: `src/GzmApp/Ai/AiAnalyzer.cs` (rozmowa z modelem), przycisk i karta AI na stronie głównej oraz widok `src/GzmApp/Pages/Shared/_Analiza.cshtml`.
+2. Otwórzcie http://localhost:5080, wpiszcie frazę i kliknijcie „✨ Analizuj z AI”. Po kilku sekundach pojawia się fioletowa karta. Ten tekst napisał model AI, a nie Wasz kod – i karta mówi o tym wprost.
+3. Rozwińcie „Co poszło do modelu?”: zadanie z Waszej decyzji 4 i rekordy z listy. Model widzi tylko to – nic więcej o Waszej bazie nie wie.
+4. Terminal: wpisy `AI (…): wysyłam do modelu … znaków` i `odpowiedź po … s, tokeny: …`. Tokeny to „waluta” AI – każde kliknięcie kosztuje.
+5. Sprawdźcie AI: czy numery „Nr” i liczby zgadzają się z listą wyników? Kliknijcie jeszcze raz – odpowiedź może być trochę inna. AI może się mylić, dlatego karta to mówi.
+6. F12 → Network: żądanie `?handler=Analizuj&q=…`. Z modelem rozmawia serwer – klucz nie trafia do przeglądarki.
+7. Testing → ▶ „Run Tests”. Wszystkie testy kroków 0–4 są zielone. Reguły 1–8 kroku 4 sprawdza udawany model: zawsze odpowiada tak samo, więc test wie, czego szukać na stronie. Reguła 9 pyta prawdziwy model – sprawdza, że u Was AI naprawdę działa.
 
 ## Gotowe! Co dalej?
 
 Macie całą aplikację: dane w bazie, wyszukiwarkę, stronę z HTMX i analizę AI. Jeśli zostało Wam trochę czasu, dodajcie coś od siebie – własnym promptem albo jednym z pomysłów:
 
-1. Drugi kafelek ze statystyką – weźcie inny wariant z decyzji 3. Najpierw dopiszcie go do specyfikacji jako regułę 7 kroku 3 (zdanie z decyzji 3): test będzie czerwony, dopóki Kilo go nie zrobi.
-2. Drugie zadanie dla AI – weźcie inny wariant z decyzji 4 i dodajcie drugi przycisk (np. „🔎 Sprawdź jakość danych”).
+1. Drugi kafelek ze statystyką – poproście Kilo o inne propozycje decyzji 3 i wklejcie wybrane zdanie do specyfikacji jako regułę 7 kroku 3: test będzie czerwony, dopóki Kilo go nie zrobi.
+2. Drugie zadanie dla AI – poproście Kilo o inne propozycje decyzji 4 i dodajcie drugi przycisk (np. „🔎 Sprawdź jakość danych”).
 3. Sortowanie listy po wybranym polu (przycisk przy nagłówku listy, `hx-get` z parametrem `sort`).
 4. Przycisk „Pokaż więcej” pod listą: kolejne 20 rekordów doklejane na końcu (`hx-swap="beforeend"`).
 5. Logowanie i ulubione: zalogowany użytkownik oznacza rekordy gwiazdką ★. Ulubione w PamięćZabrze to miejsca pamięci, które para chce odwiedzić na wycieczce po Zabrzu. Specyfikacja czeka w `scenarios/s01/spec/dodatkowe/s01-005-zapisz-ulubione.md` – przenieście ten plik do `scenarios/s01/spec/` i przebudujcie testy od zera (terminal: `dotnet build --no-incremental tests/GzmApp.Specs`): pojawi się 8 nowych czerwonych testów. Zwykłe „Build” nowego pliku nie zauważy.
 
 ### ⏸ Pauza – decyzja 5: co pokazać w „Moich ulubionych”?
 
-**A – lista tytułów**
+1. Wklejcie Kilo do rozmowy:
 
 ~~~text
+Zaproponuj nam 3 warianty decyzji 5: „co pokazać na stronie Moje ulubione” w PamięćZabrze.
+Każdy wariant to jedno zdanie według któregoś wzorca poniżej (bez zmian w treści – to trzy różne możliwości):
 Strona „Moje ulubione” pokazuje tytuły ulubionych rekordów.
-~~~
-
-**B – tytuły z datą dodania**
-
-~~~text
 Strona „Moje ulubione” pokazuje tytuł i datę dodania każdego rekordu, od najnowszych.
-~~~
-
-**C – tytuły z przyciskiem „Usuń”**
-
-~~~text
 Strona „Moje ulubione” pokazuje tytuł i przycisk „Usuń”, który usuwa rekord z listy bez przeładowania strony.
+Przedstaw warianty po polsku, powiedz, czym się różnią, zapytaj nas, który wybieramy, i czekaj na odpowiedź.
 ~~~
 
-Wariant A jest już w specyfikacji. Wybraliście inny? Wklejcie jego zdanie w pliku `s01-005-zapisz-ulubione.md` w miejsce reguły 8 (zostawcie „8. ” na początku). Zapiszcie plik.
+2. Wybierzcie wariant i odpowiedzcie Kilo.
+3. Wybrane zdanie wklejcie w pliku `scenarios/s01/spec/s01-005-zapisz-ulubione.md` w miejsce zdania reguły 8 (zostawcie „8. ”). Zapiszcie plik.
+4. Napiszcie Kilo: „Zapisz tę decyzję w LOG-DECYZJI.md”.
 
 ~~~~text
 CEL
@@ -373,7 +396,7 @@ ZASADY
 - Stan ★ `_Lista.cshtml` sprawdza sama: `@inject IFavoritesRepository` i ulubione zalogowanego użytkownika (niezalogowany: wszystkie „☆”). Nie przekazuj tego przez `ViewData` – `Partial(...)` w PageModel go nie kopiuje.
 - Handlery `OnPostUlubione(int id)` i `OnDeleteUlubione(int id)` w `Index.cshtml.cs` zwracają `Partial("_Gwiazdka", …)` z nowym stanem. Niezalogowany: status 401 i fragment „Zaloguj się, aby dodać do ulubionych” – sprawdź `User.Identity?.IsAuthenticated` w handlerze i zwróć `new ContentResult { StatusCode = 401, ContentType = "text/html; charset=utf-8", Content = "<p class=\"alert alert-warning\">Zaloguj się, aby dodać do ulubionych</p>" }`. Nie dawaj `[Authorize]` na `IndexModel` ani na handlerach: wtedy niezalogowany dostaje przekierowanie 302 do logowania zamiast 401.
 - Token antiforgery wysyła już `<body hx-headers:inherited='{"RequestVerificationToken":"..."}'>` w `_Layout.cshtml`. Nie wyłączaj walidacji antiforgery.
-- Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według reguły 8 (strona „Moje ulubione”): `<ul id="ulubione">`, jeden `<li>` na rekord, tytuł w `<span class="tytul">`. Pokazuj tylko to, co obejmuje wybrany wariant reguły 8: **A** – same tytuły; **B** – dodatkowo data dodania: `CreatedAt` (w bazie UTC), czas polski `dd.MM.yyyy HH:mm`; **C** – dodatkowo przycisk „Usuń”: `hx-delete="?handler=Usun&id=..."` z `hx-target="closest li"` i `hx-swap="outerHTML"`, a handler `OnDeleteUsun(int id)` w `Ulubione.cshtml.cs` zwraca pustą odpowiedź 200.
+- Strona `src/GzmApp/Pages/Ulubione.cshtml` z `[Authorize]` według reguły 8 (strona „Moje ulubione”): `<ul id="ulubione">`, jeden `<li>` na rekord, tytuł w `<span class="tytul">`. Pokazuj tylko to, co obejmuje wybrany wariant reguły 8: same tytuły; z datą dodania: `CreatedAt` (w bazie UTC), czas polski `dd.MM.yyyy HH:mm`; z przyciskiem „Usuń”: `hx-delete="?handler=Usun&id=..."` z `hx-target="closest li"` i `hx-swap="outerHTML"`, a handler `OnDeleteUsun(int id)` w `Ulubione.cshtml.cs` zwraca pustą odpowiedź 200.
 - Link „Moje ulubione” w menu w `_Layout.cshtml`, widoczny zawsze (niezalogowanego strona przekieruje do logowania).
 - Rejestracja repozytorium w `AddAppServices` w `src/GzmApp/AppServices.cs`. Krótkie metody, bez zagnieżdżonych if-ów.
 - Na koniec uruchom `dotnet test tests/GzmApp.Specs --filter Capability=s01-005-zapisz-ulubione`. Jeśli test nie przechodzi, przeczytaj jego komunikat i popraw kod (nie test) – najwyżej raz. Napisz, ile testów przeszło.
@@ -381,3 +404,11 @@ ZASADY
 
 Nie zmieniaj plików poza: `db/900_favorites.sql`, `src/GzmApp/Data/FavoritesRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml.cs`, `src/GzmApp/Pages/Shared/_Layout.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
+
+### ⏸ Pauza – zobaczcie, co powstało
+
+1. **Co powstało**: tabela `Favorites` w bazie, `src/GzmApp/Data/FavoritesRepository.cs` (zapisywanie ulubionych), gwiazdki na liście i strona „Moje ulubione” (`src/GzmApp/Pages/Ulubione.cshtml`).
+2. Zarejestrujcie się (przycisk „Zarejestruj się”) i zalogujcie. Kliknijcie ☆ przy rekordzie – zamienia się w ★ bez przeładowania strony.
+3. Strona „Moje ulubione” pokazuje Wasz wybór tak, jak zdecydowaliście w decyzji 5. Wylogujcie się i wróćcie na stronę główną: wszystkie gwiazdki są z powrotem „☆” – ulubione są przypisane do konta.
+4. F12 → Network: kliknięcie ★ to żądanie POST z nagłówkiem `RequestVerificationToken` (token antiforgery – ochrona przed fałszerstwem żądań).
+5. Testing → ▶ „Run Tests”. Zielone są wszystkie testy, także kroku 5.

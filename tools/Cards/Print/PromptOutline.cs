@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace Cards.Print;
 
-public sealed record Decision(int Number, string Question, IReadOnlyList<string> Variants);
+public sealed record Decision(int Number, string Question);
 
 public sealed record Step(int Number, string Title, IReadOnlyList<string> Look, IReadOnlyList<Decision> Decisions);
 
@@ -30,7 +30,7 @@ public sealed partial record PromptOutline(IReadOnlyList<Step> Steps, IReadOnlyL
         var marker = new[] { "zobaczcie, co powstało", "zanim zaczniecie" }.FirstOrDefault(m => body.Contains(m, StringComparison.Ordinal));
         var look = marker is null ? [] : NumberedItems(body[body.IndexOf(marker, StringComparison.Ordinal)..]);
         var decisions = DecisionHeading().Matches(body)
-            .Select(m => new Decision(int.Parse(m.Groups["n"].Value), m.Groups["q"].Value, Variants(body[m.Index..])))
+            .Select(m => new Decision(int.Parse(m.Groups["n"].Value), m.Groups["q"].Value))
             .ToList();
         return new Step(number, title, look, decisions);
     }
@@ -40,19 +40,11 @@ public sealed partial record PromptOutline(IReadOnlyList<Step> Steps, IReadOnlyL
         text.Split('\n').SkipWhile(l => !Numbered().IsMatch(l)).TakeWhile(l => Numbered().IsMatch(l))
             .Select(l => Numbered().Replace(l, string.Empty).Trim()).ToList();
 
-    // Variants of one decision: "**A – label**" lines up to the next "### " heading.
-    private static List<string> Variants(string text) =>
-        VariantLine().Matches(text.Split("\n### ")[0])
-            .Select(m => $"{m.Groups["letter"].Value} – {m.Groups["label"].Value}").ToList();
-
     [GeneratedRegex(@"^## Krok (?<n>\d) – (?<title>.+)$", RegexOptions.Multiline)]
     private static partial Regex StepHeading();
 
     [GeneratedRegex(@"^### ⏸ Pauza – decyzja (?<n>\d): (?<q>.+)$", RegexOptions.Multiline)]
     private static partial Regex DecisionHeading();
-
-    [GeneratedRegex(@"^\*\*(?<letter>[A-Z]) – (?<label>.+)\*\*$", RegexOptions.Multiline)]
-    private static partial Regex VariantLine();
 
     [GeneratedRegex(@"^\d+\. ")]
     private static partial Regex Numbered();

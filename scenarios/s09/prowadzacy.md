@@ -1,17 +1,20 @@
 # ArcheoDąbrowa (s09) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (4 pliki, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
+Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (5 plików, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
 
-Każde zdanie z sekcji „Reguły” w `spec/` to test w `tests/GzmApp.Specs` (generator `tools/Spectree.Generator`, kroki w `tests/GzmApp.Specs/Steps`). Testy liczą wartości oczekiwane z bazy i z `checkpoints.md`, więc działają dla każdego wariantu decyzji. Testy biorą scenariusz z `"Scenario"` w `src/GzmApp/appsettings.json` (po `ratunek.ps1` – z `appsettings.Development.json`); po zmianie trzeba przebudować projekt.
+Para **losuje** scenariusz (wylosowana karta pary), czyta `scenarios/s09/karta.md` i zaczyna od kroku 0 w `prompty.md`. Pierwszy prompt uruchamia `tools/nowy-portal.ps1`: kopiuje szkielet (`szkielet/` → `src`, `tests`, `db`), wpisuje `"Scenario": "s09"` w `src/GzmApp/appsettings.json` (pary NIE wpisują scenariusza ręcznie), pobiera plik danych z portalu GZM i zakłada `LOG-DECYZJI.md`. Potem Kilo buduje i uruchamia testy.
+
+Decyzje 1–5 nie mają wydrukowanych wariantów: para wkleja Kilo prośbę o propozycje, Kilo proponuje 3 warianty według wzorców zdań (z `prompty.md`), bierze pod uwagę dane i `LOG-DECYZJI.md`, pyta parę i czeka. Para wkleja wybrane zdanie do specyfikacji (poza tym plikiem `scenarios/` są dla Kilo zablokowane). Bez decyzji działają zdania domyślne.
 
 - **Pomysł:** Stanowiska archeologiczne Dąbrowy Górniczej: co znaleziono i z jakiej epoki.
-- **Dane:** „Dąbrowa Górnicza: zabytki archeologiczne”, plik `data/raw/s09_dabrowa-zabytki-archeologiczne.csv`, tabela `ArchaeologicalSites`.
+- **Dane:** „Dąbrowa Górnicza: zabytki archeologiczne”, plik `data/raw/s09_dabrowa-zabytki-archeologiczne.csv`, tabela `ArchaeologicalSites`. Gdy pobieranie w kroku 0 się nie powiedzie (sieć), połóż plik z pendrive'a w `data/raw/` i poproś parę o ponowne uruchomienie skryptu – pominie pobieranie.
 
-## Co powinno wyjść przy wariantach A
+## Co powinno wyjść przy zdaniach domyślnych
 
-Gałęzie `ratunek/etap-1..4` realizują warianty A wszystkich decyzji i dają dokładnie te wartości. Przy innych wariantach (B, C) liczby z kroków 2–4 będą inne – to w porządku.
+Gałęzie `ratunek/etap-1..4` realizują zdania domyślne wszystkich decyzji i dają dokładnie te wartości. Przy innych decyzjach par liczby z kroków 2–4 będą inne – to w porządku.
 
-- Krok 1: wierszy w tabeli **135** (E1.rows) (w pliku **135** (E1.fileRows)); wiersz 7, pole `Chronology`: **Wczesne średniowiecze - XI-XII/XIIIw.; Okres nowożytny - XVII-XIXw.** (E1.row7.value); rekordy z pustym albo nieczytelnym polem: **8** (E1.weird).
+- Krok 0: skrypt pisze „GOTOWE”, testy `s09-000-dane` zielone (plik, liczba wierszy **135** (E1.fileRows), nagłówki).
+- Krok 1: wierszy w tabeli **135** (E1.rows); wiersz 7, pole `Chronology`: **Wczesne średniowiecze - XI-XII/XIIIw.; Okres nowożytny - XVII-XIXw.** (E1.row7.value); rekordy z pustym albo nieczytelnym polem: **8** (E1.weird).
 - Krok 2: fraza **gródki** (E2.phrase) daje **3** (E2.count) wyników:
    - Nr 69: **Ślad osadnictwa - Gródki; Ślad osadnictwa - Gródki; Ślad osadnictwa - Gródki** (E2.result.1)
    - Nr 86: **Ślad osadnictwa - Gródki** (E2.result.2)
@@ -24,7 +27,7 @@ Gałęzie `ratunek/etap-1..4` realizują warianty A wszystkich decyzji i dają d
    - 96-52: **12** (E3.group.5)
    - 97-51: **5** (E3.group.6)
    - 96-49: **1** (E3.group.7)
-- Krok 4: karta „✨ Analiza AI” z odpowiedzią modelu AI GPT-6 Luna (treść za każdym razem trochę inna – nie ma wartości kontrolnej). Wariant A zadania: Pogrupuj stanowiska według epoki (chronologii) i wskaż najstarsze. Bez pliku `src/GzmApp/appsettings.Local.json` karta pokazuje „Brak klucza do modelu AI – poproś prowadzącego.”.
+- Krok 4: karta „✨ Analizuj z AI” z odpowiedzią modelu AI GPT-6 Luna (treść za każdym razem trochę inna – nie ma wartości kontrolnej). Zadanie zależy od decyzji 4 pary (pytają Kilo o propozycje). Bez pliku `src/GzmApp/appsettings.Local.json` karta pokazuje „Brak klucza do modelu AI – poproś prowadzącego.”.
 - Dodatkowo (ulubione): tytuł rekordu z wiersza 7 (np. do sprawdzenia „Moich ulubionych”): **Osada; Osada** (E4.title).
 
 Pełna lista wartości: `checkpoints.md` (generuje `tools/Expect`).

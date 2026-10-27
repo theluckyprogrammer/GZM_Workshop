@@ -1,16 +1,16 @@
-# RowerStat – scenariusz s03
+# RowerStat – Wasz portal (scenariusz s03)
 
-- **Aplikacja:** RowerStat
-- **Pomysł:** Ile rowerów miejskich jest dostępnych w każdej gminie GZM i gdzie jest ich za mało.
-- **Analiza AI (krok 4):** Wskaż dni i gminy, w których dostępnych rowerów było mniej niż wymaganych, i napisz, co z tego wynika.
-- **Dane:** „Dzienna dostępność rowerów w gminach”, plik `data/raw/s03_rowery-dostepnosc-gminy.csv`.
-- **Atrybucja:** Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0. Strona zbioru: https://otwartedane.metropoliagzm.pl/dataset/4e4f0a8bdce9bb2857c6ef27eceb7a8308127b738dfd7c51decc88287d4b9084
+**Ile rowerów miejskich jest dostępnych w każdej gminie GZM i gdzie jest ich za mało.** To portal, który zbudujecie w tym warsztacie – na prawdziwych otwartych danych Metropolii GZM.
+
+- **Dane:** „Dzienna dostępność rowerów w gminach” – pobierzecie je w kroku 0 prosto z portalu [otwartedane.metropoliagzm.pl](https://otwartedane.metropoliagzm.pl/dataset/4e4f0a8bdce9bb2857c6ef27eceb7a8308127b738dfd7c51decc88287d4b9084) (licencja CC BY 4.0, atrybucja: Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0).
+- **Co powstanie:** w 5 krokach – szkielet portalu z danymi → dane w bazie SQL → wyszukiwarka → strona z listą i statystyką → analiza danych przez AI (a na koniec, dla chętnych, logowanie i ulubione).
+- **Kto pisze kod:** Kilo Code (AI) – wy nim sterujecie promptami z `prompty.md` i decydujecie, jak portal ma działać.
 
 ## Jak pracujecie
 
-1. Budujecie całą aplikację w 4 krokach: dane w bazie → wyszukiwarka → strona → analiza AI.
-2. Najpierw specyfikacja, potem testy, na końcu kod. Specyfikacja to `spec/` obok tej karty: każde zdanie w „Reguły” to jeden test (ikona kolby w VS Code). Krok jest gotowy, gdy jego testy są zielone.
-3. Wszystkie prompty są w `prompty.md`. Idźcie od góry do dołu, zaczynając od kroku 0.
-4. **Pilot** kopiuje prompt do Kilo Code i akceptuje zmiany. **Nawigator** czyta pauzy, prowadzi decyzje i patrzy, czy wszystko działa. Po każdym kroku zamieniacie się rolami.
-5. W pauzach wybieracie, jak ma wyglądać Wasza aplikacja: wybrane zdanie wklejacie do specyfikacji. Nie ma złych odpowiedzi.
+1. **Pilot** kopiuje prompt do Kilo Code i akceptuje zmiany. **Nawigator** czyta pauzy, prowadzi decyzje i patrzy, czy wszystko działa. Po każdym kroku zamieniacie się rolami.
+2. Zaczynacie od **kroku 0** w `prompty.md`: pierwszy prompt tworzy szkielet aplikacji i pobiera dane. Potem budujecie funkcję za funkcją – w każdym kroku nowa część portalu.
+3. Pracujecie jak zawodowcy: najpierw **specyfikacja** (`spec/` obok tej karty – każde zdanie w „Reguły” to jeden test), potem **testy**, na końcu **kod**. Krok jest gotowy, gdy jego testy są zielone. Ikona kolby w VS Code pokazuje je na żywo.
+4. W pauzach „decyzja” **pytacie Kilo o propozycje** – AI zna Wasze dane i proponuje warianty dopasowane do Waszego portalu, a Wy wybieracie. Każdą decyzję Kilo zapisuje w `LOG-DECYZJI.md` – powstaje zapis, jak powstawał Wasz portal.
+5. Jak coś uruchomić, gdzie zajrzeć w przeglądarce, terminalu, debuggerze i bazie – pokazuje krok po kroku `docs/PORADNIK-UCZNIA.md`. W każdej pauzie jest wskazane, który akapit otworzyć.
 6. Skończyliście? Na końcu `prompty.md` są pomysły, co dodać samodzielnie.

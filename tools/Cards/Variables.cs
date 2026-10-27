@@ -12,11 +12,8 @@ public static class Variables
         ArgumentNullException.ThrowIfNull(text);
 
         var variables = Basic(mapping, checkpoints, text);
-        foreach (var (variants, index) in Decisions.For(mapping, text).Select((v, i) => (v, i + 1)))
-        {
-            variables[$"decision{index}"] = string.Join("\n\n", variants.Select(v => $"**{v.Letter} – {v.Label}**\n\n~~~text\n{v.Line}\n~~~"));
-            variables[$"rule{index}"] = variants[0].Line;
-        }
+        foreach (var index in Enumerable.Range(1, 5))
+            variables[$"rule{index}"] = Decisions.Rule(index, mapping, text);
         return variables;
     }
 

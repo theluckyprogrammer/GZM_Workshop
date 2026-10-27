@@ -1,16 +1,16 @@
-# SportGliwice – scenariusz s07
+# SportGliwice – Wasz portal (scenariusz s07)
 
-- **Aplikacja:** SportGliwice
-- **Pomysł:** Obiekty sportowe w Gliwicach: hale, boiska, baseny – gdzie są i kto nimi zarządza.
-- **Analiza AI (krok 4):** Pogrupuj obiekty według rodzaju, np. hala, boisko, basen, i napisz, kto zarządza większością z nich.
-- **Dane:** „Gliwice: obiekty sportowe”, plik `data/raw/s07_gliwice-obiekty-sportowe.csv`.
-- **Atrybucja:** Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0. Strona zbioru: https://otwartedane.metropoliagzm.pl/dataset/f310c9b971378c90071de753fc47e60d0b7b7fa52a9a0408bc5937c9373f6bd3
+**Obiekty sportowe w Gliwicach: hale, boiska, baseny – gdzie są i kto nimi zarządza.** To portal, który zbudujecie w tym warsztacie – na prawdziwych otwartych danych Metropolii GZM.
+
+- **Dane:** „Gliwice: obiekty sportowe” – pobierzecie je w kroku 0 prosto z portalu [otwartedane.metropoliagzm.pl](https://otwartedane.metropoliagzm.pl/dataset/f310c9b971378c90071de753fc47e60d0b7b7fa52a9a0408bc5937c9373f6bd3) (licencja CC BY 4.0, atrybucja: Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0).
+- **Co powstanie:** w 5 krokach – szkielet portalu z danymi → dane w bazie SQL → wyszukiwarka → strona z listą i statystyką → analiza danych przez AI (a na koniec, dla chętnych, logowanie i ulubione).
+- **Kto pisze kod:** Kilo Code (AI) – wy nim sterujecie promptami z `prompty.md` i decydujecie, jak portal ma działać.
 
 ## Jak pracujecie
 
-1. Budujecie całą aplikację w 4 krokach: dane w bazie → wyszukiwarka → strona → analiza AI.
-2. Najpierw specyfikacja, potem testy, na końcu kod. Specyfikacja to `spec/` obok tej karty: każde zdanie w „Reguły” to jeden test (ikona kolby w VS Code). Krok jest gotowy, gdy jego testy są zielone.
-3. Wszystkie prompty są w `prompty.md`. Idźcie od góry do dołu, zaczynając od kroku 0.
-4. **Pilot** kopiuje prompt do Kilo Code i akceptuje zmiany. **Nawigator** czyta pauzy, prowadzi decyzje i patrzy, czy wszystko działa. Po każdym kroku zamieniacie się rolami.
-5. W pauzach wybieracie, jak ma wyglądać Wasza aplikacja: wybrane zdanie wklejacie do specyfikacji. Nie ma złych odpowiedzi.
+1. **Pilot** kopiuje prompt do Kilo Code i akceptuje zmiany. **Nawigator** czyta pauzy, prowadzi decyzje i patrzy, czy wszystko działa. Po każdym kroku zamieniacie się rolami.
+2. Zaczynacie od **kroku 0** w `prompty.md`: pierwszy prompt tworzy szkielet aplikacji i pobiera dane. Potem budujecie funkcję za funkcją – w każdym kroku nowa część portalu.
+3. Pracujecie jak zawodowcy: najpierw **specyfikacja** (`spec/` obok tej karty – każde zdanie w „Reguły” to jeden test), potem **testy**, na końcu **kod**. Krok jest gotowy, gdy jego testy są zielone. Ikona kolby w VS Code pokazuje je na żywo.
+4. W pauzach „decyzja” **pytacie Kilo o propozycje** – AI zna Wasze dane i proponuje warianty dopasowane do Waszego portalu, a Wy wybieracie. Każdą decyzję Kilo zapisuje w `LOG-DECYZJI.md` – powstaje zapis, jak powstawał Wasz portal.
+5. Jak coś uruchomić, gdzie zajrzeć w przeglądarce, terminalu, debuggerze i bazie – pokazuje krok po kroku `docs/PORADNIK-UCZNIA.md`. W każdej pauzie jest wskazane, który akapit otworzyć.
 6. Skończyliście? Na końcu `prompty.md` są pomysły, co dodać samodzielnie.

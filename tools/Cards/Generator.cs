@@ -9,7 +9,7 @@ public static class Generator
 {
     public static readonly string[] StudentOutputs = ["karta.md", "prompty.md"];
     public static readonly string[] Outputs = [.. StudentOutputs, "prowadzacy.md"];
-    public static readonly string[] SpecTemplates = ["001-importuj-dane.md", "002-szukaj-rekordow.md", "003-pokaz-strone.md", "004-analiza-ai.md"];
+    public static readonly string[] SpecTemplates = ["000-dane.md", "001-importuj-dane.md", "002-szukaj-rekordow.md", "003-pokaz-strone.md", "004-analiza-ai.md"];
     public static readonly string[] ExtraSpecTemplates = ["005-zapisz-ulubione.md"];
 
     public static string SpecFile(string scenario, string template)

@@ -12,7 +12,7 @@ Użytkownik wpisuje frazę. Adres `/?handler=Szukaj&q=<fraza>` odsyła fragment 
 
 ## Reguły
 
-<!-- DECYZJA 1: wariant A. Inny wariant z prompty.md wklejcie w miejsce zdania po „1. ”. -->
+<!-- DECYZJA 1: zdanie domyślne. Wybrane zdanie (z propozycji Kilo) wklejcie w miejsce zdania po „1. ”. -->
 1. {{rule1}}
 2. Wielkość liter i polskie znaki we frazie nie mają znaczenia.
 3. Licznik pokazuje liczbę wszystkich trafień, a lista najwyżej 20 rekordów.

@@ -15,9 +15,9 @@ Strona główna {{app}} pokazuje kafelek ze statystyką, pole wyszukiwania i lis
 1. Wyszukiwarka na stronie głównej wysyła frazę 300 ms po ostatnim wpisanym znaku.
 2. Wyszukiwarka podmienia tylko listę wyników, a nie całą stronę.
 3. Adres wyszukiwarki otwarty wprost w przeglądarce pokazuje całą stronę z wynikami.
-<!-- DECYZJA 2: wariant A. Inny wariant z prompty.md wklejcie w miejsce zdania po „4. ”. -->
+<!-- DECYZJA 2: zdanie domyślne. Wybrane zdanie (z propozycji Kilo) wklejcie w miejsce zdania po „4. ”. -->
 4. {{rule2}}
-<!-- DECYZJA 3: wariant A. Inny wariant z prompty.md wklejcie w miejsce zdania po „5. ”. -->
+<!-- DECYZJA 3: zdanie domyślne. Wybrane zdanie (z propozycji Kilo) wklejcie w miejsce zdania po „5. ”. -->
 5. {{rule3}}
 6. Stopka pokazuje źródło danych z licencją CC BY 4.0.
 

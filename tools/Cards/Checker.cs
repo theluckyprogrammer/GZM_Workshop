@@ -53,9 +53,18 @@ public static partial class Checker
             yield return $"prompty.md: prompt nr {index} nie kończy się zdaniem „Nie zmieniaj plików poza: … {Ending}”";
         foreach (var missing in Steps.Where(s => !text.Contains(s, StringComparison.Ordinal)))
             yield return $"prompty.md: brak „{missing}”";
-        foreach (var index in prompts.Take(4).Select((p, i) => (p, i)).Where(x => !x.p.Contains($"-{Generator.SpecTemplates[x.i]}`", StringComparison.Ordinal)).Select(x => x.i + 1))
+        // Kroki 0–4 (pierwszych 5 bloków promptu) wskazują swoje pliki specyfikacji: 000-dane, 001-import, 002-szukaj, 003-strona, 004-ai.
+        foreach (var index in prompts.Take(Generator.SpecTemplates.Length).Select((p, i) => (p, i)).Where(x => !x.p.Contains($"-{Generator.SpecTemplates[x.i]}`", StringComparison.Ordinal)).Select(x => x.i + 1))
             yield return $"prompty.md: prompt kroku {index} nie wskazuje pliku specyfikacji {Generator.SpecTemplates[index - 1]}";
+        foreach (var missing in DecisionAsks().Where(m => !text.Contains(m, StringComparison.Ordinal)))
+            yield return $"prompty.md: brak „{missing}”";
+        if (!text.Contains("LOG-DECYZJI.md", StringComparison.Ordinal))
+            yield return "prompty.md: brak odwołania do LOG-DECYZJI.md";
     }
+
+    // Every decision asks Kilo for proposals (no printed A/B/C variants).
+    private static IEnumerable<string> DecisionAsks() =>
+        ["Zaproponuj nam 3 różne warianty decyzji 1", "Zaproponuj nam 3 różne warianty decyzji 2", "Zaproponuj nam 3 różne warianty decyzji 3", "Zaproponuj nam 3 różne warianty decyzji 4", "Zaproponuj nam 3 warianty decyzji 5"];
 
     private static bool EndsCorrectly(string prompt) =>
         prompt.EndsWith(Ending, StringComparison.Ordinal) && prompt.Contains("Nie zmieniaj plików poza: ", StringComparison.Ordinal);

@@ -39,9 +39,9 @@ public static class PairCard
         $"""
           <div class="decyzja">
             <p><strong>Decyzja {decision.Number}:</strong> {InlineHtml.Encode(decision.Question)}</p>
-        {string.Join("\n", decision.Variants.Select(v => $"    <span class=\"opcja\">☐ {InlineHtml.Encode(v)}</span>"))}
+            <span class="opcja">☐ pytacie Kilo o 3 propozycje i wybieracie (prompty.md)</span>
           </div>
-        """;
+          """;
 
     // An AI idea may end with "Prompt na start:" – on paper only the idea itself.
     private static string Shorten(string idea) => idea.Replace(" Prompt na start:", string.Empty, StringComparison.Ordinal);

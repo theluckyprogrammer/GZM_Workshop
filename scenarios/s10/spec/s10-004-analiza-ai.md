@@ -14,7 +14,7 @@ Przycisk „✨ Analizuj z AI” wysyła rekordy z listy wyników do modelu sztu
 
 1. Przycisk „✨ Analizuj z AI” na stronie głównej wysyła frazę z wyszukiwarki do analizy.
 2. Do modelu trafiają rekordy z listy wyników dla wpisanej frazy, każdy z numerem `SourceRow`.
-<!-- DECYZJA 4: wariant A. Inny wariant z prompty.md wklejcie w miejsce zdania po „3. ”. -->
+<!-- DECYZJA 4: zdanie domyślne. Wybrane zdanie (z propozycji Kilo) wklejcie w miejsce zdania po „3. ”. -->
 3. Model dostaje zadanie: Pogrupuj boiska według rodzaju i zaproponuj 3 miejsca na szkolny turniej.
 4. Odpowiedź modelu pojawia się w karcie `#analiza` bez przeładowania strony.
 5. Karta mówi, że tekst wygenerowała sztuczna inteligencja, i podaje nazwę modelu.
