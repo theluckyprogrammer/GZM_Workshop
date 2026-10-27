@@ -1,0 +1,6 @@
+help
+break C:\Repo\warsztaty-gzm-pary\wt-s02	ests\GzmApp.Specs\obj\Debug
+et10.0\generated\Spectree.Generator\Spectree.Generator.SpecTestGenerator\S02_001_importuj_dane.g.cs:47
+info breakpoints
+continue
+detach

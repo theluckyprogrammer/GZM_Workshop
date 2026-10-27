@@ -36,8 +36,10 @@ public static class TestSource
     private static void AppendTest(StringBuilder code, string className, string label, Rule rule) =>
         code.AppendLine($"    [global::Xunit.Fact(DisplayName = {Literal($"{label} {rule.Number}: {rule.Sentence}")})]")
             .AppendLine($"    [global::Xunit.Trait(\"Rule\", \"{rule.Number}\")]")
-            .AppendLine($"    public global::System.Threading.Tasks.Task {label.Replace("ł", "l")}{rule.Number:00}_{Identifier(rule.Sentence, MaxNameWords)}() =>")
-            .AppendLine($"        global::Spectree.StepRegistry.RunAsync(typeof({className}).Assembly, {Literal(rule.Sentence)});")
+            .AppendLine($"    public async global::System.Threading.Tasks.Task {label.Replace("ł", "l")}{rule.Number:00}_{Identifier(rule.Sentence, MaxNameWords)}()")
+            .AppendLine("    {")
+            .AppendLine($"        await global::Spectree.StepRegistry.RunAsync(typeof({className}).Assembly, {Literal(rule.Sentence)});")
+            .AppendLine("    }")
             .AppendLine();
 
     // Letters and digits of the first words, joined with "_".

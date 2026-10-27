@@ -88,6 +88,18 @@ Filtr `Capability=` bierzecie z nagłówka pliku specyfikacji kroku (linia `capa
 Po zmianie w plikach specyfikacji odświeżcie listę testów ikoną ⟳ w panelu Testing
 (a jeśli testów nie widać: **Ctrl + Shift + P** → „.NET: Build” → potem ⟳).
 
+**Przejście do kodu i debugowanie testu.**
+
+Po zbudowaniu projektu każdy krok ma plik `*.g.cs` w
+`tests/GzmApp.Specs/obj/Debug/net10.0/generated/Spectree.Generator/Spectree.Generator.SpecTestGenerator/`.
+W panelu Testing kliknijcie test prawym przyciskiem i wybierzcie **Go to Test**.
+W otwartym pliku ustawcie breakpoint przy `await`, a następnie wybierzcie **Debug Test**.
+Możecie też ustawić breakpoint w metodzie kroku w `tests/GzmApp.Specs/Steps/`
+lub w sprawdzanym kodzie aplikacji. **F11** wchodzi do wywoływanej metody.
+Nie edytujcie plików `*.g.cs` – powstają ponownie ze specyfikacji podczas kompilacji.
+Jeśli VS Code otwiera pusty plik ze starej lokalizacji, wybierzcie
+**Ctrl + Shift + P** → **Developer: Reload Window**, zbudujcie projekt i odświeżcie testy.
+
 ## 5. Czerwony test – co teraz?
 
 1. Kliknijcie czerwony test – na dole w panelu *Test Results* pojawia się komunikat po polsku.

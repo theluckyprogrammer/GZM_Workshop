@@ -12,6 +12,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <RootNamespace>GzmApp.Specs</RootNamespace>
     <ScenarioPattern>(?s)^.*?"Scenario"\s*:\s*"(s\d\d)".*$</ScenarioPattern>
     <AppSettingsDevelopment>$(MSBuildThisFileDirectory)../../src/GzmApp/appsettings.Development.json</AppSettingsDevelopment>
