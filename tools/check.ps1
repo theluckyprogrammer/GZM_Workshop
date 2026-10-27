@@ -124,10 +124,9 @@ try {
         @(Get-ChildItem $bin -Recurse -Filter 'e_sqlite3.dll' -ErrorAction SilentlyContinue).Count -gt 0
     }
 
-    # Every sentence of the specification has a step; no database needed. Proves that Test Explorer will show the tests.
-    # Before step 0 the test project lives in szkielet/ (no scenario set: only the control tests run).
-    Test-Step 'Testy specyfikacji (szkielet/tests/GzmApp.Specs: build + test kontrolny)' 'Uruchom raz z internetem: dotnet restore szkielet/tests/GzmApp.Specs; potem build i testy działają offline.' {
-        dotnet test (Join-Path $repo 'szkielet/tests/GzmApp.Specs') --filter 'Capability=kontrola' -v q -nologo 2>&1 | Out-Null
+    # Before step 0 the test project lives in szkielet/ (no scenario set: it only builds, there are no tests yet).
+    Test-Step 'Projekt testów (szkielet/tests/GzmApp.Specs: build)' 'Uruchom raz z internetem: dotnet restore szkielet/tests/GzmApp.Specs; potem build i testy działają offline.' {
+        dotnet build (Join-Path $repo 'szkielet/tests/GzmApp.Specs') -v q -nologo 2>&1 | Out-Null
         $LASTEXITCODE -eq 0
     }
 

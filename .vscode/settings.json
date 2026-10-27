@@ -1,0 +1,12 @@
+{
+  // szkielet/ to szablon dla kroku 0 – pary go nie widzą, a kolba (Testing) nie szuka w nim testów.
+  "files.exclude": {
+    "szkielet": true
+  },
+  "search.exclude": {
+    "szkielet": true
+  },
+  "files.watcherExclude": {
+    "**/szkielet/**": true
+  }
+}

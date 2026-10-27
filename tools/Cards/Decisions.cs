@@ -6,7 +6,7 @@ namespace Cards;
 // the rescue branches and checkpoints.md use). The variants are no longer printed in karta.md –
 // in the "decyzja" pauses the pair asks Kilo, which proposes sentences dynamically, following the
 // sentence patterns embedded in tools/Cards/templates/karta.md and looking at the pair's data
-// and LOG-DECYZJI.md. SpecCoverageTests in szkielet/tests checks that every pattern has a step.
+// and LOG-DECYZJI.md. Every pattern needs a step in szkielet/tests/GzmApp.Specs/Steps.
 public static class Decisions
 {
     private static readonly string[] NumericTypes = ["int", "bigint", "decimal"];
