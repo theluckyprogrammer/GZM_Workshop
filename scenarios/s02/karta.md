@@ -25,7 +25,6 @@
 - `spec/` – reguły opisujące, co ma działać; testy sprawdzają te reguły.
 - `checkpoints.md` – przykłady i wskazówki dotyczące danych.
 - `mapping.json` – techniczne ustawienia scenariusza i danych.
-- `prowadzacy.md` – notatki tylko dla prowadzącego.
 
 **Czerwone flagi AI – kiedy nie ufać kodowi.** Jeśli w kodzie od Kilo zobaczycie którąś z tych rzeczy, zatrzymajcie się i poproście o poprawkę:
 
