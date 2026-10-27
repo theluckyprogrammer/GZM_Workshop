@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DrzewoRekord – opis scenariusza (s06)</title>
+<style>
+  @page { size: A4; margin: 12mm 14mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.5pt; line-height: 1.38; color: #000; background: #fff; margin: 0; }
+  h1 { font-size: 20pt; margin: 0 0 1mm; }
+  h2 { font-size: 12.5pt; margin: 4.5mm 0 1.8mm; border-bottom: 1.2pt solid #000; padding-bottom: 0.8mm; }
+  p { margin: 0 0 1.6mm; }
+  ol, ul { margin: 0.5mm 0 1.6mm 5.5mm; padding: 0; }
+  li { margin-bottom: 1.2mm; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9.4pt; }
+  .podtytul { font-size: 11pt; margin-bottom: 3mm; }
+  .pomysl { font-size: 12.5pt; font-weight: 600; border: 1.6pt solid #000; padding: 2.5mm 3mm; margin: 2mm 0 3mm; }
+  .ramka { border: 1pt solid #000; padding: 2mm 3mm; margin-top: 3mm; break-inside: avoid; }
+  .stopka { font-size: 8.5pt; margin-top: 4mm; border-top: 0.6pt solid #000; padding-top: 1.2mm; }
+  @media screen { body { max-width: 190mm; margin: 8mm auto; padding: 0 4mm; } }
+</style>
+</head>
+<body>
+<h1>DrzewoRekord</h1>
+<p class="podtytul">Scenariusz s06 · warsztat „AI + otwarte dane GZM”</p>
+<p class="pomysl">Pomniki przyrody Dąbrowy G&#243;rniczej: jakie to drzewa i jaki mają obw&#243;d.</p>
+
+<h2>Wyobraźcie sobie…</h2>
+<p>Weekend w Dąbrowie G&#243;rniczej, słońce, rodzina chce na spacer, ale „znowu ten sam park?”. DrzewoRekord zamienia spacer w polowanie na pomniki przyrody: najgrubsze dęby, najstarsze lipy, drzewa z historią. Każde ma sw&#243;j numer, gatunek, obw&#243;d pnia i opis, jak je znaleźć.</p>
+
+<h2>Jak wygląda Wasza aplikacja</h2>
+<p>Wpisujecie „dąb” albo „lipa” i lista pokazuje drzewa: gatunek, dzielnica, obw&#243;d pnia w centymetrach i kawałek opisu położenia. Kafelek na g&#243;rze podaje średni obw&#243;d – można się założyć, czy Wasze drzewo jest grubsze. Przycisk „✨ Analizuj z AI” wybiera trzy drzewa na jeden spacer i dorzuca do każdego ciekawostkę o gatunku.</p>
+<p>A jeśli starczy czasu: logowanie i gwiazdka ★ przy rekordach, a w „Moich ulubionych” – drzewa, kt&#243;re para chce zobaczyć na spacerze.</p>
+
+<h2>Wasze decyzje</h2>
+<p>To Wy jesteście projektantami. Po drodze zdecydujecie, po czym użytkownik szuka, co widzi na liście, jaką liczbę pokazuje kafelek i o co pytacie sztuczną inteligencję. Dwie pary z tym samym scenariuszem mogą skończyć z zupełnie różnymi portalami.</p>
+
+<h2>Dokąd może urosnąć</h2>
+<ul>
+  <li><strong>Ilu nas trzeba?</strong> Przy każdym drzewie liczba: ilu uczni&#243;w musi się złapać za ręce, żeby objąć pień.</li>
+  <li><strong>Mapa pomnik&#243;w przyrody.</strong> Zielone pinezki na mapie i trasa spaceru zaproponowana przez AI.</li>
+  <li><strong>Karta gatunku.</strong> Kliknięcie w gatunek otwiera kartę: jak rozpoznać liść, ile lat żyje, co m&#243;wi AI.</li>
+  <li><strong>Odznaki odkrywcy.</strong> Zalogowani zbierają odwiedzone drzewa i dostają odznaki: 5 dęb&#243;w, 10 drzew, wszystkie gatunki.</li>
+  <li><strong>Drzewo miesiąca.</strong> Na stronie gł&#243;wnej co miesiąc inne drzewo z kr&#243;tką historią.</li>
+  <li><strong>Wasz pomysł.</strong> Opiszcie go Kilo jednym zdaniem – może to on będzie najlepszy?</li>
+</ul>
+
+<div class="ramka">
+  <p><strong>Jak zacząć:</strong> w VS Code otwórzcie <code>scenarios/s06/karta.md</code> i skopiujcie do Kilo Code prompt „Krok 0”. Tam są wszystkie kroki i pauzy na decyzje.</p>
+  <p><strong>Logowanie do portalu:</strong> login <code>adm</code>, hasło <code>TestPass123!</code>.</p>
+</div>
+<p class="stopka">Dane: „Dąbrowa G&#243;rnicza: pomniki przyrody” – Źr&#243;dło: Dąbrowa G&#243;rnicza, otwartedane.metropoliagzm.pl, CC BY 4.0</p>
+</body>
+</html>

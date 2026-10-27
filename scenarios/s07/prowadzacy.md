@@ -1,10 +1,10 @@
 # SportGliwice (s07) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (5 plików, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
+Nie rozdawaj uczniom. Uczniowie mają `karta.md` (opis portalu, zasady i prompty) i specyfikację `spec/` (5 plików, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
 
-Para **losuje** scenariusz (wylosowana karta pary), czyta `scenarios/s07/karta.md` i zaczyna od kroku 0 w `prompty.md`. Pierwszy prompt uruchamia `tools/nowy-portal.ps1`: kopiuje szkielet (`szkielet/` → `src`, `tests`, `db`), wpisuje `"Scenario": "s07"` w `src/GzmApp/appsettings.json` (pary NIE wpisują scenariusza ręcznie), pobiera plik danych z portalu GZM i zakłada `LOG-DECYZJI.md`. Potem Kilo buduje i uruchamia testy.
+Para **losuje** scenariusz (wylosowany wydruk `print/opis-scenariusza-s07.html`), czyta `scenarios/s07/karta.md` i zaczyna od kroku 0 w promptych z tej samej karty. Pierwszy prompt uruchamia `tools/nowy-portal.ps1`: tworzy oddzielny branch pary (s07-<losowy numer>, od main) i przechodzi na niego, kopiuje szkielet (`szkielet/` → `src`, `tests`, `db`), wpisuje `"Scenario": "s07"` w `src/GzmApp/appsettings.json` (pary NIE wpisują scenariusza ręcznie), pobiera plik danych z portalu GZM i zakłada `LOG-DECYZJI.md`. Potem Kilo buduje i uruchamia testy.
 
-Decyzje 1–5 nie mają wydrukowanych wariantów: para wkleja Kilo prośbę o propozycje, Kilo proponuje 3 warianty według wzorców zdań (z `prompty.md`), bierze pod uwagę dane i `LOG-DECYZJI.md`, pyta parę i czeka. Para wkleja wybrane zdanie do specyfikacji (poza tym plikiem `scenarios/` są dla Kilo zablokowane). Bez decyzji działają zdania domyślne.
+Decyzje 1–5 nie mają wydrukowanych wariantów: para wkleja Kilo prośbę o propozycje, Kilo proponuje 3 warianty według wzorców zdań (z `karta.md`), bierze pod uwagę dane i `LOG-DECYZJI.md`, pyta parę i czeka. Para wkleja wybrane zdanie do specyfikacji (poza tym plikiem `scenarios/` są dla Kilo zablokowane). Bez decyzji działają zdania domyślne.
 
 - **Pomysł:** Obiekty sportowe w Gliwicach: hale, boiska, baseny – gdzie są i kto nimi zarządza.
 - **Dane:** „Gliwice: obiekty sportowe”, plik `data/raw/s07_gliwice-obiekty-sportowe.csv`, tabela `SportsFacilities`. Gdy pobieranie w kroku 0 się nie powiedzie (sieć), połóż plik z pendrive'a w `data/raw/` i poproś parę o ponowne uruchomienie skryptu – pominie pobieranie.
@@ -38,7 +38,7 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
-| Kodowanie UTF-8 | Plik jest dobry, ale zapisany ponownie w Excelu dostanie Windows-1250 i ogonki się zepsują. Nie zapisuj go w Excelu. | rozszerzenie mssql: `SELECT TOP 5 * FROM SportsFacilities` |
+| Kodowanie UTF-8 | Plik jest dobry, ale zapisany ponownie w Excelu dostanie Windows-1250 i ogonki się zepsują. Nie zapisuj go w Excelu. | SQLite Viewer: tabela SportsFacilities, pierwsze wiersze |
 | Nazwa kolumny `ADRES___ZARZĄDZAJĄCY` ma ogonek i trzy podkreślniki | Literówka w nazwie kolumny = pusta kolumna w bazie albo wyjątek CsvHelper. | breakpoint + Watch na nagłówkach pliku |
 
 ### Krok 2 – wyszukiwarka
@@ -46,7 +46,7 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
 | Fraza z ogonkami: „nawierzchnią” | Przy złym kodowaniu albo kulturze wyników jest 0. W adresie fraza jest zakodowana (`%C5%...`). | Network: adres żądania; log SQL: wartość parametru `q` |
-| Wielkość liter i ogonki | Porównanie `=` albo LIKE z collation `CS`/`AS` nie znajdzie „NAWIERZCHNIĄ”. | log SQL: czy zapytanie ma `COLLATE ..._CI_AI` |
+| Wielkość liter i ogonki | Zwykłe `LIKE` w SQLite pomija wielkość liter tylko w literach bez ogonków – samo „NAWIERZCHNIĄ” znajdzie 0 wyników. | log SQL: czy zapytanie używa funkcji plain() |
 | Fraza `' OR 1=1 --` | Sklejany tekst SQL zwróci wszystkie rekordy. Z parametrem `@q` wyników jest 0. | Network + log SQL |
 
 ### Krok 3 – strona i statystyka
@@ -54,8 +54,8 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
 | Statystyka liczona z listy wyników | Lista pokazuje najwyżej 20 rekordów. Statystyka ma objąć całą tabelę – licz ją w SQL. | log SQL: zapytanie statystyki bez `TOP 20` |
-| Wielkość liter i spacje w grupach | SQL (collation bez wielkości liter) łączy „Abc” i „abc” w jedną grupę, a `GroupBy` w C# nie. Licz w SQL. | Watch na liście grup + log SQL |
-| Spacja na końcu nazwy obiektu („Boisko wielofunkcyjne ”) | Bez Trim ta sama nazwa tworzy dwie grupy w top 5. | rozszerzenie mssql: `SELECT Facility, LEN(Facility) FROM SportsFacilities` |
+| Wielkość liter i spacje w grupach | `GROUP BY` w SQLite rozróżnia wielkość liter („Abc” i „abc” to dwie grupy), a `GroupBy` w C# z ignorowaniem wielkości liter jedną. Licz w SQL. | Watch na liście grup + log SQL |
+| Spacja na końcu nazwy obiektu („Boisko wielofunkcyjne ”) | Bez Trim ta sama nazwa tworzy dwie grupy w top 5. | SQLite Viewer: kolumna Facility w SportsFacilities |
 
 ### Krok 4 – analiza AI
 
@@ -70,5 +70,5 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
-| Dwa kliknięcia ★ w dwóch kartach | Bez klucza `PK_Favorites` w tabeli są dwa takie same wiersze. | rozszerzenie mssql: `SELECT COUNT(*) FROM Favorites` |
+| Dwa kliknięcia ★ w dwóch kartach | Bez klucza `PK_Favorites` w tabeli są dwa takie same wiersze. | SQLite Viewer (plik src/GzmApp/gzm.db): tabela Favorites |
 | Brak tokenu antiforgery | Żądanie POST/DELETE dostaje status 400, a handler się nie uruchamia. | Network: nagłówek `RequestVerificationToken` |

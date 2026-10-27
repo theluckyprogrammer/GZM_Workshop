@@ -1,10 +1,10 @@
 # DrzewoRekord (s06) – materiał dla prowadzącego
 
-Nie rozdawaj uczniom. Uczniowie mają `karta.md`, `prompty.md` i specyfikację `spec/` (5 plików, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
+Nie rozdawaj uczniom. Uczniowie mają `karta.md` (opis portalu, zasady i prompty) i specyfikację `spec/` (5 plików, po jednym na krok, oraz `spec/dodatkowe/` z ulubionymi do „Co dalej?”).
 
-Para **losuje** scenariusz (wylosowana karta pary), czyta `scenarios/s06/karta.md` i zaczyna od kroku 0 w `prompty.md`. Pierwszy prompt uruchamia `tools/nowy-portal.ps1`: kopiuje szkielet (`szkielet/` → `src`, `tests`, `db`), wpisuje `"Scenario": "s06"` w `src/GzmApp/appsettings.json` (pary NIE wpisują scenariusza ręcznie), pobiera plik danych z portalu GZM i zakłada `LOG-DECYZJI.md`. Potem Kilo buduje i uruchamia testy.
+Para **losuje** scenariusz (wylosowany wydruk `print/opis-scenariusza-s06.html`), czyta `scenarios/s06/karta.md` i zaczyna od kroku 0 w promptych z tej samej karty. Pierwszy prompt uruchamia `tools/nowy-portal.ps1`: tworzy oddzielny branch pary (s06-<losowy numer>, od main) i przechodzi na niego, kopiuje szkielet (`szkielet/` → `src`, `tests`, `db`), wpisuje `"Scenario": "s06"` w `src/GzmApp/appsettings.json` (pary NIE wpisują scenariusza ręcznie), pobiera plik danych z portalu GZM i zakłada `LOG-DECYZJI.md`. Potem Kilo buduje i uruchamia testy.
 
-Decyzje 1–5 nie mają wydrukowanych wariantów: para wkleja Kilo prośbę o propozycje, Kilo proponuje 3 warianty według wzorców zdań (z `prompty.md`), bierze pod uwagę dane i `LOG-DECYZJI.md`, pyta parę i czeka. Para wkleja wybrane zdanie do specyfikacji (poza tym plikiem `scenarios/` są dla Kilo zablokowane). Bez decyzji działają zdania domyślne.
+Decyzje 1–5 nie mają wydrukowanych wariantów: para wkleja Kilo prośbę o propozycje, Kilo proponuje 3 warianty według wzorców zdań (z `karta.md`), bierze pod uwagę dane i `LOG-DECYZJI.md`, pyta parę i czeka. Para wkleja wybrane zdanie do specyfikacji (poza tym plikiem `scenarios/` są dla Kilo zablokowane). Bez decyzji działają zdania domyślne.
 
 - **Pomysł:** Pomniki przyrody Dąbrowy Górniczej: jakie to drzewa i jaki mają obwód.
 - **Dane:** „Dąbrowa Górnicza: pomniki przyrody”, plik `data/raw/s06_dabrowa-pomniki-przyrody.csv`, tabela `NatureMonuments`. Gdy pobieranie w kroku 0 się nie powiedzie (sieć), połóż plik z pendrive'a w `data/raw/` i poproś parę o ponowne uruchomienie skryptu – pominie pobieranie.
@@ -34,10 +34,10 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
-| Kodowanie UTF-8 | Plik jest dobry, ale zapisany ponownie w Excelu dostanie Windows-1250 i ogonki się zepsują. Nie zapisuj go w Excelu. | rozszerzenie mssql: `SELECT TOP 5 * FROM NatureMonuments` |
-| Kolumny, których nie importujemy: 2 | Nie dodawaj dla nich pól – tabela jest gotowa w prompcie. | rozszerzenie mssql: lista kolumn tabeli |
-| Puste pola w `circumference`: 1 | Muszą trafić do bazy jako NULL, nie jako pusty tekst ani 0. | rozszerzenie mssql: `SELECT COUNT(*) FROM NatureMonuments WHERE Circumference IS NULL` |
-| Puste pola w `coordinateData`: 1 | Muszą trafić do bazy jako NULL, nie jako pusty tekst ani 0. | rozszerzenie mssql: `SELECT COUNT(*) FROM NatureMonuments WHERE Coordinates IS NULL` |
+| Kodowanie UTF-8 | Plik jest dobry, ale zapisany ponownie w Excelu dostanie Windows-1250 i ogonki się zepsują. Nie zapisuj go w Excelu. | SQLite Viewer: tabela NatureMonuments, pierwsze wiersze |
+| Kolumny, których nie importujemy: 2 | Nie dodawaj dla nich pól – tabela jest gotowa w prompcie. | SQLite Viewer: lista kolumn tabeli |
+| Puste pola w `circumference`: 1 | Muszą trafić do bazy jako NULL, nie jako pusty tekst ani 0. | SQLite Viewer: kolumna Circumference – puste komórki mają być NULL |
+| Puste pola w `coordinateData`: 1 | Muszą trafić do bazy jako NULL, nie jako pusty tekst ani 0. | SQLite Viewer: kolumna Coordinates – puste komórki mają być NULL |
 | Współrzędne w `coordinateData` mają stopnie, minuty i cudzysłów („N50° 23' 29.9"”) | Cudzysłów w środku pola psuje dzielenie przez `Split`. Zostają tekstem. | breakpoint + Watch na polu `coordinateData` |
 
 ### Krok 2 – wyszukiwarka
@@ -45,17 +45,17 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
 | Fraza z ogonkami: „wyniosły” | Przy złym kodowaniu albo kulturze wyników jest 0. W adresie fraza jest zakodowana (`%C5%...`). | Network: adres żądania; log SQL: wartość parametru `q` |
-| Wielkość liter i ogonki | Porównanie `=` albo LIKE z collation `CS`/`AS` nie znajdzie „WYNIOSŁY”. | log SQL: czy zapytanie ma `COLLATE ..._CI_AI` |
+| Wielkość liter i ogonki | Zwykłe `LIKE` w SQLite pomija wielkość liter tylko w literach bez ogonków – samo „WYNIOSŁY” znajdzie 0 wyników. | log SQL: czy zapytanie używa funkcji plain() |
 | Fraza `' OR 1=1 --` | Sklejany tekst SQL zwróci wszystkie rekordy. Z parametrem `@q` wyników jest 0. | Network + log SQL |
-| Ten sam gatunek zapisany różnie: „Fagus silvatica” i „Fagus sylvatica” | Fraza „sylvatica” nie znajdzie wszystkich buków. | rozszerzenie mssql: `SELECT Name, COUNT(*) FROM NatureMonuments GROUP BY Name` |
+| Ten sam gatunek zapisany różnie: „Fagus silvatica” i „Fagus sylvatica” | Fraza „sylvatica” nie znajdzie wszystkich buków. | SQLite Viewer: posortuj kolumnę Name w NatureMonuments |
 
 ### Krok 3 – strona i statystyka
 
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
 | Statystyka liczona z listy wyników | Lista pokazuje najwyżej 20 rekordów. Statystyka ma objąć całą tabelę – licz ją w SQL. | log SQL: zapytanie statystyki bez `TOP 20` |
-| AVG na kolumnie liczb całkowitych | SQL liczy wtedy średnią jako liczbę całkowitą i gubi część po przecinku. Rzutuj na `decimal`. | log SQL + wartość E3 |
-| Puste wartości w polu `Circumference`: 1 | NULL nie wchodzi do statystyki. Zamiana pustych na 0 albo „” da inny wynik niż na karcie. | rozszerzenie mssql: `SELECT COUNT(*) FROM NatureMonuments WHERE Circumference IS NULL` |
+| Średnia z liczb zapisanych jako tekst | Bez rzutowania SQLite policzy średnią po swojej drodze i wynik nie zgadza się z kartą. Rzutuj: `CAST(pole AS REAL)`. | log SQL + wartość E3 |
+| Puste wartości w polu `Circumference`: 1 | NULL nie wchodzi do statystyki. Zamiana pustych na 0 albo „” da inny wynik niż na karcie. | SQLite Viewer (plik src/GzmApp/gzm.db): kolumna Circumference – puste komórki mają być NULL |
 
 ### Krok 4 – analiza AI
 
@@ -70,5 +70,5 @@ Co może pójść nie tak w tym zbiorze i jak to szybko zobaczyć.
 
 | Pułapka | Co się stanie | Narzędzie |
 |---|---|---|
-| Dwa kliknięcia ★ w dwóch kartach | Bez klucza `PK_Favorites` w tabeli są dwa takie same wiersze. | rozszerzenie mssql: `SELECT COUNT(*) FROM Favorites` |
+| Dwa kliknięcia ★ w dwóch kartach | Bez klucza `PK_Favorites` w tabeli są dwa takie same wiersze. | SQLite Viewer (plik src/GzmApp/gzm.db): tabela Favorites |
 | Brak tokenu antiforgery | Żądanie POST/DELETE dostaje status 400, a handler się nie uruchamia. | Network: nagłówek `RequestVerificationToken` |

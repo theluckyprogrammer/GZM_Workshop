@@ -1,10 +1,11 @@
 using System.Text.Json;
 using Dapper;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 
 namespace GzmApp.Data;
 
 // Thin layer over Dapper. Every query is written to the log (category "SQL") with its parameters.
+// Every connection gets the SQL function plain(): search without case or Polish diacritics.
 public sealed class SqlRunner
 {
     public const string LogCategory = "SQL";
@@ -24,22 +25,12 @@ public sealed class SqlRunner
 
     public string ConnectionString { get; }
 
-    public string DatabaseName => new SqlConnectionStringBuilder(ConnectionString).InitialCatalog;
-
-    public SqlRunner ForDatabase(string databaseName)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(databaseName);
-
-        var builder = new SqlConnectionStringBuilder(ConnectionString) { InitialCatalog = databaseName };
-        return new SqlRunner(builder.ConnectionString, _loggerFactory);
-    }
-
     public async Task<IReadOnlyList<T>> QueryAsync<T>(string sql, object? param = null, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sql);
 
         Log(sql, param);
-        await using var connection = new SqlConnection(ConnectionString);
+        await using var connection = Open();
         var rows = await connection.QueryAsync<T>(new CommandDefinition(sql, param, cancellationToken: ct));
         return rows.AsList();
     }
@@ -49,7 +40,7 @@ public sealed class SqlRunner
         ArgumentException.ThrowIfNullOrWhiteSpace(sql);
 
         Log(sql, param);
-        await using var connection = new SqlConnection(ConnectionString);
+        await using var connection = Open();
         return await connection.ExecuteScalarAsync<T>(new CommandDefinition(sql, param, cancellationToken: ct));
     }
 
@@ -58,8 +49,17 @@ public sealed class SqlRunner
         ArgumentException.ThrowIfNullOrWhiteSpace(sql);
 
         Log(sql, param);
-        await using var connection = new SqlConnection(ConnectionString);
+        await using var connection = Open();
         return await connection.ExecuteAsync(new CommandDefinition(sql, param, cancellationToken: ct));
+    }
+
+    // Opening the connection creates the database file when it does not exist yet.
+    private SqliteConnection Open()
+    {
+        var connection = new SqliteConnection(ConnectionString);
+        connection.Open();
+        connection.CreateFunction("plain", (string? value) => PlainText.Of(value));
+        return connection;
     }
 
     private void Log(string sql, object? param) =>

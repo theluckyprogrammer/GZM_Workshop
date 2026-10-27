@@ -23,7 +23,7 @@ public static partial class Checks
         yield return new("E1.rows", "Liczba wierszy w tabeli po imporcie", Number(set.Records.Count));
         yield return new("E1.fileRows", "Wiersze danych w pliku (bez nagłówka)", Number(set.FileRows));
         yield return new("E1.skipped", "Pominięte wiersze (notatki pod tabelą)", Rows(set.SkippedRows));
-        yield return new("E1.duplicates", "Duplikaty klucza (scalone przez MERGE)", Rows(set.DuplicateRows));
+        yield return new("E1.duplicates", "Duplikaty klucza (scalone przez upsert)", Rows(set.DuplicateRows));
         yield return new("E1.row7.raw", $"Wiersz 7, kolumna CSV `{CsvName(mapping, mapping.CheckField)}` – tekst w pliku", sample.Raw);
         yield return new("E1.row7.value", $"Wiersz 7, pole `{mapping.CheckField}` – wartość w bazie", sample.Display);
         yield return new("E1.weird", "„Dziwne” rekordy (co najmniej jedno pole puste albo nieparsowalne)", Number(weird.Count));

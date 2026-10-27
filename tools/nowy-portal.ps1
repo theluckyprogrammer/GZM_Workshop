@@ -1,15 +1,18 @@
 ﻿<#
 .SYNOPSIS
-    Tworzy portal pary w kroku 0: szkielet aplikacji, dane z portalu GZM i log decyzji.
+    Tworzy portal pary w kroku 0: branch pary, szkielet aplikacji, dane z portalu GZM i log decyzji.
 
 .DESCRIPTION
-    1. Kopiuje szkielet/src -> src, szkielet/tests -> tests, szkielet/db -> db, szkielet/GzmWorkshop.slnx -> GzmWorkshop.slnx.
-    2. Wpisuje "Scenario": "sNN" w src/GzmApp/appsettings.json (para nigdy nie robi tego ręcznie).
-    3. Pobiera plik danych z otwartedane.metropoliagzm.pl do data/raw/ (gdy pliku brak) i sprawdza sumę SHA-256.
-    4. Tworzy LOG-DECYZJI.md, jeśli go jeszcze nie ma (będzie go prowadzić Kilo).
+    1. Tworzy oddzielny branch dla pary (nazwa: sNN-<losowy numer>, od main) i od razu na niego przechodzi.
+    2. Kopiuje szkielet/src -> src, szkielet/tests -> tests, szkielet/db -> db, szkielet/GzmWorkshop.slnx -> GzmWorkshop.slnx.
+    3. Wpisuje "Scenario": "sNN" w src/GzmApp/appsettings.json (para nigdy nie robi tego ręcznie).
+    4. Pobiera plik danych z otwartedane.metropoliagzm.pl do data/raw/ (gdy pliku brak) i sprawdza sumę SHA-256.
+    5. Tworzy LOG-DECYZJI.md, jeśli go jeszcze nie ma (będzie go prowadzić Kilo).
+    6. Usuwa folder szkielet/ z branchu pary (na main zostaje).
     Uruchamia go Kilo Code w pierwszym prompcie (krok 0) albo para sama w terminalu VS Code.
     Nie wymaga uprawnień administratora. Jeśli portal już istnieje, skrypt odmawia –
-    flaga -OdNowa kasuje src, tests, db i GzmWorkshop.slnx (LOG-DECYZJI.md zostaje).
+    flaga -OdNowa kasuje src, tests, db i GzmWorkshop.slnx (LOG-DECYZJI.md i appsettings.Local.json
+    zostają) i przywraca szkielet/ z main.
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File tools\nowy-portal.ps1 -Scenariusz s05
@@ -111,6 +114,36 @@ Dzięki temu na końcu warsztatu widać, jak powstał Wasz portal.
     Write-Host '   Tworzę LOG-DECYZJI.md (tu Kilo zapisze Wasze decyzje).'
 }
 
+function New-PairBranch([string]$Code) {
+    $current = (git rev-parse --abbrev-ref HEAD).Trim()
+    if ($current -ne 'main') {
+        Write-Host ("   Jesteście już na branchu {0} – zostaję na nim." -f $current)
+        return
+    }
+    do {
+        $branch = '{0}-{1}' -f $Code, (Get-Random -Minimum 1000 -Maximum 10000)
+    } while (git show-ref --verify --quiet "refs/heads/$branch")
+    git switch -c $branch
+    if ($LASTEXITCODE -ne 0) { throw "Nie udało się stworzyć branchu $branch (git switch). Zawołaj prowadzącego." }
+    Write-Host ("   Branch pary: {0} (od main) – całą pracę robicie na nim, nie na main." -f $branch)
+}
+
+# Po -OdNowa szkielet/ jest już usunięty z branchu pary – wraca z main.
+function Restore-Skeleton([string]$Path) {
+    if (Test-Path $Path) { return }
+    Write-Step 'Przywracam szkielet/ z main'
+    git restore --source=main --worktree -- szkielet
+    if ($LASTEXITCODE -ne 0) { throw 'Nie udało się przywrócić szkielet/ z main (git restore). Zawołaj prowadzącego.' }
+}
+
+# Na main szkielet/ musi zostać – usuwamy go tylko z branchu pary.
+function Remove-Skeleton([string]$Path) {
+    if ((git rev-parse --abbrev-ref HEAD).Trim() -eq 'main') { return }
+    Write-Step 'Usuwam szkielet/ (portal pary jest już w src i tests)'
+    try { Remove-Item -Recurse -Force $Path }
+    catch { Write-Warning 'Nie udało się usunąć całego szkielet/ (plik otwarty w VS Code?). Portal działa – folder można skasować później.' }
+}
+
 Push-Location $repo
 try {
     $szkielet = Join-Path $repo 'szkielet'
@@ -118,7 +151,11 @@ try {
     if ($istnieje -and -not $OdNowa) {
         throw "Portal już istnieje (src/GzmApp). Jeśli chcecie zacząć od zera, uruchom: tools\nowy-portal.ps1 -Scenariusz $Scenariusz -OdNowa (skasuje dotychczasowy kod pary)."
     }
+    $localSettings = Join-Path $repo 'src/GzmApp/appsettings.Local.json'
+    $savedSettings = $null
     if ($istnieje -and $OdNowa) {
+        Restore-Skeleton $szkielet
+        if (Test-Path $localSettings) { $savedSettings = [IO.File]::ReadAllBytes($localSettings) }
         Write-Step 'Kasuję dotychczasowy portal (-OdNowa): src, tests, db, GzmWorkshop.slnx'
         'src', 'tests', 'db', 'GzmWorkshop.slnx' | ForEach-Object {
             $path = Join-Path $repo $_
@@ -128,11 +165,14 @@ try {
 
     $dataset = Get-Dataset $Scenariusz
 
-    Write-Step "Kopiuję szkielet aplikacji (szkielet/ -> src, tests, db) – scenariusz $Scenariusz"
+    Write-Step 'Tworzę branch pary (od main)'
+    New-PairBranch $Scenariusz
+
+    Write-Step "Kopiuję szkielet aplikacji (szkielet/ -> src, tests) – scenariusz $Scenariusz"
     Copy-Item -Path (Join-Path $szkielet 'src') -Destination (Join-Path $repo 'src') -Recurse
     Copy-Item -Path (Join-Path $szkielet 'tests') -Destination (Join-Path $repo 'tests') -Recurse
-    Copy-Item -Path (Join-Path $szkielet 'db') -Destination (Join-Path $repo 'db') -Recurse
     Copy-Item -Path (Join-Path $szkielet 'GzmWorkshop.slnx') -Destination (Join-Path $repo 'GzmWorkshop.slnx')
+    if ($savedSettings -and -not (Test-Path $localSettings)) { [IO.File]::WriteAllBytes($localSettings, $savedSettings) }
 
     Write-Step 'Ustawiam scenariusz w src/GzmApp/appsettings.json'
     Set-Scenario (Join-Path $repo 'src/GzmApp/appsettings.json') $Scenariusz
@@ -141,12 +181,13 @@ try {
     Save-Dataset $dataset
 
     New-DecisionLog
+    Remove-Skeleton $szkielet
 
     $size = [math]::Round((Get-Item (Join-Path $repo $dataset.file)).Length / 1KB, 1)
     Write-Host ''
-    Write-Host ("GOTOWE: portal {0} stoi. Scenariusz: {1}." -f $Scenariusz, $Scenariusz) -ForegroundColor Green
+    Write-Host ("GOTOWE: portal {0} stoi. Scenariusz: {1}. Branch pary: {2}" -f $Scenariusz, $Scenariusz, (git rev-parse --abbrev-ref HEAD).Trim()) -ForegroundColor Green
     Write-Host ("   Dane: {0} ({1} KB, suma SHA-256 zgodna). Zbiór: {2}" -f $dataset.file, $size, $dataset.sourceUrl)
-    Write-Host '   Co dalej (pauza w prompty.md po pierwszym prompcie):'
+    Write-Host '   Co dalej (pauza w karta.md po pierwszym prompcie):'
     Write-Host '   1. F5 w VS Code – aplikacja startuje pod http://localhost:5080'
     Write-Host '   2. Testy: ikona kolby (Testing) w VS Code albo dotnet test tests/GzmApp.Specs'
     Write-Host ("   3. Testy danych kroku 0: dotnet test tests/GzmApp.Specs --filter Capability={0}-000-dane" -f $Scenariusz)

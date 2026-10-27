@@ -5,7 +5,8 @@
        src/GzmApp/appsettings.json – written only by scripts (tools/nowy-portal.ps1 in step 0),
        never by hand. Change it, build, and the tests follow.
        The project builds both from the repo root (after step 0 copies the skeleton from szkielet/)
-       and straight from szkielet/ – then no scenario is set and only the "kontrola" tests compile. -->
+       and straight from szkielet/ – then no scenario is set and only the "kontrola" tests compile.
+       With a scenario only the generated specification tests (GzmApp.Specs.Spec) are in the project. -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -26,17 +27,13 @@
   <ItemGroup>
     <Using Include="Xunit" />
     <AdditionalFiles Include="../../scenarios/$(GzmScenario)/spec/*.md" Condition="'$(GzmScenario)' != ''" />
+    <!-- The "kontrola" tests check all 15 scenarios: only for the instructor (szkielet/, tools/check.ps1), not in the pair's portal. -->
+    <Compile Remove="SpecCoverageTests.cs" Condition="'$(GzmScenario)' != ''" />
     <CompilerVisibleProperty Include="RootNamespace" />
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
       <_Parameter1>GzmScenario</_Parameter1>
       <_Parameter2>$(GzmScenario)</_Parameter2>
     </AssemblyAttribute>
-  </ItemGroup>
-
-  <!-- Shared with GzmApp.Tests: the test database, HTML helpers, scenario data and the independent CSV parser. -->
-  <ItemGroup>
-    <Compile Include="../GzmApp.Tests/Infrastructure/TestDatabase.cs;../GzmApp.Tests/Infrastructure/Html.cs;../GzmApp.Tests/Infrastructure/LogCapture.cs;../GzmApp.Tests/Infrastructure/RepoPaths.cs;../GzmApp.Tests/Infrastructure/ScenarioData.cs;../GzmApp.Tests/Infrastructure/TestUser.cs" LinkBase="Shared/Infrastructure" />
-    <Compile Include="../GzmApp.Tests/Data/*.cs" LinkBase="Shared/Data" />
   </ItemGroup>
 
   <ItemGroup>

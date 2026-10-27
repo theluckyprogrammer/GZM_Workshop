@@ -54,9 +54,21 @@ public static class Variables
         : $"Nagłówek dopiero w linii {line}: linie 1–{line - 1} to tytuł, pomiń je.";
 
     private static string ColumnsTable(ScenarioMapping mapping) =>
-        "| Kolumna w pliku | Pole w tabeli | Typ SQL | Kultura | Format | Może być puste |\n|---|---|---|---|---|---|\n"
+        "| Kolumna w pliku | Pole w tabeli | Typ w SQLite | Kultura | Format | Może być puste |\n|---|---|---|---|---|---|\n"
         + string.Join("\n", mapping.Imported.Select(c =>
-            $"| `{c.Csv}` | `{c.Field}` | `{c.SqlType}` | {c.Culture} | {FormatText(c)} | {(c.Nullable ? "tak" : "nie")} |"));
+            $"| `{c.Csv}` | `{c.Field}` | `{ColumnType(c.SqlType!)}` | {c.Culture} | {FormatText(c)} | {(c.Nullable ? "tak" : "nie")} |"));
+
+    // The SQLite type plus the exact text format the value is stored in (decimals, dates, times).
+    private static string ColumnType(string sqlType) => sqlType switch
+    {
+        _ when sqlType.StartsWith("nvarchar", StringComparison.Ordinal) => "TEXT",
+        _ when sqlType.StartsWith("decimal", StringComparison.Ordinal) => $"TEXT (liczba, {sqlType[(sqlType.IndexOf(',') + 1)..^1]} miejsc po kropce)",
+        "date" => "TEXT (`yyyy-MM-dd`)",
+        _ when sqlType.StartsWith("datetime2", StringComparison.Ordinal) => "TEXT (`yyyy-MM-dd HH:mm:ss`)",
+        _ when sqlType.StartsWith("time", StringComparison.Ordinal) => "TEXT (`HH:mm`)",
+        "bit" => "INTEGER (1 albo 0)",
+        _ => "INTEGER",
+    };
 
     private static string FormatText(ColumnMapping column) => column switch
     {
@@ -79,8 +91,8 @@ public static class Variables
     }
 
     private static string KeyNote(ScenarioMapping mapping) => mapping.Key.IsRowHash
-        ? "- Klucz: `RowHash` = SHA-256 z wartości wszystkich importowanych pól (po `Trim`) połączonych znakiem `\\u001F`, zapisany jako `binary(32)`."
-        : $"- Klucz naturalny (unikalny): {string.Join(" + ", mapping.Key.Fields.Select(f => $"`{f}`"))}. Wiersze zapisuj przez `MERGE` po kluczu: powtórzony klucz nadpisuje wcześniejszy wiersz, bez wyjątku.";
+        ? "- Klucz: `RowHash` = SHA-256 z wartości wszystkich importowanych pól (po `Trim`) połączonych znakiem `\\u001F`, zapisany jako `BLOB`."
+        : $"- Klucz naturalny (unikalny): {string.Join(" + ", mapping.Key.Fields.Select(f => $"`{f}`"))}. Wiersze zapisuj przez upsert: `INSERT … ON CONFLICT ({string.Join(", ", mapping.Key.Fields.Select(f => $"[{f}]"))}) DO UPDATE SET …` – powtórzony klucz nadpisuje wcześniejszy wiersz, bez wyjątku.";
 
     private static string CsvName(ScenarioMapping mapping, string field) => mapping.Imported.First(c => c.Field == field).Csv;
 }

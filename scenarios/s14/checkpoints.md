@@ -17,7 +17,7 @@ Znak `|` w wartości jest zapisany jako `\|`, a nowa linia jako `\n`.
 | E1.rows | Liczba wierszy w tabeli po imporcie | 266 |
 | E1.fileRows | Wiersze danych w pliku (bez nagłówka) | 272 |
 | E1.skipped | Pominięte wiersze (notatki pod tabelą) | 267, 268, 269, 270, 271, 272 |
-| E1.duplicates | Duplikaty klucza (scalone przez MERGE) | brak |
+| E1.duplicates | Duplikaty klucza (scalone przez upsert) | brak |
 | E1.row7.raw | Wiersz 7, kolumna CSV `Współrzędne geograficzne` – tekst w pliku | 50.39760177303035 18.877324014902115 |
 | E1.row7.value | Wiersz 7, pole `Coordinates` – wartość w bazie | 50.39760177303035 18.877324014902115 |
 | E1.weird | „Dziwne” rekordy (co najmniej jedno pole puste albo nieparsowalne) | 25 |

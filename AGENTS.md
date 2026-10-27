@@ -5,7 +5,7 @@
 Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie programują. Na koniec napisz w 3 punktach, co zrobiłeś.
 
 ## Start portalu (krok 0)
-- Portal pary powstaje w kroku 0: skrypt `tools/nowy-portal.ps1 -Scenariusz sNN` kopiuje szkielet (`szkielet/` → `src/`, `tests/`, `db/`), pobiera dane z portalu GZM i wpisuje scenariusz. Uruchamiasz go tylko wtedy, gdy poprosi o to prompt kroku 0; plików `szkielet/` nie zmieniasz.
+- Portal pary powstaje w kroku 0: skrypt `tools/nowy-portal.ps1 -Scenariusz sNN` kopiuje szkielet (`szkielet/` → `src/`, `tests/`), pobiera dane z portalu GZM i wpisuje scenariusz. Uruchamiasz go tylko wtedy, gdy poprosi o to prompt kroku 0; plików `szkielet/` nie zmieniasz.
 - `LOG-DECYZJI.md` w głównym katalogu to log decyzji pary: po każdej decyzji dopisujesz jeden wiersz do tabeli (Krok | Pytanie | Wasza decyzja | Dlaczego). Niczego z niego nie usuwasz.
 
 ## Stos – używaj tylko tego
@@ -13,7 +13,7 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 - Widok: HTMX 4.0.0 z pliku lokalnego `wwwroot/lib/htmx/4.0.0/htmx.min.js` (już podpięty w `_Layout.cshtml`). Fragmenty HTML zwracają handlery Razor Pages (`Partial(...)`). Zasady HTMX 4: `.kilo/rules/htmx4.md`.
 - Wygląd: biblioteka CSS Tabler 1.6.1 (klasy Bootstrap 5: `card`, `list-group`, `badge`, `btn`, `row`/`col-*`), plik lokalny już podpięty w `_Layout.cshtml`. Wszystkie teksty na stronie po polsku.
 - AI: model GPT-6 Luna jest już podłączony w `Program.cs` – z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`). Klucz jest w `src/GzmApp/appsettings.Local.json` (od prowadzącego). Odpowiedź modelu pokazuj jako tekst (`@`), nigdy przez `Html.Raw`.
-- Dane: Dapper + jawne skrypty SQL w `db/*.sql`. Każde zapytanie przez istniejącą klasę `SqlRunner` (loguje SQL). Parametry zawsze przez Dappera (`@q`), nigdy sklejanie tekstu SQL.
+- Dane: SQLite – baza to jeden plik `src/GzmApp/gzm.db`, powstaje sama przy pierwszym starciu (nic nie instalujemy). Dapper + jawne skrypty SQL w `db/*.sql`. Każde zapytanie przez istniejącą klasę `SqlRunner` (loguje SQL; na każdym połączeniu rejestruje funkcję `plain()` – wyszukiwanie bez rozróżniania wielkości liter i ogonków). Parametry zawsze przez Dappera (`@q`), nigdy sklejanie tekstu SQL. Liczby z ułamkiem i daty zapisuj do bazy jako tekst, dokładnie w formacie podanym w prompcie.
 - CSV: pakiet CsvHelper (jest w projekcie), `CultureInfo("pl-PL")` albo kultura z promptu.
 - Logowanie: ASP.NET Core Identity (już skonfigurowane). Token antiforgery wysyła `<body hx-headers:inherited=...>` w `_Layout.cshtml`.
 - Rejestracja Twoich klas i zadania przy starcie: `src/GzmApp/AppServices.cs` (`AddAppServices`, `RunAtStartupAsync`).
@@ -45,32 +45,3 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 
 ## Pliki
 - Zmieniaj tylko pliki z listy „Nie zmieniaj plików poza: …” w prompcie. Jeśli potrzebny jest inny plik – zatrzymaj się i zapytaj.
-
-# HTMX 4 – różnice względem 2.x (używamy 4.0.0)
-
-Źródło: https://four.htmx.org/docs/whats-new-in-htmx-4
-
-1. **Dziedziczenie atrybutów jest jawne.** Atrybut na rodzicu działa na dzieci tylko z `:inherited`.
-   - Źle: `<div hx-target="#wyniki"><input hx-get="?handler=Szukaj"></div>`
-   - Dobrze: `<input hx-get="?handler=Szukaj" hx-target="#wyniki">` albo `<div hx-target:inherited="#wyniki">…</div>`
-2. **Token antiforgery jest już na `<body>`** (`hx-headers:inherited='{"RequestVerificationToken":"…"}'` w `_Layout.cshtml`).
-   - Źle: drugi `hx-headers` na przycisku albo wyłączenie walidacji (`[IgnoreAntiforgeryToken]`).
-   - Dobrze: zwykły `hx-post` / `hx-delete` – token dojdzie sam.
-3. **Odpowiedzi 4xx i 5xx są podmieniane w stronie** (nie podmienia się tylko 204 i 304).
-   - Źle: zwrócić całą stronę błędu – wyląduje w środku listy.
-   - Dobrze: krótki fragment z komunikatem i właściwym statusem, np. `<p class="alert alert-warning">Zaloguj się…</p>` ze statusem 401.
-4. **Zdarzenia mają postać `htmx:faza:akcja`.**
-   - Źle: `htmx:beforeRequest`, `htmx:afterSwap`, `htmx:responseError`
-   - Dobrze: `htmx:before:request`, `htmx:after:swap`, `htmx:response:error`
-5. **Logowanie:** `htmx.logAll()` nie istnieje.
-   - Dobrze: `htmx.config.logAll = true;`
-6. **Domyślny timeout to 60 s** (w 2.x nie było limitu).
-7. **Selektory ze spacją lub przecinkiem w `hx-trigger ... from:` muszą być w apostrofach.**
-   - Źle: `hx-trigger="keyup from:(closest form)"`
-   - Dobrze: `hx-trigger="keyup from:'closest form'"`
-8. **Nagłówki żądań:** `HX-Request` (zawsze `true`), `HX-Request-Type` (`full` / `partial`), `HX-Source` (zamiast `HX-Trigger`, format `tag#id`), `HX-Target`, `HX-Current-URL`. Rozpoznawaj żądanie HTMX po `HX-Request: true`.
-9. **Usunięte:** `hx-vars` (zamiast tego `hx-vals` z `js:`), `hx-params`, `hx-ext`, `hx-disinherit`, `hx-inherit`, modyfikator `queue` w `hx-trigger` (zamiast tego `hx-sync`).
-10. **Wyszukiwarka na żywo:** `hx-trigger="keyup changed delay:300ms"`.
-11. **`hx-disable` zmienił znaczenie.** W 4.x `hx-disable="this"` blokuje przycisk na czas żądania (dawne `hx-disabled-elt`). Wyłączenie HTMX dla fragmentu strony to teraz `hx-ignore`.
-   - Źle: usuwać `hx-disable="this"` z przycisku „Analizuj”, bo „wyłącza HTMX”.
-   - Dobrze: zostawić – chroni przed podwójnym kliknięciem i drugim zapytaniem do AI.

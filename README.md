@@ -6,8 +6,8 @@ otwartych danych Metropolii GZM. Kod pisze Kilo Code (AI) – Wy nim sterujecie.
 ## Jak zacząć (na warsztacie)
 
 1. **Losujecie scenariusz** – karta od prowadzącego mówi, który to scenariusz, np. `s05`.
-2. Otwieracie folder `scenarios/s05/` i czytacie **`karta.md`** – dowiadujecie się, o czym jest Wasz portal.
-3. Otwieracie **`prompty.md`** i zaczynacie od **kroku 0**: pierwszy prompt tworzy szkielet aplikacji
+2. Otwieracie folder `scenarios/s05/` i czytacie **`karta.md`** – dowiadujecie się, o czym jest Wasz portal (są tam też prompty krok po kroku).
+3. Zaczynacie od **kroku 0** w `karta.md`: pierwszy prompt tworzy szkielet aplikacji
    i pobiera dane z portalu GZM. Potem budujecie portal krok po kroku: dane w bazie → wyszukiwarka →
    strona → analiza AI.
 4. W pauzach pytacie Kilo o propozycje decyzji – każda decyzja trafia do `LOG-DECYZJI.md`.
@@ -19,8 +19,8 @@ a dane pobiera się prosto z otwartedane.metropoliagzm.pl.
 
 | Miejsce | Co tam jest |
 |---|---|
-| `scenarios/sNN/` | materiały scenariusza: `karta.md`, `prompty.md`, `spec/` (specyfikacja kroków), `prowadzacy.md` (tylko dla prowadzącego). |
-| `docs/PORADNIK-UCZNIA.md` | poradnik pary: uruchamianie (F5 / `dotnet run`), testy (ikona kolby / `dotnet test`), F12 w Edge, debugger VS Code, baza w mssql. |
+| `scenarios/sNN/` | materiały scenariusza: `karta.md` (opis portalu, zasady pracy i prompty), `spec/` (specyfikacja kroków), `prowadzacy.md` (tylko dla prowadzącego). |
+| `docs/PORADNIK-UCZNIA.md` | poradnik pary: uruchamianie (F5 / `dotnet run`), testy (ikona kolby / `dotnet test`), F12 w Edge, debugger VS Code, baza w SQLite Viewer. |
 | `szkielet/` | szablon aplikacji i testów – krokiem 0 skrypt robi z niego Wasz portal. |
 | `data/` | tu wyląduje pobrany plik CSV (`data/raw/`). |
 | `LOG-DECYZJI.md` | log decyzji pary – prowadzi go Kilo (powstaje w kroku 0). |

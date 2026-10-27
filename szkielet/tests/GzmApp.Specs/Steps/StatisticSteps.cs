@@ -1,5 +1,5 @@
 using AngleSharp.Dom;
-using GzmApp.Tests.Infrastructure;
+using GzmApp.Specs.Infrastructure;
 using Spectree;
 
 namespace GzmApp.Specs.Steps;
@@ -14,13 +14,13 @@ public sealed class StatisticSteps
 
     [Step("Kafelek ze statystyką pokazuje średnią pola `{pole}` z 2 miejscami po przecinku.")]
     public Task ShowsAverage(string field) =>
-        AssertValueAsync($"ROUND(AVG(CAST({Records.Field(field)} AS decimal(18,2))), 2)", $"średnia pola `{field}`");
+        AssertValueAsync($"ROUND(AVG(CAST({Records.Field(field)} AS REAL)), 2)", $"średnia pola `{field}`");
 
     [Step("Kafelek ze statystyką pokazuje 5 najczęstszych wartości pola `{pole}` z liczbą rekordów.")]
-    public Task ShowsTop5(string field) => AssertGroupsAsync(field, "TOP 5 ");
+    public Task ShowsTop5(string field) => AssertGroupsAsync(field, 5);
 
     [Step("Kafelek ze statystyką pokazuje liczbę rekordów dla każdej wartości pola `{pole}`.")]
-    public Task ShowsCountBy(string field) => AssertGroupsAsync(field, string.Empty);
+    public Task ShowsCountBy(string field) => AssertGroupsAsync(field, 0);
 
     private static async Task AssertValueAsync(string aggregate, string description)
     {
@@ -32,14 +32,15 @@ public sealed class StatisticSteps
         Assert.True(shown.Any(s => DisplayForms.Number(s) == value), $"Kafelek pokazuje {string.Join(" / ", shown)}, a {description} w bazie to {value}.");
     }
 
-    private static async Task AssertGroupsAsync(string field, string top)
+    private static async Task AssertGroupsAsync(string field, int limit)
     {
         var column = Records.Field(field);
-        var expected = await Records.RowsAsync($"SELECT {top}{column}, COUNT(*) FROM {Records.Table} WHERE {column} IS NOT NULL GROUP BY {column} ORDER BY COUNT(*) DESC, {column}");
+        var top = limit == 0 ? string.Empty : $" LIMIT {limit}";
+        var expected = await Records.RowsAsync($"SELECT {column}, COUNT(*) FROM {Records.Table} WHERE {column} IS NOT NULL GROUP BY {column} ORDER BY COUNT(*) DESC, {column}{top}");
         var lists = (await TileAsync()).QuerySelectorAll("li[data-stat]").GroupBy(li => li.ParentElement).Select(g => g.ToList()).ToList();
         Assert.True(lists.Count > 0, "W `<div id=\"statystyka\">` nie ma listy `<li data-stat>wartość: <strong>liczba</strong></li>`.");
 
-        var matches = lists.Any(shown => shown.Count == expected.Count && expected.Zip(shown).All(p => Same(p.Second, p.First[0], (int)p.First[1]!)));
+        var matches = lists.Any(shown => shown.Count == expected.Count && expected.Zip(shown).All(p => Same(p.Second, p.First[0], Convert.ToInt32(p.First[1]!))));
         Assert.True(matches, $"Kafelek pokazuje: {string.Join("; ", lists.SelectMany(l => l).Select(s => DisplayForms.Normalize(s.TextContent)))}. W bazie: {string.Join("; ", expected.Select(e => $"{DisplayForms.Of(e[0]).FirstOrDefault()}: {e[1]}"))}.");
     }
 

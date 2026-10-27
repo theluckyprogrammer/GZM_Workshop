@@ -3,9 +3,9 @@ using Expect;
 namespace Cards;
 
 // The default rule sentence of each of the five decisions (variant A in scenarios.json: what mapping.json,
-// the rescue branches and checkpoints.md use). The variants are no longer printed in prompty.md –
+// the rescue branches and checkpoints.md use). The variants are no longer printed in karta.md –
 // in the "decyzja" pauses the pair asks Kilo, which proposes sentences dynamically, following the
-// sentence patterns embedded in tools/Cards/templates/prompty.md and looking at the pair's data
+// sentence patterns embedded in tools/Cards/templates/karta.md and looking at the pair's data
 // and LOG-DECYZJI.md. SpecCoverageTests in szkielet/tests checks that every pattern has a step.
 public static class Decisions
 {

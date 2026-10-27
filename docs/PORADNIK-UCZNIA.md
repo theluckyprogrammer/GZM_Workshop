@@ -2,7 +2,7 @@
 
 Nie musicie umieć debugować – ten poradnik pokazuje krok po kroku, gdzie zobaczyć zmiany,
 jak podejrzeć dane i co zrobić, gdy coś nie działa. Wszystko robicie w VS Code i przeglądarce Edge.
-Zaglądajcie tu za każdym razem, gdy pauza w `prompty.md` odsyła do poradnika.
+Zaglądajcie tu za każdym razem, gdy pauza w `karta.md` odsyła do poradnika.
 
 ## Spis treści
 
@@ -13,7 +13,7 @@ Zaglądajcie tu za każdym razem, gdy pauza w `prompty.md` odsyła do poradnika.
 5. [Czerwony test – co teraz?](#5-czerwony-test--co-teraz)
 6. [Narzędzia deweloperskie Edge (F12)](#6-narzędzia-deweloperskie-edge-f12)
 7. [Debuger VS Code: pułapka w kodzie](#7-debuger-vs-code-pułapka-w-kodzie)
-8. [Baza danych w rozszerzeniu mssql](#8-baza-danych-w-rozszerzeniu-mssql)
+8. [Baza danych w rozszerzeniu SQLite Viewer](#8-baza-danych-w-rozszerzeniu-sqlite-viewer)
 9. [Mapa repozytorium: gdzie co leży](#9-mapa-repozytorium)
 
 ## 1. Terminal w VS Code
@@ -146,30 +146,43 @@ wybierz konfigurację **GzmApp (http://localhost:5080)** i kliknijcie zieloną s
 
 ![Widok Run and Debug](obrazki/vscode-debugger-start.png)
 
-## 8. Baza danych w rozszerzeniu mssql
+## 8. Baza danych w rozszerzeniu SQLite Viewer
 
-Wasze dane leżą w SQL Server (baza `GzmWorkshop`). Oglądacie je bez pisania kodu:
+Wasza baza to jeden plik: `src/GzmApp/gzm.db` (baza SQLite). Nie ma tu żadnego serwera,
+logowania ani połączenia – plik powstaje przy pierwszym uruchomieniu aplikacji.
 
-1. Po lewej stronie VS Code kliknijcie **ikonę bazy danych** (SQL Server).
-2. Rozwińcie połączenie `(localdb)\MSSQLLocalDB` → `GzmWorkshop` → `Tables`.
-   Gdy połączenia nie ma: *Add Connection* → server name `(localdb)\MSSQLLocalDB` →
-   Authentication *Trust server certificate* / Windows → database `GzmWorkshop` → Connect.
-3. Prawy przycisk na tabeli → **Select Top 1000** – pierwsze 1000 wierszy Waszych danych.
+### Pierwsze spojrzenie
 
-![Widok bazy w rozszerzeniu mssql](obrazki/vscode-mssql-baza.png)
+1. Uruchomcie aplikację klawiszem **F5** i poczekajcie, aż otworzy się strona.
+   Przy starcie aplikacja tworzy plik `src/GzmApp/gzm.db`, jeśli go jeszcze nie ma.
+   Możecie potem zatrzymać aplikację: **Shift + F5**.
+2. W Eksploratorze VS Code (Ctrl+Shift+E) znajdźcie plik `src/GzmApp/gzm.db`
+   i kliknijcie go pojedynczym kliknięciem.
+3. Rozszerzenie **SQLite Viewer** otworzy go w karcie obok edytora. Po lewej stronie
+   jest lista tabel: tabele logowania `AspNet…` są od początku, tabela z Waszymi
+   danymi powstanie w kroku 1.
 
-4. Własne zapytanie: prawy przycisk na bazie `GzmWorkshop` → **New Query** → wpiszcie np.
-   `SELECT COUNT(*) FROM dbo.DabrowaLostItems` → **Ctrl + Shift + E** wykonuje zapytanie.
+Jeśli plik `gzm.db` nie istnieje, uruchomcie aplikację przez **F5**, poczekajcie na
+otwarcie strony i kliknijcie plik ponownie. Jeśli zamiast tabel pojawia się komunikat
+o nieznanym formacie, zawołajcie prowadzącego.
 
-![Wyniki zapytania w mssql](obrazki/vscode-mssql-wyniki.png)
+### Podgląd danych
 
-Zapytania tylko zaczynające się od `SELECT` – niczego nie zmieniajcie w bazie ręcznie.
+1. Na liście po lewej kliknijcie tabelę z Waszego scenariusza (jej nazwa jest
+   w prompcie kroku 1, np. `ZabrzeMemorials`).
+2. Zobaczycie wiersze danych w tabelce – przewijajcie w dół, żeby zobaczyć kolejne.
+   Puste komórki to `NULL`: puste pola z pliku CSV.
+3. Kliknijcie nazwę kolumny, żeby posortować wiersze – łatwo zobaczycie,
+   jakie wartości się powtarzają.
+
+Podgląd jest tylko do oglądania: niczego nie zmieniajcie w bazie ręcznie.
+Zapytania do bazy pisze Wasza aplikacja – każde widać w terminalu (log „SQL”).
 
 ## 9. Mapa repozytorium
 
 | Miejsce | Co tam jest |
 |---|---|
-| `scenarios/sNN/` | Wasz scenariusz: `karta.md` (o czym jest portal), `prompty.md` (prompty krok po kroku), `spec/` (specyfikacja – zdania-reguły), `checkpoints.md` (spis wartości w danych). |
+| `scenarios/sNN/` | Wasz scenariusz: `karta.md` (opis portalu i prompty krok po kroku), `spec/` (specyfikacja – zdania-reguły), `checkpoints.md` (spis wartości w danych). |
 | `src/GzmApp/` | Kod Waszej aplikacji (powstaje w kroku 0): strony w `Pages/`, import danych w `Data/`, analiza AI w `Ai/`. |
 | `tests/GzmApp.Specs/` | Testy specyfikacji – nie zmieniacie ich, tylko uruchamiacie. |
 | `data/raw/` | Pobrany plik CSV z danymi GZM. |
@@ -178,5 +191,5 @@ Zapytania tylko zaczynające się od `SELECT` – niczego nie zmieniajcie w bazi
 | `tools/nowy-portal.ps1` | Skrypt kroku 0: tworzy aplikację i pobiera dane. |
 
 ---
-*Obrazki: zrzuty ekranu © Microsoft z dokumentacji VS Code i rozszerzenia mssql
+*Obrazki: zrzuty ekranu © Microsoft z dokumentacji VS Code
 (sources: `docs/obrazki/ZRODLA.md`).*

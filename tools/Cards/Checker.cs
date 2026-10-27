@@ -4,8 +4,8 @@ using Expect;
 namespace Cards;
 
 // "check": the generated files of a scenario are complete, student files (and the specification) carry no expected values,
-// every prompt ends with the required sentence and points to its spec file, and every **value** (ID) in prowadzacy.md
-// equals checkpoints.md.
+// every prompt in karta.md ends with the required sentence and points to its spec file, and every **value** (ID)
+// in prowadzacy.md equals checkpoints.md.
 public static partial class Checker
 {
     private const string Ending = "Nie dodawaj pakietów.";
@@ -34,7 +34,7 @@ public static partial class Checker
         };
         var specific = name switch
         {
-            "prompty.md" => PromptRules(text),
+            "karta.md" => PromptRules(text),
             "prowadzacy.md" => references.Count == 0 ? ["prowadzacy.md: brak wartości z checkpoints.md"] : [],
             _ => [],
         };
@@ -48,18 +48,18 @@ public static partial class Checker
     {
         var prompts = PromptBlock().Matches(text).Select(m => m.Groups["body"].Value.TrimEnd()).ToList();
         if (prompts.Count < Steps.Length)
-            yield return $"prompty.md: {prompts.Count} bloków promptu, oczekiwano co najmniej {Steps.Length}";
+            yield return $"karta.md: {prompts.Count} bloków promptu, oczekiwano co najmniej {Steps.Length}";
         foreach (var index in prompts.Select((p, i) => (p, i + 1)).Where(x => !EndsCorrectly(x.p)).Select(x => x.Item2))
-            yield return $"prompty.md: prompt nr {index} nie kończy się zdaniem „Nie zmieniaj plików poza: … {Ending}”";
+            yield return $"karta.md: prompt nr {index} nie kończy się zdaniem „Nie zmieniaj plików poza: … {Ending}”";
         foreach (var missing in Steps.Where(s => !text.Contains(s, StringComparison.Ordinal)))
-            yield return $"prompty.md: brak „{missing}”";
+            yield return $"karta.md: brak „{missing}”";
         // Kroki 0–4 (pierwszych 5 bloków promptu) wskazują swoje pliki specyfikacji: 000-dane, 001-import, 002-szukaj, 003-strona, 004-ai.
         foreach (var index in prompts.Take(Generator.SpecTemplates.Length).Select((p, i) => (p, i)).Where(x => !x.p.Contains($"-{Generator.SpecTemplates[x.i]}`", StringComparison.Ordinal)).Select(x => x.i + 1))
-            yield return $"prompty.md: prompt kroku {index} nie wskazuje pliku specyfikacji {Generator.SpecTemplates[index - 1]}";
+            yield return $"karta.md: prompt kroku {index} nie wskazuje pliku specyfikacji {Generator.SpecTemplates[index - 1]}";
         foreach (var missing in DecisionAsks().Where(m => !text.Contains(m, StringComparison.Ordinal)))
-            yield return $"prompty.md: brak „{missing}”";
+            yield return $"karta.md: brak „{missing}”";
         if (!text.Contains("LOG-DECYZJI.md", StringComparison.Ordinal))
-            yield return "prompty.md: brak odwołania do LOG-DECYZJI.md";
+            yield return "karta.md: brak odwołania do LOG-DECYZJI.md";
     }
 
     // Every decision asks Kilo for proposals (no printed A/B/C variants).

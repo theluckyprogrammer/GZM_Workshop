@@ -1,5 +1,5 @@
 using System.Net;
-using GzmApp.Tests.Infrastructure;
+using GzmApp.Specs.Infrastructure;
 using Spectree;
 
 namespace GzmApp.Specs.Steps;

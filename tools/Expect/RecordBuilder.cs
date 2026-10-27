@@ -7,7 +7,7 @@ public sealed record DataRecord(int SourceRow, IReadOnlyDictionary<string, Parse
     public bool IsWeird => WrongFieldCount || Values.Values.Any(v => v.State != ValueState.Ok);
 }
 
-// Records: rows that end up in the table (after skipping and after the MERGE on the key).
+// Records: rows that end up in the table (after skipping and after the upsert on the key).
 public sealed record RecordSet(IReadOnlyList<DataRecord> Records, int FileRows, IReadOnlyList<int> SkippedRows, IReadOnlyList<int> DuplicateRows)
 {
     public DataRecord Row(int sourceRow) =>

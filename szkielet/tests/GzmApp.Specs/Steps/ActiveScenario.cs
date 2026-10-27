@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
-using GzmApp.Tests.Infrastructure;
+using GzmApp.Specs.Infrastructure;
 
 namespace GzmApp.Specs.Steps;
 
@@ -15,7 +15,7 @@ public static class ActiveScenario
         typeof(ActiveScenario).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>().FirstOrDefault(a => a.Key == "GzmScenario")?.Value ?? string.Empty;
 
     public static Scenario Data => string.IsNullOrEmpty(Code)
-        ? throw new InvalidOperationException("Brak scenariusza: uruchomcie pierwszy prompt z prompty.md (krok 0) – skrypt tools/nowy-portal.ps1 tworzy aplikację i wpisuje scenariusz. Potem przebudujcie projekt.")
+        ? throw new InvalidOperationException("Brak scenariusza: uruchomcie pierwszy prompt z karta.md (krok 0) – skrypt tools/nowy-portal.ps1 tworzy aplikację i wpisuje scenariusz. Potem przebudujcie projekt.")
         : ScenarioData.Get(Code);
 
     public static string Table => Data.Text("table");

@@ -26,7 +26,7 @@ public sealed class SearchSteps
         var lower = (await Pages.SearchAsync(phrase)).Count;
         var plain = (await Pages.SearchAsync(SearchRule.WithoutPolishLetters(phrase))).Count;
 
-        Assert.True(lower == expected && upper == expected, $"„{phrase}” daje {lower} wyników, a wielkimi literami – {upper}; pasujących rekordów jest {expected}. Użyjcie COLLATE Latin1_General_CI_AI.");
+        Assert.True(lower == expected && upper == expected, $"„{phrase}” daje {lower} wyników, a wielkimi literami – {upper}; pasujących rekordów jest {expected}. Użyjcie funkcji plain() – rejestruje ją SqlRunner na każdym połączeniu.");
         Assert.True(plain >= expected, $"„{SearchRule.WithoutPolishLetters(phrase)}” (bez polskich znaków) daje {plain} wyników, a pasujących rekordów jest {expected}.");
     }
 

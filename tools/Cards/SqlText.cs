@@ -2,7 +2,7 @@ using Expect;
 
 namespace Cards;
 
-// SQL shown to students: the table for step 1 and the statistic queries for step 3.
+// SQL shown to students (SQLite): the table for step 1 and the statistic queries for step 3.
 public static class SqlText
 {
     public static string CreateTable(ScenarioMapping mapping)
@@ -11,15 +11,26 @@ public static class SqlText
 
         var lines = new List<string>
         {
-            $"    [RecordId] int IDENTITY(1,1) NOT NULL CONSTRAINT [PK_{mapping.Table}] PRIMARY KEY,",
-            "    [SourceRow] int NOT NULL,",
+            "    [RecordId] INTEGER PRIMARY KEY AUTOINCREMENT,",
+            "    [SourceRow] INTEGER NOT NULL,",
         };
-        lines.AddRange(mapping.Imported.Select(c => $"    [{c.Field}] {c.SqlType} {(c.Nullable ? "NULL" : "NOT NULL")},"));
+        lines.AddRange(mapping.Imported.Select(c => $"    [{c.Field}] {SqliteType(c.SqlType!)} {(c.Nullable ? "NULL" : "NOT NULL")},"));
         if (mapping.Key.IsRowHash)
-            lines.Add("    [RowHash] binary(32) NOT NULL,");
+            lines.Add("    [RowHash] BLOB NOT NULL,");
         lines.Add($"    CONSTRAINT [UQ_{mapping.Table}_Key] UNIQUE ({KeyColumns(mapping)})");
-        return $"IF OBJECT_ID(N'dbo.{mapping.Table}') IS NULL\nCREATE TABLE dbo.[{mapping.Table}] (\n{string.Join("\n", lines)}\n);";
+        return $"CREATE TABLE IF NOT EXISTS [{mapping.Table}] (\n{string.Join("\n", lines)}\n);";
     }
+
+    // SQLite storage: texts, numbers with decimals, dates and times in TEXT (canonical formats),
+    // whole numbers and 0/1 flags in INTEGER.
+    public static string SqliteType(string sqlType) => sqlType switch
+    {
+        _ when sqlType.StartsWith("nvarchar", StringComparison.Ordinal) => "TEXT",
+        _ when sqlType.StartsWith("decimal", StringComparison.Ordinal) => "TEXT",
+        _ when sqlType.StartsWith("date", StringComparison.Ordinal) => "TEXT",
+        _ when sqlType.StartsWith("time", StringComparison.Ordinal) => "TEXT",
+        _ => "INTEGER",
+    };
 
     public static string Statistic(string kind, string field, string table)
     {
@@ -28,12 +39,12 @@ public static class SqlText
         ArgumentException.ThrowIfNullOrWhiteSpace(table);
 
         var column = $"[{field}]";
-        var from = $"dbo.[{table}]";
+        var from = $"[{table}]";
         return kind switch
         {
             "sum" => $"SELECT SUM({column}) FROM {from}",
-            "avg" => $"SELECT ROUND(AVG(CAST({column} AS decimal(18,2))), 2) FROM {from}",
-            "top5" => $"SELECT TOP 5 {column} AS Value, COUNT(*) AS Count FROM {from} WHERE {column} IS NOT NULL GROUP BY {column} ORDER BY COUNT(*) DESC, {column}",
+            "avg" => $"SELECT ROUND(AVG(CAST({column} AS REAL)), 2) FROM {from}",
+            "top5" => $"SELECT {column} AS Value, COUNT(*) AS Count FROM {from} WHERE {column} IS NOT NULL GROUP BY {column} ORDER BY COUNT(*) DESC, {column} LIMIT 5",
             _ => $"SELECT {column} AS Value, COUNT(*) AS Count FROM {from} WHERE {column} IS NOT NULL GROUP BY {column} ORDER BY COUNT(*) DESC, {column}",
         };
     }

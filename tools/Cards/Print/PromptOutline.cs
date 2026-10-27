@@ -6,7 +6,7 @@ public sealed record Decision(int Number, string Question);
 
 public sealed record Step(int Number, string Title, IReadOnlyList<string> Look, IReadOnlyList<Decision> Decisions);
 
-// The road through scenarios/sNN/prompty.md: steps, "see what you built" points, decisions with variants, "what next" ideas.
+// The road through scenarios/sNN/karta.md (the "Prompty – krok po kroku" section): steps, "see what you built" points, decisions with variants, "what next" ideas.
 public sealed partial record PromptOutline(IReadOnlyList<Step> Steps, IReadOnlyList<string> Next)
 {
     public static PromptOutline Parse(string markdown)

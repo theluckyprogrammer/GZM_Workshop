@@ -3,7 +3,7 @@
 Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie programują. Na koniec napisz w 3 punktach, co zrobiłeś.
 
 ## Start portalu (krok 0)
-- Portal pary powstaje w kroku 0: skrypt `tools/nowy-portal.ps1 -Scenariusz sNN` kopiuje szkielet (`szkielet/` → `src/`, `tests/`, `db/`), pobiera dane z portalu GZM i wpisuje scenariusz. Uruchamiasz go tylko wtedy, gdy poprosi o to prompt kroku 0; plików `szkielet/` nie zmieniasz.
+- Portal pary powstaje w kroku 0: skrypt `tools/nowy-portal.ps1 -Scenariusz sNN` kopiuje szkielet (`szkielet/` → `src/`, `tests/`), pobiera dane z portalu GZM i wpisuje scenariusz. Uruchamiasz go tylko wtedy, gdy poprosi o to prompt kroku 0; plików `szkielet/` nie zmieniasz.
 - `LOG-DECYZJI.md` w głównym katalogu to log decyzji pary: po każdej decyzji dopisujesz jeden wiersz do tabeli (Krok | Pytanie | Wasza decyzja | Dlaczego). Niczego z niego nie usuwasz.
 
 ## Stos – używaj tylko tego
@@ -11,7 +11,7 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 - Widok: HTMX 4.0.0 z pliku lokalnego `wwwroot/lib/htmx/4.0.0/htmx.min.js` (już podpięty w `_Layout.cshtml`). Fragmenty HTML zwracają handlery Razor Pages (`Partial(...)`). Zasady HTMX 4: `.kilo/rules/htmx4.md`.
 - Wygląd: biblioteka CSS Tabler 1.6.1 (klasy Bootstrap 5: `card`, `list-group`, `badge`, `btn`, `row`/`col-*`), plik lokalny już podpięty w `_Layout.cshtml`. Wszystkie teksty na stronie po polsku.
 - AI: model GPT-6 Luna jest już podłączony w `Program.cs` – z DI bierzesz `IChatClient` (`Microsoft.Extensions.AI`) i `IOptions<Sol6Options>` (`GzmApp.Ai`). Klucz jest w `src/GzmApp/appsettings.Local.json` (od prowadzącego). Odpowiedź modelu pokazuj jako tekst (`@`), nigdy przez `Html.Raw`.
-- Dane: Dapper + jawne skrypty SQL w `db/*.sql`. Każde zapytanie przez istniejącą klasę `SqlRunner` (loguje SQL). Parametry zawsze przez Dappera (`@q`), nigdy sklejanie tekstu SQL.
+- Dane: SQLite – baza to jeden plik `src/GzmApp/gzm.db`, powstaje sama przy pierwszym starciu (nic nie instalujemy). Dapper + jawne skrypty SQL w `db/*.sql`. Każde zapytanie przez istniejącą klasę `SqlRunner` (loguje SQL; na każdym połączeniu rejestruje funkcję `plain()` – wyszukiwanie bez rozróżniania wielkości liter i ogonków). Parametry zawsze przez Dappera (`@q`), nigdy sklejanie tekstu SQL. Liczby z ułamkiem i daty zapisuj do bazy jako tekst, dokładnie w formacie podanym w prompcie.
 - CSV: pakiet CsvHelper (jest w projekcie), `CultureInfo("pl-PL")` albo kultura z promptu.
 - Logowanie: ASP.NET Core Identity (już skonfigurowane). Token antiforgery wysyła `<body hx-headers:inherited=...>` w `_Layout.cshtml`.
 - Rejestracja Twoich klas i zadania przy starcie: `src/GzmApp/AppServices.cs` (`AddAppServices`, `RunAtStartupAsync`).

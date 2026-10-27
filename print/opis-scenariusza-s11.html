@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PamięćKatowic – opis scenariusza (s11)</title>
+<style>
+  @page { size: A4; margin: 12mm 14mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.5pt; line-height: 1.38; color: #000; background: #fff; margin: 0; }
+  h1 { font-size: 20pt; margin: 0 0 1mm; }
+  h2 { font-size: 12.5pt; margin: 4.5mm 0 1.8mm; border-bottom: 1.2pt solid #000; padding-bottom: 0.8mm; }
+  p { margin: 0 0 1.6mm; }
+  ol, ul { margin: 0.5mm 0 1.6mm 5.5mm; padding: 0; }
+  li { margin-bottom: 1.2mm; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9.4pt; }
+  .podtytul { font-size: 11pt; margin-bottom: 3mm; }
+  .pomysl { font-size: 12.5pt; font-weight: 600; border: 1.6pt solid #000; padding: 2.5mm 3mm; margin: 2mm 0 3mm; }
+  .ramka { border: 1pt solid #000; padding: 2mm 3mm; margin-top: 3mm; break-inside: avoid; }
+  .stopka { font-size: 8.5pt; margin-top: 4mm; border-top: 0.6pt solid #000; padding-top: 1.2mm; }
+  @media screen { body { max-width: 190mm; margin: 8mm auto; padding: 0 4mm; } }
+</style>
+</head>
+<body>
+<h1>PamięćKatowic</h1>
+<p class="podtytul">Scenariusz s11 · warsztat „AI + otwarte dane GZM”</p>
+<p class="pomysl">Tablice, pomniki i groby pamięci narodowej w Katowicach.</p>
+
+<h2>Wyobraźcie sobie…</h2>
+<p>Projekt szkolny „Moja ulica pamięta”: każdy ma się dowiedzieć, co upamiętnia jego okolica w Katowicach. PamięćKatowic zbiera tablice, pomniki i groby z opisami – wystarczy wpisać ulicę.</p>
+
+<h2>Jak wygląda Wasza aplikacja</h2>
+<p>Wpisujecie nazwę swojej ulicy i lista pokazuje miejsca pamięci: opis, ulica i rodzaj obiektu – tablica, pomnik, gr&#243;b. Kafelek obok m&#243;wi, ile jest miejsc każdego rodzaju. „✨ Analizuj z AI” zamienia listę w trasę spacerową z kr&#243;tką historią każdego przystanku.</p>
+<p>A jeśli starczy czasu: logowanie i gwiazdka ★ przy rekordach, a w „Moich ulubionych” – miejsca na lekcję historii w terenie.</p>
+
+<h2>Wasze decyzje</h2>
+<p>To Wy jesteście projektantami. Po drodze zdecydujecie, po czym użytkownik szuka, co widzi na liście, jaką liczbę pokazuje kafelek i o co pytacie sztuczną inteligencję. Dwie pary z tym samym scenariuszem mogą skończyć z zupełnie różnymi portalami.</p>
+
+<h2>Dokąd może urosnąć</h2>
+<ul>
+  <li><strong>Moja ulica.</strong> Wpisujecie adres, a AI opowiada historię wszystkich miejsc pamięci w promieniu kilku ulic.</li>
+  <li><strong>Audioprzewodnik.</strong> Każdy opis z przyciskiem „Czytaj na głos” – idealne na spacer ze słuchawkami.</li>
+  <li><strong>Katowice i Zabrze.</strong> Por&#243;wnanie: kogo i co upamiętniają dwa sąsiednie miasta?</li>
+  <li><strong>Wspomnienia mieszkańc&#243;w.</strong> Zalogowani dopisują kr&#243;tkie historie rodzinne związane z miejscem.</li>
+  <li><strong>Mapa pamięci.</strong> R&#243;żne ikonki dla tablic, pomnik&#243;w i grob&#243;w na jednej mapie miasta.</li>
+  <li><strong>Wasz pomysł.</strong> Opiszcie go Kilo jednym zdaniem – może to on będzie najlepszy?</li>
+</ul>
+
+<div class="ramka">
+  <p><strong>Jak zacząć:</strong> w VS Code otwórzcie <code>scenarios/s11/karta.md</code> i skopiujcie do Kilo Code prompt „Krok 0”. Tam są wszystkie kroki i pauzy na decyzje.</p>
+  <p><strong>Logowanie do portalu:</strong> login <code>adm</code>, hasło <code>TestPass123!</code>.</p>
+</div>
+<p class="stopka">Dane: „Katowice: miejsca pamięci narodowej” – Źr&#243;dło: Katowice, otwartedane.metropoliagzm.pl, CC BY 4.0</p>
+</body>
+</html>

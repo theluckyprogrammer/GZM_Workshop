@@ -2,12 +2,12 @@ using Expect;
 
 namespace Cards;
 
-// Writes karta.md, prompty.md (students), prowadzacy.md (teacher) and the specification spec/sNN-NNN-*.md
+// Writes karta.md (scenario description and the prompts), prowadzacy.md (teacher) and the specification spec/sNN-NNN-*.md
 // (one capability file per workshop step, tests in tests/GzmApp.Specs) of one scenario from tools/Cards/templates.
 // The extra step from "Co dalej?" goes to spec/dodatkowe/: no tests until the pair moves the file to spec/.
 public static class Generator
 {
-    public static readonly string[] StudentOutputs = ["karta.md", "prompty.md"];
+    public static readonly string[] StudentOutputs = ["karta.md"];
     public static readonly string[] Outputs = [.. StudentOutputs, "prowadzacy.md"];
     public static readonly string[] SpecTemplates = ["000-dane.md", "001-importuj-dane.md", "002-szukaj-rekordow.md", "003-pokaz-strone.md", "004-analiza-ai.md"];
     public static readonly string[] ExtraSpecTemplates = ["005-zapisz-ulubione.md"];

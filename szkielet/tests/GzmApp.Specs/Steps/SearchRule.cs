@@ -1,7 +1,8 @@
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using GzmApp.Tests.Infrastructure;
+using GzmApp.Data;
+using GzmApp.Specs.Infrastructure;
 
 namespace GzmApp.Specs.Steps;
 
@@ -18,9 +19,10 @@ public sealed partial record SearchRule(string Field, bool Prefix)
         return new SearchRule(RuleOne().Match(line).Groups["field"].Value, line.Contains("zaczyna się od frazy", StringComparison.Ordinal));
     }
 
-    public string Pattern(string phrase) => Prefix ? phrase + "%" : "%" + phrase + "%";
+    // The pattern is plain(): without case and Polish diacritics, exactly like the SQL function plain().
+    public string Pattern(string phrase) => Prefix ? PlainText.Of(phrase) + "%" : "%" + PlainText.Of(phrase) + "%";
 
-    public string Where => $"CAST({Records.Field(Field)} AS nvarchar(4000)) COLLATE Latin1_General_CI_AI LIKE @pattern";
+    public string Where => $"plain(CAST({Records.Field(Field)} AS TEXT)) LIKE @pattern";
 
     public async Task<string> PhraseAsync()
     {
@@ -28,7 +30,7 @@ public sealed partial record SearchRule(string Field, bool Prefix)
         if (await Records.CountAsync(Where, new { pattern = Pattern(checkpoint) }) > 0)
             return checkpoint;
 
-        var rows = await Records.RowsAsync($"SELECT TOP 1 CAST({Records.Field(Field)} AS nvarchar(4000)) FROM {Records.Table} WHERE LEN({Records.Field(Field)}) >= 3 ORDER BY [SourceRow]");
+        var rows = await Records.RowsAsync($"SELECT CAST({Records.Field(Field)} AS TEXT) FROM {Records.Table} WHERE LENGTH(CAST({Records.Field(Field)} AS TEXT)) >= 3 ORDER BY [SourceRow] LIMIT 1");
         Assert.True(rows.Count == 1, $"Pole `{Field}` jest puste we wszystkich rekordach – nie ma czego szukać.");
         var value = (string)rows[0][0]!;
         var word = Words().Matches(value).Select(m => m.Value).OrderByDescending(w => w.Length).FirstOrDefault() ?? value;

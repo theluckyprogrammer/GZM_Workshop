@@ -21,7 +21,6 @@ param(
 $ErrorActionPreference = 'Continue'
 $repo = Split-Path -Parent $PSScriptRoot
 $script:failures = 0
-$onWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
 
 function Write-Result([string]$Name, [string]$State, [string]$Hint) {
     $color = @{ 'OK' = 'Green'; 'BŁĄD' = 'Red'; 'POMINIĘTO' = 'Yellow' }[$State]
@@ -43,24 +42,6 @@ function Test-Step([string]$Name, [string]$Hint, [scriptblock]$Check) {
 
 function Test-Command([string]$Name) {
     return $null -ne (Get-Command $Name -ErrorAction SilentlyContinue)
-}
-
-function Invoke-SqlSelect1([string]$ConnectionString) {
-    if (Test-Command 'sqlcmd') {
-        $output = sqlcmd -S '(localdb)\MSSQLLocalDB' -E -h -1 -Q 'SET NOCOUNT ON; SELECT 1' 2>&1
-        return ($LASTEXITCODE -eq 0) -and ("$output".Trim() -eq '1')
-    }
-    Add-Type -AssemblyName System.Data
-    $connection = New-Object System.Data.SqlClient.SqlConnection $ConnectionString
-    try {
-        $connection.Open()
-        $command = $connection.CreateCommand()
-        $command.CommandText = 'SELECT 1'
-        return ($command.ExecuteScalar() -eq 1)
-    }
-    finally {
-        $connection.Dispose()
-    }
 }
 
 function Get-HtmxExpectedHash {
@@ -111,17 +92,10 @@ try {
         (Test-Command 'dotnet') -and ((dotnet --list-sdks) -match '^10\.0\.').Count -gt 0
     }
 
-    Test-Step 'SQL Server LocalDB i połączenie (SELECT 1)' 'Zainstaluj SqlLocalDB.msi; potem: sqllocaldb create MSSQLLocalDB -s' {
-        if (-not $onWindows) { return 'skip' }
-        $info = sqllocaldb info MSSQLLocalDB 2>&1
-        if ($LASTEXITCODE -ne 0) { return $false }
-        Invoke-SqlSelect1 'Server=(localdb)\MSSQLLocalDB;Database=master;Trusted_Connection=True;TrustServerCertificate=True'
-    }
-
-    Test-Step 'Rozszerzenia VS Code (C#, C# Dev Kit, mssql, Kilo Code)' 'code --install-extension <id> dla brakujących: ms-dotnettools.csharp, ms-dotnettools.csdevkit, ms-mssql.mssql, kilocode.kilo-code' {
+    Test-Step 'Rozszerzenia VS Code (C#, C# Dev Kit, SQLite Viewer, Kilo Code)' 'code --install-extension <id> dla brakujących: ms-dotnettools.csharp, ms-dotnettools.csdevkit, qwtel.sqlite-viewer, kilocode.kilo-code' {
         if (-not (Test-Command 'code')) { return $false }
         $installed = code --list-extensions 2>$null | ForEach-Object { $_.ToLowerInvariant() }
-        $required = 'ms-dotnettools.csharp', 'ms-dotnettools.csdevkit', 'ms-mssql.mssql', 'kilocode.kilo-code'
+        $required = 'ms-dotnettools.csharp', 'ms-dotnettools.csdevkit', 'qwtel.sqlite-viewer', 'kilocode.kilo-code'
         ($required | Where-Object { $installed -notcontains $_ }).Count -eq 0
     }
 
@@ -142,6 +116,12 @@ try {
     Test-Step 'dotnet build (pakiety z cache NuGet)' 'Uruchom raz z internetem: dotnet restore szkielet/src/GzmApp; potem build działa offline.' {
         dotnet build (Join-Path $repo 'szkielet/src/GzmApp') -v q -nologo 2>&1 | Out-Null
         $LASTEXITCODE -eq 0
+    }
+
+    # Baza SQLite jest w aplikacji (pakiet Microsoft.Data.Sqlite z natywną biblioteką) – nic nie instalujemy.
+    Test-Step 'Baza SQLite (natywna biblioteka e_sqlite3 po buildzie)' 'Uruchom raz z internetem: dotnet restore szkielet/src/GzmApp – pakiet z bazą pobierze się do cache NuGet.' {
+        $bin = Join-Path $repo 'szkielet/src/GzmApp/bin'
+        @(Get-ChildItem $bin -Recurse -Filter 'e_sqlite3.dll' -ErrorAction SilentlyContinue).Count -gt 0
     }
 
     # Every sentence of the specification has a step; no database needed. Proves that Test Explorer will show the tests.

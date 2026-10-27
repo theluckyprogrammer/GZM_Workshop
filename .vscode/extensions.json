@@ -2,7 +2,7 @@
   "recommendations": [
     "ms-dotnettools.csharp",
     "ms-dotnettools.csdevkit",
-    "ms-mssql.mssql",
+    "qwtel.sqlite-viewer",
     "kilocode.kilo-code"
   ]
 }

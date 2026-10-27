@@ -10,7 +10,7 @@
         "stage": 3,
         "trap": "Ta sama dzielnica zapisana różnie: „Zabrze-Biskupice”, „Zabrze – Biskupice”, „Zabrze - Mikulczyce”",
         "effect": "W top 5 to osobne grupy. Tak jest w danych – nie poprawiaj ich.",
-        "tool": "rozszerzenie mssql: `SELECT DISTINCT City FROM ZabrzeMemorials`"
+        "tool": "SQLite Viewer: posortuj kolumnę City w ZabrzeMemorials"
       }
     ],
     "search": [
@@ -80,7 +80,7 @@
         "stage": 5,
         "trap": "Kolumna „Nazwa” zawiera numer stacji (np. 27007), a nie nazwę",
         "effect": "Tytuł ulubionego wygląda jak liczba. To nie błąd importu.",
-        "tool": "rozszerzenie mssql: `SELECT TOP 5 Name, Number FROM BikeStations`"
+        "tool": "SQLite Viewer: pierwsze wiersze BikeStations (Name, Number)"
       }
     ],
     "search": [
@@ -277,7 +277,7 @@
         "stage": 1,
         "trap": "Daty odbioru (`collectionDate`) są w przyszłości",
         "effect": "To nie błąd przeliczenia – to termin, do którego można odebrać rzecz.",
-        "tool": "rozszerzenie mssql: `SELECT TOP 5 FoundDate, CollectionDate FROM DabrowaLostItems`"
+        "tool": "SQLite Viewer: pierwsze wiersze DabrowaLostItems (FoundDate, CollectionDate)"
       }
     ],
     "search": [
@@ -337,7 +337,7 @@
         "stage": 2,
         "trap": "Ten sam gatunek zapisany różnie: „Fagus silvatica” i „Fagus sylvatica”",
         "effect": "Fraza „sylvatica” nie znajdzie wszystkich buków.",
-        "tool": "rozszerzenie mssql: `SELECT Name, COUNT(*) FROM NatureMonuments GROUP BY Name`"
+        "tool": "SQLite Viewer: posortuj kolumnę Name w NatureMonuments"
       }
     ],
     "search": [
@@ -413,7 +413,7 @@
         "stage": 3,
         "trap": "Spacja na końcu nazwy obiektu („Boisko wielofunkcyjne ”)",
         "effect": "Bez Trim ta sama nazwa tworzy dwie grupy w top 5.",
-        "tool": "rozszerzenie mssql: `SELECT Facility, LEN(Facility) FROM SportsFacilities`"
+        "tool": "SQLite Viewer: kolumna Facility w SportsFacilities"
       }
     ],
     "search": [
@@ -678,7 +678,7 @@
         "stage": 5,
         "trap": "Tytuł rekordu to długi opis (nawet 390 znaków)",
         "effect": "Lista ulubionych robi się szeroka – skróć tekst w widoku CSS-em, nie w bazie.",
-        "tool": "rozszerzenie mssql: `SELECT MAX(LEN(Description)) FROM KatowiceMemorials`"
+        "tool": "SQLite Viewer: kolumna Description w KatowiceMemorials (najdłuższe wartości)"
       }
     ],
     "search": [
@@ -935,7 +935,7 @@
         "stage": 5,
         "trap": "Nazwa klubu w wierszu 7 ma znak nowej linii w środku",
         "effect": "W przeglądarce widać spację, na karcie zapis `\\n`. To ta sama wartość.",
-        "tool": "rozszerzenie mssql: `SELECT Name FROM SchoolSportsClubs WHERE SourceRow = 7`"
+        "tool": "SQLite Viewer: wiersz z SourceRow = 7 w SchoolSportsClubs"
       },
       {
         "stage": 1,

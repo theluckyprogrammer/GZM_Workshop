@@ -17,7 +17,7 @@ Znak `|` w wartości jest zapisany jako `\|`, a nowa linia jako `\n`.
 | E1.rows | Liczba wierszy w tabeli po imporcie | 391 |
 | E1.fileRows | Wiersze danych w pliku (bez nagłówka) | 391 |
 | E1.skipped | Pominięte wiersze (notatki pod tabelą) | brak |
-| E1.duplicates | Duplikaty klucza (scalone przez MERGE) | brak |
+| E1.duplicates | Duplikaty klucza (scalone przez upsert) | brak |
 | E1.row7.raw | Wiersz 7, kolumna CSV `addressstreetName` – tekst w pliku | pl. Bolesława Chrobrego |
 | E1.row7.value | Wiersz 7, pole `Street` – wartość w bazie | pl. Bolesława Chrobrego |
 | E1.weird | „Dziwne” rekordy (co najmniej jedno pole puste albo nieparsowalne) | 11 |

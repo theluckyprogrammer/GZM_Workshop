@@ -4,17 +4,30 @@ using Expect;
 
 namespace Cards.Print;
 
-// Checks of print/: the cheat sheet equals checkpoints.md, pair cards have no expected values and no placeholders.
+// Checks of print/: the cheat sheet equals checkpoints.md, scenario sheets and the station instruction have no expected values and no placeholders.
 public static partial class PrintChecker
 {
-    public static IEnumerable<string> CheckCard(string scenario, string html)
+    public static IEnumerable<string> CheckSheet(string scenario, string html)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(scenario);
         ArgumentNullException.ThrowIfNull(html);
 
-        var name = $"print/karta-pary-{scenario}.html";
+        var name = $"print/{PrintMaterials.SheetPrefix}{scenario}.html";
         if (html.Contains("data-cp", StringComparison.Ordinal) || CheckpointId().IsMatch(html))
             yield return $"{name}: wartość oczekiwana na karcie ucznia";
+        if (html.Contains("{{", StringComparison.Ordinal))
+            yield return $"{name}: niewypełnione pole";
+        if (EmptyElement().IsMatch(html))
+            yield return $"{name}: puste pole (pusty element listy lub komórki)";
+    }
+
+    public static IEnumerable<string> CheckStation(string html)
+    {
+        ArgumentNullException.ThrowIfNull(html);
+
+        var name = $"print/{PrintMaterials.StationFile}";
+        if (html.Contains("data-cp", StringComparison.Ordinal) || CheckpointId().IsMatch(html))
+            yield return $"{name}: wartość oczekiwana";
         if (html.Contains("{{", StringComparison.Ordinal))
             yield return $"{name}: niewypełnione pole";
         if (EmptyElement().IsMatch(html))

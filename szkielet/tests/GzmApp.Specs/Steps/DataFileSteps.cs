@@ -1,5 +1,5 @@
-using GzmApp.Tests.Data;
-using GzmApp.Tests.Infrastructure;
+using GzmApp.Specs.Data;
+using GzmApp.Specs.Infrastructure;
 using Spectree;
 
 namespace GzmApp.Specs.Steps;
@@ -13,7 +13,7 @@ public sealed class DataFileSteps
     public void FileExists(string file)
     {
         Assert.True(File.Exists(FullPath(file)),
-            $"Brak pliku {file}. Uruchomcie pierwszy prompt z prompty.md (krok 0) – skrypt tools/nowy-portal.ps1 pobiera dane z portalu GZM.");
+            $"Brak pliku {file}. Uruchomcie pierwszy prompt z karta.md (krok 0) – skrypt tools/nowy-portal.ps1 pobiera dane z portalu GZM.");
     }
 
     [Step("Plik z danymi ma pełną liczbę wierszy.")]

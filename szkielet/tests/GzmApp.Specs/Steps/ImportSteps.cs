@@ -1,12 +1,12 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using GzmApp.Tests.Data;
+using GzmApp.Specs.Data;
 using Spectree;
 
 namespace GzmApp.Specs.Steps;
 
 // Krok 1 (sNN-001-importuj-dane): the import at start-up, checked in the database against checkpoints.md
-// and against the second CSV parser of GzmApp.Tests (IndependentScenario).
+// and against the second CSV parser of GzmApp.Specs (IndependentScenario).
 public sealed partial class ImportSteps
 {
     [Step("Po starcie aplikacji tabela `{tabela}` ma tyle wierszy, ile poprawnych rekordów jest w pliku.")]
@@ -75,7 +75,7 @@ public sealed partial class ImportSteps
         await ActiveScenario.StartedOrExplainedAsync(again);
         var after = await Records.CountAsync();
 
-        Assert.True(before == after, $"Po pierwszym starcie w tabeli było {before} wierszy, po drugim – {after}. Import ma się uruchamiać tylko dla pustej tabeli albo przez MERGE.");
+        Assert.True(before == after, $"Po pierwszym starcie w tabeli było {before} wierszy, po drugim – {after}. Import ma się uruchamiać tylko dla pustej tabeli albo przez upsert (INSERT … ON CONFLICT …).");
     }
 
     private static async Task AssertColumnAsync(IndependentScenario data, JsonElement column)

@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 // Sol6:Endpoint and Sol6:ApiKey of the AI model – a local file copied by the teacher, ignored by git.
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
-var connectionString = GzmConnection.Resolve(builder.Configuration);
+var connectionString = GzmConnection.Resolve(builder.Configuration, builder.Environment.ContentRootPath);
 
-builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AppIdentityDbContext>()
     .AddErrorDescriber<PolishIdentityErrors>();

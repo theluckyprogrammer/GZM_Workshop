@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 using AngleSharp.Dom;
-using GzmApp.Tests.Infrastructure;
+using GzmApp.Specs.Infrastructure;
 
 namespace GzmApp.Specs.Steps;
 

@@ -4,7 +4,7 @@ namespace Expect;
 
 public enum ValueState { Ok, Empty, Unparsable }
 
-// Display: the value as SQL Server shows it after import (dates yyyy-MM-dd, decimals with a dot).
+// Display: the value as the database shows it after import (dates yyyy-MM-dd, decimals with a dot).
 public sealed record ParsedValue(ValueState State, string Raw, object? Value, string Display);
 
 // Values are trimmed first. Empty after trimming = NULL. A value that does not fit the SQL type = unparsable.

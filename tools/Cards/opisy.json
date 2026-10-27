@@ -1,0 +1,167 @@
+{
+  "s01": {
+    "story": "Jest początek listopada. Wasza klasa ma przygotować wycieczkę „Zabrze pamięta” – pani od historii prosi, żeby trasa nie była nudna i żeby każdy przystanek miał swoją historię. Zamiast przekopywać się przez strony urzędu, otwieracie PamięćZabrze: wpisujecie jedno słowo i po chwili wiecie, gdzie stoją tablice poświęcone powstańcom, patronom szkół czy ofiarom wojen.",
+    "screen": "U góry duże pole „Szukaj…”. Wpisujecie np. „szkoła” – i jeszcze zanim skończycie pisać, pod spodem pojawia się lista miejsc: pogrubiona nazwa miejsca, a pod nią szarym drukiem dzielnica i ulica. Obok listy stoi kafelek, który od razu pokazuje, w których dzielnicach Zabrza miejsc pamięci jest najwięcej. Na dole fioletowy przycisk „✨ Analizuj z AI”: po kliknięciu wysuwa się karta, w której sztuczna inteligencja grupuje znalezione miejsca (kogo upamiętniają) i proponuje spacer po trzech z nich – z uczciwym dopiskiem, że to tekst AI i warto go sprawdzić.",
+    "future": [
+      { "title": "Spacer na mapie", "text": "Trzy miejsca zaproponowane przez AI pojawiają się jako pinezki połączone linią trasy." },
+      { "title": "Kalendarz rocznic", "text": "Strona „Dziś pamiętamy”: miejsca związane z wydarzeniami, które miały rocznicę w tym tygodniu." },
+      { "title": "Quiz „Kto to był?”", "text": "AI czyta napis z tablicy i układa trzy pytania z odpowiedziami – idealne na wycieczkę klasową." },
+      { "title": "Tryb zwiedzania w telefonie", "text": "Duże litery, jeden przystanek na ekran i przycisk „Dalej” – jak przewodnik w kieszeni." },
+      { "title": "Moje wycieczki", "text": "Zalogowany użytkownik zbiera ulubione miejsca w gotowe trasy i dzieli się nimi z klasą." }
+    ]
+  },
+  "s02": {
+    "story": "Wracacie z treningu w Gliwicach, autobus właśnie uciekł, a do domu w Sosnowcu daleko. Gdzie jest najbliższa stacja Metroroweru i czy w ogóle działa? StacjaFinder odpowiada w kilka sekund – i przy okazji pokazuje, jak wygląda sieć rowerów miejskich w całej metropolii, gmina po gminie.",
+    "screen": "Wpisujecie nazwę gminy, np. „Gliwice”, a lista wypełnia się stacjami: numer stacji, liczba stojaków i zielona plakietka „dostępna” albo szara „niedostępna”. Kafelek obok liczy, ile stojaków czeka na rowerzystów w całej sieci. Przycisk „✨ Analizuj z AI” zamienia suche liczby w radę: AI patrzy na stacje z listy i podpowiada, gdzie warto dostawić rowery, bo stojaków jest dużo, a rowerów mało.",
+    "future": [
+      { "title": "Mapa stacji", "text": "Każda stacja to kropka na mapie – zielona, gdy działa, szara, gdy nie." },
+      { "title": "Najbliższa stacja", "text": "Przycisk „Gdzie jestem?” – telefon podaje położenie, aplikacja wskazuje trzy najbliższe stacje." },
+      { "title": "Pojedynek gmin", "text": "Wybieracie dwie gminy i widzicie, która ma więcej stacji, stojaków i rowerów – jak tabela wyników w sporcie." },
+      { "title": "Planer przejażdżki", "text": "Stacja startowa i docelowa, a AI podpowiada, czy trasa ma sens rowerem." },
+      { "title": "Moje stacje", "text": "Gwiazdka przy stacji pod domem i pod szkołą – zawsze na górze listy." }
+    ]
+  },
+  "s03": {
+    "story": "Operator rowerów miejskich obiecał metropolii, że w każdej gminie będzie stało tyle rowerów, ile trzeba. Czy dotrzymuje słowa? Jesteście dziennikarzami lokalnego portalu i macie to sprawdzić na twardych danych. RowerStat pokazuje gminę po gminie: tyle rowerów było, a tyle powinno być.",
+    "screen": "Wpisujecie początek nazwy gminy – np. „Kat” – i na liście pojawiają się gminy z dwiema liczbami: dostępne rowery i wymagane rowery, a przy każdej plakietka, czy norma została przekroczona. Kafelek na górze podaje jedną wielką liczbę dla całej metropolii. Po kliknięciu „✨ Analizuj z AI” sztuczna inteligencja pisze krótki „artykuł”: gdzie brakuje rowerów najbardziej i komu należy się pochwała.",
+    "future": [
+      { "title": "Pasek postępu", "text": "Przy każdej gminie kolorowy pasek: ile procent normy udało się spełnić." },
+      { "title": "Ranking „Rowerowa gmina”", "text": "Podium trzech gmin, które najlepiej wypełniają normę, z medalami." },
+      { "title": "Raport dla urzędu", "text": "Jeden przycisk drukuje stronę z tabelą i wnioskami AI – gotowe do wysłania." },
+      { "title": "Historia dni", "text": "Gdy pobierzecie dane z kolejnych dni, wykres pokaże, czy z tygodnia na tydzień jest lepiej." },
+      { "title": "Alarm", "text": "Czerwony baner na górze strony, gdy jakaś gmina spada poniżej połowy normy." }
+    ]
+  },
+  "s04": {
+    "story": "Zostawiliście plecak w tramwaju w Bytomiu. Panika: w środku był telefon, klucze i zeszyt do matmy. Zanim pobiegniecie do urzędu, sprawdzacie ZgubaBytom – a przy okazji odkrywacie, co mieszkańcy Bytomia gubią najczęściej i ile rzeczy wraca do właścicieli.",
+    "screen": "W polu wyszukiwania wpisujecie „telefon” albo „klucze” – lista pokazuje znalezione rzeczy z datą wpisu i plakietką statusu: sprawa zakończona albo wciąż otwarta. Kafelek obok mówi, ile spraw udało się zamknąć, a ile czeka na właściciela. Przycisk „✨ Analizuj z AI” robi z listy zabawne podsumowanie: czego ludzie gubią najwięcej i co z tego wynika.",
+    "future": [
+      { "title": "Formularz „Zgubiłem”", "text": "Opisujecie swoją zgubę, a aplikacja od razu pokazuje podobne rzeczy z listy." },
+      { "title": "Powiadomienie", "text": "Gdy w danych pojawi się rzecz pasująca do opisu, na stronie wyskakuje baner „Może to Twoje?”." },
+      { "title": "Kalendarz zgub", "text": "Wykres miesięcy: czy w grudniu, przed świętami, gubimy więcej niż w wakacje?" },
+      { "title": "AI-detektyw", "text": "Wpisujecie opis swoimi słowami („czarny plecak z naszywką”), a AI szuka najbliższych dopasowań." },
+      { "title": "Porównanie miast", "text": "Zestawienie z Dąbrową Górniczą: gdzie gubimy więcej i co innego?" }
+    ]
+  },
+  "s05": {
+    "story": "Babcia zgubiła parasolkę i portfel gdzieś w Dąbrowie Górniczej. Rzeczy znalezione czekają w urzędzie, ale tylko do określonego dnia – potem przepadają. ZgubaDąbrowa pilnuje terminów: pokazuje, co znaleziono, kiedy i do kiedy trzeba to odebrać.",
+    "screen": "Wpisujecie „portfel” i na liście widać każdą znalezioną rzecz z datą znalezienia oraz terminem „odbiór do”. Kafelek pokazuje, jakie rzeczy w Dąbrowie znajduje się najczęściej. A „✨ Analizuj z AI” układa listę w plan działania: co trzeba odebrać najpierw, bo termin zaraz minie.",
+    "future": [
+      { "title": "Licznik dni", "text": "Przy każdej rzeczy kolorowy licznik „zostało 12 dni” – zielony, żółty, a na końcu czerwony." },
+      { "title": "Kalendarz odbiorów", "text": "Widok miesiąca z zaznaczonymi terminami, jak w szkolnym dzienniku." },
+      { "title": "Przypominajka", "text": "Gwiazdka przy rzeczy i przypomnienie na stronie „Moje ulubione” na trzy dni przed terminem." },
+      { "title": "Mapa znalezisk", "text": "Gdzie w mieście najczęściej coś się znajduje – dworzec, park, centrum handlowe?" },
+      { "title": "Bytom kontra Dąbrowa", "text": "Porównanie z danymi z Bytomia: które miasto bardziej roztargnione?" }
+    ]
+  },
+  "s06": {
+    "story": "Weekend w Dąbrowie Górniczej, słońce, rodzina chce na spacer, ale „znowu ten sam park?”. DrzewoRekord zamienia spacer w polowanie na pomniki przyrody: najgrubsze dęby, najstarsze lipy, drzewa z historią. Każde ma swój numer, gatunek, obwód pnia i opis, jak je znaleźć.",
+    "screen": "Wpisujecie „dąb” albo „lipa” i lista pokazuje drzewa: gatunek, dzielnica, obwód pnia w centymetrach i kawałek opisu położenia. Kafelek na górze podaje średni obwód – można się założyć, czy Wasze drzewo jest grubsze. Przycisk „✨ Analizuj z AI” wybiera trzy drzewa na jeden spacer i dorzuca do każdego ciekawostkę o gatunku.",
+    "future": [
+      { "title": "Ilu nas trzeba?", "text": "Przy każdym drzewie liczba: ilu uczniów musi się złapać za ręce, żeby objąć pień." },
+      { "title": "Mapa pomników przyrody", "text": "Zielone pinezki na mapie i trasa spaceru zaproponowana przez AI." },
+      { "title": "Karta gatunku", "text": "Kliknięcie w gatunek otwiera kartę: jak rozpoznać liść, ile lat żyje, co mówi AI." },
+      { "title": "Odznaki odkrywcy", "text": "Zalogowani zbierają odwiedzone drzewa i dostają odznaki: 5 dębów, 10 drzew, wszystkie gatunki." },
+      { "title": "Drzewo miesiąca", "text": "Na stronie głównej co miesiąc inne drzewo z krótką historią." }
+    ]
+  },
+  "s07": {
+    "story": "Po lekcjach chcecie pograć w kosza, ale szkolne boisko zajęte. Gdzie w Gliwicach jest inne – i kto nim zarządza, żeby zapytać o godziny? SportGliwice zbiera w jednym miejscu boiska, hale, korty i skateparki z całego miasta.",
+    "screen": "Wpisujecie „boisko”, „hala” albo „kort” i lista pokazuje obiekty: nazwa, a pod nią adres i zarządca. Kafelek obok mówi, jakich obiektów sportowych jest w mieście najwięcej. „✨ Analizuj z AI” robi z listy przewodnik: jakie rodzaje obiektów są w okolicy i do kogo się zgłosić, żeby z nich skorzystać.",
+    "future": [
+      { "title": "Mapa sportu", "text": "Każdy rodzaj obiektu w innym kolorze – od razu widać, gdzie brakuje skateparku." },
+      { "title": "Szukam ekipy", "text": "Tablica ogłoszeń przy obiekcie: „Środa 17:00, brakuje dwóch do kosza”." },
+      { "title": "Oceny i komentarze", "text": "Gwiazdki za stan nawierzchni i oświetlenie, wystawiane przez zalogowanych." },
+      { "title": "Filtr dyscyplin", "text": "Przyciski „piłka”, „kosz”, „rolki”, „tenis” zamiast wpisywania." },
+      { "title": "AI-trener", "text": "Mówicie, ile macie czasu i ile osób, a AI wybiera obiekt i proponuje grę." }
+    ]
+  },
+  "s08": {
+    "story": "Pracujecie w zespole aplikacji rowerowej. Szef pyta: „Ludzie rezerwują rowery w aplikacji, a potem ich nie odbierają. Dlaczego?”. RezerwacjaRadar to Wasze centrum dowodzenia: każda rezerwacja, z której stacji, z jakiego telefonu i czym się skończyła.",
+    "screen": "Wpisujecie nazwę stacji albo „Android” i na liście przewijają się rezerwacje: data i godzina, stacja, kanał i kolorowa plakietka statusu – zamknięta, anulowana albo wygasła. Kafelek na górze pokazuje, ile rezerwacji skończyło się którym statusem. „✨ Analizuj z AI” stawia diagnozę: jak kończą się rezerwacje i jakie mogą być tego powody.",
+    "future": [
+      { "title": "Godziny szczytu", "text": "Wykres dnia: o której ludzie rezerwują najczęściej – rano do pracy czy wieczorem?" },
+      { "title": "iPhone kontra Android", "text": "Dwa kafelki obok siebie: czy użytkownicy jednego telefonu częściej porzucają rezerwacje?" },
+      { "title": "Radar na żywo", "text": "Lista odświeża się sama co minutę, jak tablica odlotów na lotnisku." },
+      { "title": "Mapa ciepła", "text": "Stacje świecą tym mocniej, im więcej mają rezerwacji." },
+      { "title": "Raport dla szefa", "text": "AI pisze trzy rekomendacje, jak zmniejszyć liczbę wygasłych rezerwacji." }
+    ]
+  },
+  "s09": {
+    "story": "Co było w miejscu Waszego osiedla trzy tysiące lat temu? Archeolodzy w Dąbrowie Górniczej znaleźli ślady osad, narzędzi i ceramiki z różnych epok. ArcheoDąbrowa pozwala przekopać się przez te stanowiska – bez łopaty.",
+    "screen": "Wpisujecie nazwę epoki albo miejsca i lista pokazuje stanowiska archeologiczne: nazwa miejscowa, epoka i notatki archeologów o znaleziskach. Kafelek obok mówi, gdzie stanowisk jest najwięcej. „✨ Analizuj z AI” układa znaleziska w opowieść według epok – od najstarszych do najmłodszych.",
+    "future": [
+      { "title": "Oś czasu", "text": "Stanowiska ułożone na pasku od epoki kamienia do średniowiecza – przewijacie historię palcem." },
+      { "title": "Dzień z życia", "text": "AI opowiada, jak mógł wyglądać jeden dzień mieszkańca wybranej osady." },
+      { "title": "Słowniczek epok", "text": "Kliknięcie w epokę wyjaśnia prostymi słowami, co to znaczy i kiedy było." },
+      { "title": "Quiz archeologa", "text": "Zgadnij, z której epoki pochodzi znalezisko – punkty dla zalogowanych." },
+      { "title": "Moja okolica", "text": "Wpisujecie dzielnicę i widzicie, co znaleziono najbliżej Waszego domu." }
+    ]
+  },
+  "s10": {
+    "story": "Nauczyciel WF-u organizuje w Gliwicach międzyszkolny turniej i potrzebuje kilku boisk niedaleko siebie. BoiskoMap zbiera boiska i stadiony z całego miasta: jakie są, gdzie stoją i jak się nazywają.",
+    "screen": "Wpisujecie nazwę szkoły, ulicę albo rodzaj boiska i lista pokazuje obiekty: nazwa, adres i rodzaj nawierzchni czy dyscypliny. Kafelek na górze mówi, jakich boisk jest najwięcej. Po kliknięciu „✨ Analizuj z AI” sztuczna inteligencja proponuje zestaw boisk na turniej i tłumaczy, dlaczego akurat te.",
+    "future": [
+      { "title": "Mapa boisk", "text": "Pinezki na mapie – wystarczy przeliczyć współrzędne z układu mapy Polski na zwykłe stopnie." },
+      { "title": "Drabinka turnieju", "text": "Wpisujecie drużyny, a aplikacja losuje pary i przypisuje im boiska." },
+      { "title": "Które wolne?", "text": "Prosty grafik: kto zajął boisko w jaką godzinę." },
+      { "title": "Ranking boisk", "text": "Oceny zalogowanych: nawierzchnia, bramki, oświetlenie." },
+      { "title": "Zaproszenie dla klas", "text": "AI pisze gotowe zaproszenie na turniej do wysłania innym szkołom." }
+    ]
+  },
+  "s11": {
+    "story": "Projekt szkolny „Moja ulica pamięta”: każdy ma się dowiedzieć, co upamiętnia jego okolica w Katowicach. PamięćKatowic zbiera tablice, pomniki i groby z opisami – wystarczy wpisać ulicę.",
+    "screen": "Wpisujecie nazwę swojej ulicy i lista pokazuje miejsca pamięci: opis, ulica i rodzaj obiektu – tablica, pomnik, grób. Kafelek obok mówi, ile jest miejsc każdego rodzaju. „✨ Analizuj z AI” zamienia listę w trasę spacerową z krótką historią każdego przystanku.",
+    "future": [
+      { "title": "Moja ulica", "text": "Wpisujecie adres, a AI opowiada historię wszystkich miejsc pamięci w promieniu kilku ulic." },
+      { "title": "Audioprzewodnik", "text": "Każdy opis z przyciskiem „Czytaj na głos” – idealne na spacer ze słuchawkami." },
+      { "title": "Katowice i Zabrze", "text": "Porównanie: kogo i co upamiętniają dwa sąsiednie miasta?" },
+      { "title": "Wspomnienia mieszkańców", "text": "Zalogowani dopisują krótkie historie rodzinne związane z miejscem." },
+      { "title": "Mapa pamięci", "text": "Różne ikonki dla tablic, pomników i grobów na jednej mapie miasta." }
+    ]
+  },
+  "s12": {
+    "story": "Bytom to miasto pełne kamienic, kościołów i gmachów w różnych stylach – od neogotyku po modernizm. Fotograf szuka secesji, a Wy chcecie wiedzieć, czym różni się jedno od drugiego. ZabytkiBytom to przewodnik po architekturze w kieszeni.",
+    "screen": "Wpisujecie nazwę ulicy albo styl i lista pokazuje zabytki: nazwa, ulica z numerem i styl architektoniczny. Kafelek na górze mówi, które style dominują w mieście. „✨ Analizuj z AI” wyjaśnia znalezione style prostym językiem i układa wycieczkę po najciekawszych budynkach.",
+    "future": [
+      { "title": "Zgadnij styl", "text": "Quiz: opis budynku, trzy style do wyboru, punkty za trafienie." },
+      { "title": "Zabytek dnia", "text": "Na stronie głównej codziennie inny budynek z ciekawostką od AI." },
+      { "title": "Mapa stylów", "text": "Każdy styl w innym kolorze – widać, które ulice są „secesyjne”." },
+      { "title": "Galeria", "text": "Zalogowani dodają własne zdjęcia zabytków – powstaje album miasta." },
+      { "title": "Słownik architekta", "text": "Kliknięcie w styl otwiera wyjaśnienie: łuki, wieżyczki, ozdoby – po czym go poznać." }
+    ]
+  },
+  "s13": {
+    "story": "Rodzice z Siemianowic Śląskich szukają zajęć dla 7-letniej córki i 12-letniego syna – najlepiej w tym samym dniu i budynku, żeby nie jeździć dwa razy. SekcjaSCK zna wszystkie sekcje Siemianowickiego Centrum Kultury: taniec, plastyka, muzyka, teatr – z dniem, godziną, salą i wiekiem uczestników.",
+    "screen": "Wpisujecie „taniec” albo „plastyka” i lista pokazuje sekcje: nazwa, dzień tygodnia, godzina, sala i od ilu lat można się zapisać. Kafelek na górze mówi, ilu sekcji jakiego rodzaju jest najwięcej. „✨ Analizuj z AI” dobiera zajęcia dla rodzeństwa tak, żeby godziny się nie gryzły.",
+    "future": [
+      { "title": "Plan tygodnia", "text": "Siatka jak w szkolnym planie lekcji: dni w kolumnach, godziny w wierszach." },
+      { "title": "Ile masz lat?", "text": "Suwak z wiekiem – zostają tylko zajęcia, na które można się zapisać." },
+      { "title": "Mój grafik", "text": "Zalogowani układają własny plan z gwiazdek i widzą kolizje na czerwono." },
+      { "title": "AI-doradca", "text": "Opisujecie dziecko („lubi rysować, nie lubi biegać”), a AI proponuje trzy sekcje." },
+      { "title": "Zapisy", "text": "Prosty formularz „Chcę się zapisać” przy każdej sekcji." }
+    ]
+  },
+  "s14": {
+    "story": "Turystka z Krakowa wysiada na przystanku w Chorzowie i… nie ma biletu. Gdzie jest najbliższy automat? BiletBot zna wszystkie automaty biletowe w metropolii: przystanek, stanowisko i opis, gdzie dokładnie stoją.",
+    "screen": "Wpisujecie nazwę przystanku albo gminy i lista pokazuje automaty: przystanek, gmina i opis miejsca – np. przy wiacie albo przy kiosku. Kafelek na górze mówi, w których gminach automatów jest najwięcej. „✨ Analizuj z AI” podsumowuje, gdzie automatów jest dużo, a gdzie przydałby się nowy.",
+    "future": [
+      { "title": "Najbliższy automat", "text": "Przycisk „Gdzie jestem?” i strzałka do najbliższego automatu na mapie." },
+      { "title": "Czatbot biletowy", "text": "Pytacie „Jak kupić bilet ulgowy?”, a AI odpowiada krok po kroku." },
+      { "title": "Zgłoś awarię", "text": "Przycisk przy automacie: „Nie działa” – lista zgłoszeń dla przewoźnika." },
+      { "title": "Wersja dla turystów", "text": "Przełącznik języka: polski, angielski, ukraiński." },
+      { "title": "Sprawiedliwy ranking", "text": "Ile automatów przypada na gminę – i gdzie trzeba czekać najdłużej." }
+    ]
+  },
+  "s15": {
+    "story": "Chcecie trenować siatkówkę, pływanie albo judo w uczniowskim klubie sportowym w Katowicach. Ale czy klub, o którym mówił kolega, jeszcze istnieje? KlubKatowice zna rejestr uczniowskich klubów sportowych: nazwę, ulicę, datę rejestracji i to, czy klub działa, czy został wykreślony.",
+    "screen": "Wpisujecie „siatk”, „piłk” albo nazwę ulicy i lista pokazuje kluby: nazwa, data rejestracji, ulica i plakietka statusu – aktywny, wykreślony albo nieznany. Kafelek na górze mówi, ile klubów działa, a ile zniknęło. „✨ Analizuj z AI” opowiada, jakie kluby dominują i jak zmieniało się klubowe życie miasta.",
+    "future": [
+      { "title": "Oś czasu klubów", "text": "Wykres lat: kiedy powstawało najwięcej klubów, a kiedy najwięcej znikało." },
+      { "title": "Znajdź klub dla siebie", "text": "Krótki quiz zainteresowań, po którym AI proponuje trzy aktywne kluby z pasującą dyscypliną." },
+      { "title": "Mapa klubów", "text": "Aktywne kluby na mapie miasta – które dzielnice są najbardziej „klubowe”?" },
+      { "title": "Wizytówka klubu", "text": "Strona szczegółów z danymi z rejestru i miejscem na opis od samego klubu." },
+      { "title": "Detektyw nazw", "text": "AI szuka klubów o bardzo podobnych nazwach – może to ten sam klub zarejestrowany dwa razy?" }
+    ]
+  }
+}

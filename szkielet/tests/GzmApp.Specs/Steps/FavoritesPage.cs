@@ -1,5 +1,5 @@
 using AngleSharp.Dom;
-using GzmApp.Tests.Infrastructure;
+using GzmApp.Specs.Infrastructure;
 
 namespace GzmApp.Specs.Steps;
 

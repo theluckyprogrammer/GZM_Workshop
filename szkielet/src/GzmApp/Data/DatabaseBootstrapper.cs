@@ -1,8 +1,9 @@
 using GzmApp.Identity;
+using Microsoft.Data.Sqlite;
 
 namespace GzmApp.Data;
 
-// At startup: create the database (db/000_create.sql), create AspNet* tables, check the connection.
+// At startup: create the SQLite database file (src/GzmApp/gzm.db), create AspNet* tables, check the connection.
 public sealed class DatabaseBootstrapper
 {
     private readonly SqlRunner _sql;
@@ -24,10 +25,13 @@ public sealed class DatabaseBootstrapper
         await _sql.ExecuteScalarAsync<int>("SELECT 1", ct: ct);
     }
 
+    // Opening a connection creates the file; the folder must exist first.
     private async Task CreateDatabaseAsync(CancellationToken ct)
     {
-        var script = await File.ReadAllTextAsync(ScriptPath("000_create.sql"), ct);
-        await _sql.ForDatabase("master").ExecuteAsync(script, new { DatabaseName = _sql.DatabaseName }, ct);
+        var directory = Path.GetDirectoryName(new SqliteConnectionStringBuilder(_sql.ConnectionString).DataSource);
+        if (!string.IsNullOrEmpty(directory))
+            Directory.CreateDirectory(directory);
+        await _sql.ExecuteScalarAsync<int>("SELECT 1", ct: ct);
     }
 
     private async Task EnsureIdentityTablesAsync(CancellationToken ct)
@@ -36,7 +40,4 @@ public sealed class DatabaseBootstrapper
         var identityDb = scope.ServiceProvider.GetRequiredService<AppIdentityDbContext>();
         await identityDb.Database.EnsureCreatedAsync(ct);
     }
-
-    private static string ScriptPath(string fileName) =>
-        Path.Combine(AppContext.BaseDirectory, "db", fileName);
 }

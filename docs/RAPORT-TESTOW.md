@@ -30,10 +30,10 @@ Pełny zestaw na `ratunek/etap-4` (bez Playwright, bez prawdziwego SOL-6): 509 t
 Plan 6 min na etap jest realny, jeśli `glm-5.3-flash` w Kilo jest najwyżej ~3× wolniejszy od symulacji i para nie musi poprawiać błędów. Najbardziej ryzykowny jest krok 4 (najwięcej plików); w razie problemów zostaje `ratunek.ps1 -Etap 4`.
 
 ## Czynności ręczne przed 28.10.2026
-1. `tools\check.cmd` na fizycznym komputerze szkolnym (LocalDB, VS Code z rozszerzeniami, Windows PowerShell 5.1).
+1. `tools\check.cmd` na fizycznym komputerze szkolnym (baza SQLite w pakiecie, VS Code z rozszerzeniami, Windows PowerShell 5.1).
 2. Test reguł Kilo według `docs/KILO-TEST.md` (zakazy z `kilo.jsonc`, reguły HTMX 4) z prawdziwym modelem.
 3. Test kluczy przy 15 równoczesnych sesjach Kilo (limity, opóźnienia).
-4. AI-04 z kluczem SOL-6: `dotnet test tests/GzmApp.Tests --filter "Spec=AI-04"` na `ratunek/etap-4`.
+4. Krok 4 (analiza AI) z kluczem SOL-6 na branchu testowym: `dotnet test tests/GzmApp.Specs --filter Capability=sNN-004-analiza-ai`.
 5. Wydruk 15 kart `print/karta-pary-sNN.html` i `print/sciaga-prowadzacego.html` (po 2 strony A4).
 6. PR `claude/admiring-franklin-wpdxux` → `main`, potem `git fetch origin "ratunek/*:ratunek/*"` na stanowiskach.
 7. Decyzje: encje w `Program.cs` i wyjątki licencyjne (punkty 2–3 wyżej).
