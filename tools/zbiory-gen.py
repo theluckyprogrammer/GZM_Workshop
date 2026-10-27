@@ -4,7 +4,19 @@
 # (sha256 i rozmiar liczony z bajtów zdalnych: portal daje LF, lokalne pliki po checkoucie mają CRLF).
 # Nazwy zasobów spisane jawnie (odmiana polska psuje automatyczne dopasowanie);
 # poprawność potwierdza zgodność treści po normalizacji końców linii.
-import json, os, re, hashlib, urllib.request
+import json, os, re, hashlib, subprocess, urllib.request
+
+def read_local(path):
+    # pliki data/raw opuscily repo (pobiera je krok 0); czytaj z historii gita, gdy brak na dysku
+    if os.path.exists(path):
+        return open(path, "rb").read()
+    rel = os.path.relpath(path, root).replace("\\", "/")
+    for tip in subprocess.run(["git", "log", "--format=%H", "--", rel], cwd=root,
+                              capture_output=True, text=True, check=True).stdout.split():
+        probe = subprocess.run(["git", "cat-file", "-e", f"{tip}:{rel}"], cwd=root)
+        if probe.returncode == 0:
+            return subprocess.run(["git", "show", f"{tip}:{rel}"], cwd=root, capture_output=True, check=True).stdout
+    raise SystemExit(f"brak pliku {rel} na dysku i w historii gita")
 
 root = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -46,7 +58,7 @@ for i in range(1, 16):
     meta_code, role, file_url = matches[0]
     req = urllib.request.Request(file_url, headers={"User-Agent": "Mozilla/5.0"})
     remote = urllib.request.urlopen(req, timeout=30).read()
-    local = open(path, "rb").read()
+    local = read_local(path)
     if remote.replace(b"\r\n", b"\n") != local.replace(b"\r\n", b"\n"):
         raise SystemExit(f"{code}: treść z portalu różni się od pliku lokalnego ({name})")
     sha = hashlib.sha256(remote).hexdigest()
@@ -64,6 +76,8 @@ for i in range(1, 16):
         "sha256": sha,
         "sizeBytes": len(remote),
         "fileRows": int(m.group(1)),
+        "headerLine": mapping["source"]["headerLine"],
+        "separator": mapping["source"]["separator"],
         "dataset": mapping["dataset"],
         "sourceUrl": mapping["sourceUrl"],
         "attribution": mapping["attribution"],

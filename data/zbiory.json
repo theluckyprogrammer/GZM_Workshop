@@ -13,6 +13,8 @@
       "sha256": "96853428021cb68aac0fabee0ba788667cdf7e794cbb5d3663f9f109d44eb0fa",
       "sizeBytes": 26027,
       "fileRows": 58,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Zabrze: miejsca pamięci",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/b78bdf8a194b381025a5c2f4a79b9daa01d335f107519145604fb35412178299",
       "attribution": "Źródło: Zabrze, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -27,6 +29,8 @@
       "sha256": "e6229035521d4df439e02b5ae6aa8d5f4de098da94cb96178f016f6c4579e175",
       "sizeBytes": 88485,
       "fileRows": 945,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Metrorower: stacje aktualne",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/b161e77ded1548e6044a0f52796df030fe96755c3e1470e49d8524084682d464",
       "attribution": "Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -41,6 +45,8 @@
       "sha256": "4bf7b9f8905674457006cae105c53d69470e00d02ec08af04cffac79a9147562",
       "sizeBytes": 1641,
       "fileRows": 40,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Dzienna dostępność rowerów w gminach",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/4e4f0a8bdce9bb2857c6ef27eceb7a8308127b738dfd7c51decc88287d4b9084",
       "attribution": "Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -55,6 +61,8 @@
       "sha256": "3a58ed1568882eeec37c90fec2e7a4e74aaccad2ecefdef30d04082f34dc2d49",
       "sizeBytes": 49813,
       "fileRows": 451,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Bytom: rzeczy znalezione",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/dea28113f214eb0fb3fc9fcc9ec149f6cd5f61b7382e422645bd2fb52a60c67b",
       "attribution": "Źródło: Bytom, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -69,6 +77,8 @@
       "sha256": "d397ed134acbd013b58e7a4a616e55808c8c5963e6f6f597277638a3dab5d33a",
       "sizeBytes": 6379,
       "fileRows": 64,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Dąbrowa Górnicza: rzeczy znalezione",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/565dc7a79264b260f100cd7e07e40a06e5bd073b5d0721e8ea6619e721178b8c",
       "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -83,6 +93,8 @@
       "sha256": "3f3ec88e93b87a501b57bb661d096014ca6914cff0cd1f3c8fac468b83450cca",
       "sizeBytes": 5990,
       "fileRows": 31,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Dąbrowa Górnicza: pomniki przyrody",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/498f49f43a2b0c7b39c26ee824eae5bcdb95c1001277727318ffe297ba02f7d1",
       "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -97,6 +109,8 @@
       "sha256": "2ba4beb12417a232d0566127219465fab171c775f99c4271e4955a4a61e3329d",
       "sizeBytes": 4585,
       "fileRows": 71,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Gliwice: obiekty sportowe",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/f310c9b971378c90071de753fc47e60d0b7b7fa52a9a0408bc5937c9373f6bd3",
       "attribution": "Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -111,6 +125,8 @@
       "sha256": "2384679e632d66179e7a9f868d6ced3b73bc91efd02a4f09ab6a9a3d83993d71",
       "sizeBytes": 9410,
       "fileRows": 100,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Metrorower: rezerwacje",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/27d74bc7362cbcb3aeaf9b41b3635cc331c227cf122431be9a6aab11e29ac975",
       "attribution": "Źródło: Urząd Metropolitalny Górnośląsko-Zagłębiowskiej Metropolii, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -125,6 +141,8 @@
       "sha256": "86ccf7293651db289bfab59b807945db31ffcaabbcb56dcd37c5cc7c6475f82b",
       "sizeBytes": 47965,
       "fileRows": 135,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Dąbrowa Górnicza: zabytki archeologiczne",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/60616698d4c313601e766da27640196b633b7c33b5d16f3c1b568bf977dec292",
       "attribution": "Źródło: Dąbrowa Górnicza, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -139,6 +157,8 @@
       "sha256": "e96b3dbcbc791d3573f89d96b2ff4146228ae8c81b82e5ea55afe757667e7cd4",
       "sizeBytes": 22703,
       "fileRows": 121,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Gliwice: boiska i stadiony",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/05bc52c0eed46e917739a13ee88cc94f45a672c3ffaa9ef5bc88f4ad6bdb660b",
       "attribution": "Źródło: Gliwice, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -153,6 +173,8 @@
       "sha256": "203a5116a8c0ac432f290768a18621a439de05a792efd6c30655c3c85d5601e4",
       "sizeBytes": 80785,
       "fileRows": 391,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Katowice: miejsca pamięci narodowej",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/1def0df4cbc60ff042636848df79479a71a3b87247138be2615f72499323ac64",
       "attribution": "Źródło: Katowice, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -167,6 +189,8 @@
       "sha256": "15c072a2254faab338dbac24b076f0fcb0c37ba46b82bc756c1ee1ad3dc17742",
       "sizeBytes": 317512,
       "fileRows": 2313,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Bytom: zabytki",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/77714e3bb8cad342bc54cfe6d77c478c4d2141b97aefc1cb6df6cc0719ce52a3",
       "attribution": "Źródło: Bytom, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -181,6 +205,8 @@
       "sha256": "23df36b46d9658ef135057c328f3dda39cf78fa3c6bda7cc21c308d0362c64b9",
       "sizeBytes": 4176,
       "fileRows": 38,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "SCK Siemianowice: zajęcia sekcyjne",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/1ea36ecce32f5766c78654f9cd1358a75830a7799d8a002fc251bec6b7359f47",
       "attribution": "Źródło: Siemianowickie Centrum Kultury, otwartedane.metropoliagzm.pl, CC BY 4.0"
@@ -195,6 +221,8 @@
       "sha256": "a1e55aa40d98586a561d7f0ee17fbd1c2d13f4af8409542b4c6f6d6a221fffb7",
       "sizeBytes": 37711,
       "fileRows": 272,
+      "headerLine": 5,
+      "separator": ";",
       "dataset": "ZTM: automaty biletowe",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/lista-automatow-biletowych",
       "attribution": "Źródło: Zarząd Transportu Metropolitalnego, otwartedane.metropoliagzm.pl, Creative Commons Attribution"
@@ -209,6 +237,8 @@
       "sha256": "7ed9bfe281bb558a9c2f67155d96e529a5281fa9d5eb0e2692aa04018d53816a",
       "sizeBytes": 17604,
       "fileRows": 94,
+      "headerLine": 1,
+      "separator": ",",
       "dataset": "Katowice: uczniowskie kluby sportowe",
       "sourceUrl": "https://otwartedane.metropoliagzm.pl/dataset/a6605135dbc0c36162fb4bc135a8c82db2b244d74cabb433237cd3c0a051cf60",
       "attribution": "Źródło: Katowice, otwartedane.metropoliagzm.pl, CC BY 4.0"

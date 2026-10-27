@@ -38,11 +38,13 @@
       "tests/**": "deny",
       "tools/**": "deny"
     },
-    // Uczniowie mogą budować projekt i uruchamiać testy kroków (od kroku 26: dotnet test tests/GzmApp.Specs --filter ...).
+    // Uczniowie budują projekt, uruchamiają testy kroków (dotnet test tests/GzmApp.Specs --filter ...)
+    // i w kroku 0 tworzą portal skryptem tools/nowy-portal.ps1 (kopiowanie szkieletu + pobranie danych).
     "bash": {
       "*": "deny",
       "dotnet build*": "allow",
-      "dotnet test*": "allow"
+      "dotnet test*": "allow",
+      "*nowy-portal.ps1*": "allow"
     },
     "webfetch": "deny",
     "websearch": "deny"
