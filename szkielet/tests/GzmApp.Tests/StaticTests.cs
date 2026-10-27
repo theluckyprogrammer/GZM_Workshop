@@ -29,6 +29,8 @@ public partial class StaticTests
 
         Assert.All(DeniedEdits, pattern => Assert.Equal("deny", permission.GetProperty("edit").GetProperty(pattern).GetString()));
         Assert.Equal("deny", permission.GetProperty("bash").GetProperty("*").GetString());
+        // Krok 0: Kilo tworzy portal skryptem tools/nowy-portal.ps1 (kopiowanie szkieletu + pobranie danych).
+        Assert.Equal("allow", permission.GetProperty("bash").GetProperty("*nowy-portal.ps1*").GetString());
     }
 
     [Fact]

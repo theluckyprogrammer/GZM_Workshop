@@ -3,7 +3,9 @@
   <!-- Tests generated from the specification of the pair's scenario: scenarios/<Scenario>/spec/*.md.
        The scenario is "Scenario" from src/GzmApp/appsettings.Development.json (set by tools/ratunek.ps1),
        otherwise from src/GzmApp/appsettings.json – both written by scripts (tools/nowy-portal.ps1 in step 0,
-       tools/ratunek.ps1 for a rescue stage), never by hand. Change it, build, and the tests follow. -->
+       tools/ratunek.ps1 for a rescue stage), never by hand. Change it, build, and the tests follow.
+       The project builds both from the repo root (after step 0 copies the skeleton from szkielet/)
+       and straight from szkielet/ – then no scenario is set and only the "kontrola" tests compile. -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -16,6 +18,9 @@
     <GzmScenario Condition="Exists('$(AppSettingsDevelopment)')">$([System.Text.RegularExpressions.Regex]::Replace($([System.IO.File]::ReadAllText('$(AppSettingsDevelopment)')), '$(ScenarioPattern)', '$1'))</GzmScenario>
     <GzmScenario Condition="'$(GzmScenario.Length)' != '3' And Exists('$(AppSettings)')">$([System.Text.RegularExpressions.Regex]::Replace($([System.IO.File]::ReadAllText('$(AppSettings)')), '$(ScenarioPattern)', '$1'))</GzmScenario>
     <GzmScenario Condition="'$(GzmScenario.Length)' != '3'"></GzmScenario>
+    <!-- tools/ sits next to tests/ at the repo root; from szkielet/tests it is one level higher. -->
+    <ToolsDir Condition="Exists('$(MSBuildThisFileDirectory)../../tools/Spectree')">$(MSBuildThisFileDirectory)../../tools</ToolsDir>
+    <ToolsDir Condition="'$(ToolsDir)' == '' And Exists('$(MSBuildThisFileDirectory)../../../tools/Spectree')">$(MSBuildThisFileDirectory)../../../tools</ToolsDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,8 +41,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GzmApp\GzmApp.csproj" />
-    <ProjectReference Include="..\..\tools\Spectree\Spectree.csproj" />
-    <ProjectReference Include="..\..\tools\Spectree.Generator\Spectree.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(ToolsDir)\Spectree\Spectree.csproj" />
+    <ProjectReference Include="$(ToolsDir)\Spectree.Generator\Spectree.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
