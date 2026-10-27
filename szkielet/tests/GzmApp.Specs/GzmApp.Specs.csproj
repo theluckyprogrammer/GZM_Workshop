@@ -2,7 +2,8 @@
 
   <!-- Tests generated from the specification of the pair's scenario: scenarios/<Scenario>/spec/*.md.
        The scenario is "Scenario" from src/GzmApp/appsettings.Development.json (set by tools/ratunek.ps1),
-       otherwise from src/GzmApp/appsettings.json (set by the pair in step 0). Change it, build, and the tests follow. -->
+       otherwise from src/GzmApp/appsettings.json – both written by scripts (tools/nowy-portal.ps1 in step 0,
+       tools/ratunek.ps1 for a rescue stage), never by hand. Change it, build, and the tests follow. -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
