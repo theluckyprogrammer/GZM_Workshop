@@ -130,10 +130,8 @@ try {
         try { $listener.Start(); $true } catch { $false } finally { $listener.Stop() }
     }
 
-    Test-Step 'Git i gałęzie ratunek/etap-1..4' 'Zainstaluj Git; w repo: git fetch origin "ratunek/*:ratunek/*"' {
-        if (-not (Test-Command 'git')) { return $false }
-        $branches = git branch -a --list '*ratunek/etap-*' 2>$null | ForEach-Object { ($_ -replace '^[\*\s]+', '') -replace '^remotes/origin/', '' } | Sort-Object -Unique
-        (1..4 | Where-Object { $branches -notcontains "ratunek/etap-$_" }).Count -eq 0
+    Test-Step 'Git (git --version)' 'Zainstaluj Git dla Windows: https://git-scm.com/download/win' {
+        Test-Command 'git'
     }
 
     Test-Step 'HTMX 4.0.0 (plik i SHA-256 z docs/HTMX.md)' 'Przywróć plik: git checkout -- szkielet/src/GzmApp/wwwroot/lib/htmx/4.0.0/htmx.min.js' {

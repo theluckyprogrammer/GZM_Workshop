@@ -24,7 +24,7 @@ Materiały: karta pary `print/karta-pary-sNN.html` (druk, do losowania), ściąg
    code --install-extension ms-mssql.mssql
    code --install-extension kilocode.kilo-code
    ```
-2. Klon repozytorium (z gałęziami ratunkowymi):
+2. Klon repozytorium:
    ```
    git clone https://github.com/theluckyprogrammer/GZM_Workshop.git
    cd GZM_Workshop
@@ -65,15 +65,13 @@ Materiały: karta pary `print/karta-pary-sNN.html` (druk, do losowania), ściąg
 | 2–6 | Krok 0 – pierwszy prompt: skrypt tworzy szkielet aplikacji i pobiera dane z portalu GZM; Kilo buduje i uruchamia testy. Pauza: para sprawdza plik danych, F5, testy (zielone: kroku 0; czerwone: kroki 1–4 – lista zadań), bazę w mssql. |
 | 6–11 | Krok 1 – dane z pliku do bazy. Pauza: tabela w rozszerzeniu mssql, zielone testy kroku 1, pierwsza pułapka w debuggerze; decyzja 1 (pytają Kilo o propozycje). |
 | 11–16 | Krok 2 – wyszukiwarka (endpoint). Pauza: F12 → Network/Elements, debugger na `OnGetSzukaj`; decyzje 2 i 3 (Kilo proponuje). |
-| 16 | Decyzja ratunkowa: pary bez kroku 2 → `tools\ratunek.ps1 -Etap 2 -Scenariusz sNN`. |
 | 16–21 | Krok 3 – strona z wyszukiwarką i kafelkiem (HTMX). Pauza: żądania przy pisaniu, tryb telefonu; decyzja 4 (co ma przeanalizować AI – Kilo proponuje na podstawie danych i wcześniejszych decyzji). |
-| 21 | Decyzja: pary bez kroku 3 → `tools\ratunek.ps1 -Etap 3 -Scenariusz sNN`. |
 | 21–26 | Krok 4 – analiza AI: przycisk „✨ Analizuj z AI”, pauza: karta z napisem „wygenerowała sztuczna inteligencja”, „Co poszło do modelu?”, log `AI (gpt-6-luna) … tokeny` w terminalu. Albo demonstracja prowadzącego na rzutniku. |
 | 26–30 | Zamknięcie (tekst niżej). Szybkie pary: „Co dalej?” w `prompty.md`. |
 
-**Wariant skrócony** (opóźnienie ponad 4 minuty): krok 4 tylko jako demo na rzutniku – stanowisko prowadzącego po `tools\ratunek.ps1 -Etap 4 -Scenariusz s02`.
+**Wariant skrócony** (opóźnienie ponad 4 minuty): krok 4 tylko jako demo na rzutniku – przygotuj sobie wcześniej na stanowisku demonstracyjnym własny portal (przejdź prompty dowolnego scenariusza) albo pokaż portal pary, która skończyła.
 
-`ratunek.ps1` przełącza stanowisko na gotowy etap ze zdaniem domyślnym (scenariusz zapisuje w `src/GzmApp/appsettings.Development.json` – testy specyfikacji też go biorą; po ratunku przebuduj projekt, a testy kroków 1..N będą zielone). Warunek: para ma już krok 0 (aplikacja istnieje) – jeśli nie, najpierw `powershell -ExecutionPolicy Bypass -File tools\nowy-portal.ps1 -Scenariusz sNN`. Zmiany pary idą do schowka (`git stash list`), a para kontynuuje od następnego kroku w `prompty.md`. Uruchamiaj w terminalu VS Code: `powershell -ExecutionPolicy Bypass -File tools\ratunek.ps1 -Etap 3 -Scenariusz s06`.
+**Para, która nie nadąża:** nie ma gałęzi ratunkowych – pomóż bezpośrednio (najczęstsze przyczyny: port zajęty, LocalDB, klucz Kilo – tabela niżej), a w ostateczności para kontynuuje od kroku, na którym jest, i ogląda dalsze kroki na rzutniku. Każdy krok jest samodzielny: nawet aplikacja po kroku 2 działa i pokazuje listę wyników.
 
 ## 4. Teksty
 
@@ -89,17 +87,17 @@ Materiały: karta pary `print/karta-pary-sNN.html` (druk, do losowania), ściąg
 | Skrypt kroku 0 odmawia | „Portal już istnieje (src/GzmApp)” | Portal już stoi – to normalne po pierwszym uruchomieniu. Od zera: `tools\nowy-portal.ps1 -Scenariusz sNN -OdNowa` (kasuje dotychczasowy kod pary). |
 | Port zajęty | „address already in use”, przeglądarka pokazuje starą wersję | Shift+F5 w VS Code; w terminalu zamknij `dotnet`; `tools\check.cmd` pokaże, czy port 5080 jest wolny. |
 | LocalDB nie startuje | Błąd połączenia przy starcie aplikacji | `sqllocaldb start MSSQLLocalDB`; jeśli nie istnieje: `sqllocaldb create MSSQLLocalDB -s`. |
-| Kilo nie odpowiada / limit klucza | Brak odpowiedzi, komunikat o limicie | Sprawdź klucz pary w ustawieniach Kilo; zapasowy klucz z puli prowadzącego; w ostateczności `ratunek.ps1` do kolejnego etapu. |
+| Kilo nie odpowiada / limit klucza | Brak odpowiedzi, komunikat o limicie | Sprawdź klucz pary w ustawieniach Kilo; podmień na zapasowy klucz z puli prowadzącego. |
 | AI dodało React, npm albo EF Core | Nowe pliki `package.json`, `DbContext` w danych | Odrzuć zmiany w Kilo (Reject) albo `git checkout -- .` i wklej prompt ponownie. Reguły w `.kilo/rules/stack.md` tego zabraniają. |
 | Kilo proponuje decyzję poza wzorcami | Zdanie nie pasuje do wzorców z pauzy | Powiedz parze: „poproś Kilo, żeby użyło tylko wzorców z bloku” – wzorce są w prompcie pauzy; test kontrolny pilnuje, że każdy wzorzec ma test. |
-| Zła liczba wierszy | W mssql inna liczba niż w `scenarios/sNN/prowadzacy.md` | Zajrzyj do „Pułapki w danych” w `prowadzacy.md` (kodowanie, separator, nagłówek); jeśli brak czasu – `ratunek.ps1 -Etap 1`. |
+| Zła liczba wierszy | W mssql inna liczba niż w `scenarios/sNN/prowadzacy.md` | Zajrzyj do „Pułapki w danych” w `prowadzacy.md` (kodowanie, separator, nagłówek). |
 | „Brak klucza do modelu AI” w karcie | Karta pokazuje „Brak klucza do modelu AI – poproś prowadzącego.” | Brak `appsettings.Local.json` w aplikacji – skopiuj plik z pendrive'a do `src\GzmApp\` i uruchom aplikację ponownie (F5). Reguła 9 kroku 4 (prawdziwy model) jest wtedy czerwona; reguły 1–8 przechodzą i bez niego (udawany model). |
 | „Model AI nie odpowiedział” | Karta z ostrzeżeniem po ok. 45 s | Sieć szkolna albo limit wdrożenia – kliknij jeszcze raz; terminal (kategoria `AI`) pokazuje typ błędu. W ostateczności demo na rzutniku. |
 | Odpowiedź AI z dziwnymi znaczkami | `**`, `#` albo znaczniki HTML w karcie | Model czasem pisze Markdownem – to tylko wygląd. Znaczniki HTML pokazane jako tekst to dobrze (reguła 7: bez `Html.Raw`). |
 | 400 przy ulubionych (Co dalej) | ★ nie działa, Network: status 400 | Brak tokenu antiforgery – sprawdź, czy `<body hx-headers:inherited=...>` w `_Layout.cshtml` nie zostało zmienione; nie wyłączaj walidacji. |
 | Brak żądań w zakładce Network | Lista się nie zmienia przy pisaniu | Odśwież z otwartym F12; sprawdź `hx-get`, `hx-trigger` i `hx-target` w `Index.cshtml` oraz czy strona ładuje `/lib/htmx/4.0.0/htmx.min.js`. |
 | Para nie wkleiła decyzji | W specyfikacji jest zdanie domyślne | Nic nie rób: zdanie domyślne jest wpisane w `scenarios/sNN/spec/` i ma swoje testy. |
-| Nie widać testów | Testing (kolba) pusty | Testy pojawiają się po kroku 0 (projekt `tests/GzmApp.Specs`). Potem: Ctrl+Shift+P → „.NET: Build” i ⟳ w panelu Testing. Po `ratunek.ps1` scenariusz jest w `appsettings.Development.json`. |
+| Nie widać testów | Testing (kolba) pusty | Testy pojawiają się po kroku 0 (projekt `tests/GzmApp.Specs`). Potem: Ctrl+Shift+P → „.NET: Build” i ⟳ w panelu Testing. |
 | Czerwony test | ✗ przy zdaniu „Reguła N: …” | Kliknij test: komunikat po polsku mówi, czego brakuje (np. „Tabela … jeszcze nie istnieje – tworzy ją krok 1”). Wklej komunikat do Kilo: „Ten test nie przechodzi: …”. Testów kolejnych kroków nie naprawiamy wcześniej. |
 | Kilo zmienia test albo specyfikację | Kilo chce edytować `tests/` albo `scenarios/` | Zablokowane w `kilo.jsonc`. Powiedz parze: test mówi prawdę, poprawiamy kod. |
 | Para skończyła wcześniej | – | „Co dalej?” na końcu `prompty.md` (drugi kafelek – inne propozycje decyzji 3, drugie zadanie dla AI, sortowanie, „Pokaż więcej”, logowanie i ulubione – specyfikacja w `spec/dodatkowe/`). |

@@ -11,7 +11,7 @@ Decyzje 1–5 nie mają wydrukowanych wariantów: para wkleja Kilo prośbę o pr
 
 ## Co powinno wyjść przy zdaniach domyślnych
 
-Gałęzie `ratunek/etap-1..4` realizują zdania domyślne wszystkich decyzji i dają dokładnie te wartości. Przy innych decyzjach par liczby z kroków 2–4 będą inne – to w porządku.
+Zdania domyślne (wpisane w specyfikacji) dają dokładnie te wartości. Przy innych decyzjach par liczby z kroków 2–4 będą inne – to w porządku.
 
 - Krok 0: skrypt pisze „GOTOWE”, testy `s09-000-dane` zielone (plik, liczba wierszy **135** (E1.fileRows), nagłówki).
 - Krok 1: wierszy w tabeli **135** (E1.rows); wiersz 7, pole `Chronology`: **Wczesne średniowiecze - XI-XII/XIIIw.; Okres nowożytny - XVII-XIXw.** (E1.row7.value); rekordy z pustym albo nieczytelnym polem: **8** (E1.weird).

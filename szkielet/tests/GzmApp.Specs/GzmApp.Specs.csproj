@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- Tests generated from the specification of the pair's scenario: scenarios/<Scenario>/spec/*.md.
-       The scenario is "Scenario" from src/GzmApp/appsettings.Development.json (set by tools/ratunek.ps1),
-       otherwise from src/GzmApp/appsettings.json – both written by scripts (tools/nowy-portal.ps1 in step 0,
-       tools/ratunek.ps1 for a rescue stage), never by hand. Change it, build, and the tests follow.
+       The scenario is "Scenario" from src/GzmApp/appsettings.Development.json, otherwise from
+       src/GzmApp/appsettings.json – written only by scripts (tools/nowy-portal.ps1 in step 0),
+       never by hand. Change it, build, and the tests follow.
        The project builds both from the repo root (after step 0 copies the skeleton from szkielet/)
        and straight from szkielet/ – then no scenario is set and only the "kontrola" tests compile. -->
   <PropertyGroup>
