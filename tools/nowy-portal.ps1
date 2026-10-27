@@ -88,7 +88,7 @@ function Save-Dataset($Dataset) {
         Invoke-WebRequest -Uri $Dataset.fileUrl -OutFile $temp -UseBasicParsing `
             -UserAgent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' -TimeoutSec 120
         if (-not (Test-FileHash $temp $Dataset.sha256)) {
-            throw "Pobrany plik ma inną sumę SHA-256, niż zapisano w data/zbiory.json. Odśwież dane: python tools/zbiory-gen.py"
+            throw "Pobrany plik ma inną sumę SHA-256, niż zapisano w data/zbiory.json. Zawołajcie prowadzącego."
         }
         Move-Item -Path $temp -Destination $target -Force
     }

@@ -19,12 +19,14 @@ a dane pobiera się prosto z otwartedane.metropoliagzm.pl.
 
 | Miejsce | Co tam jest |
 |---|---|
-| `scenarios/sNN/` | materiały scenariusza: `karta.md` (opis portalu, zasady pracy i prompty), `spec/` (specyfikacja kroków), `prowadzacy.md` (tylko dla prowadzącego). |
+| `scenarios/sNN/` | materiały scenariusza: `karta.md` (opis portalu, zasady pracy i prompty), `spec/` (specyfikacja kroków), `checkpoints.md` i `mapping.json` (dane dla testów). |
 | `docs/PORADNIK-UCZNIA.md` | poradnik pary: uruchamianie (F5 / `dotnet run`), testy (ikona kolby / `dotnet test`), F12 w Edge, debugger VS Code, baza w SQLite Viewer. |
 | `szkielet/` | szablon aplikacji i testów – krokiem 0 skrypt robi z niego Wasz portal. |
 | `data/` | tu wyląduje pobrany plik CSV (`data/raw/`). |
 | `LOG-DECYZJI.md` | log decyzji pary – prowadzi go Kilo (powstaje w kroku 0). |
 | `tools/` | narzędzia warsztatu (m.in. `nowy-portal.ps1` z kroku 0) – nie zmieniacie. |
+
+Materiały prowadzącego (wydruki, notatki, narzędzia do generowania kart i danych) są na gałęzi `organizacyjne`.
 
 Licencja danych: CC BY 4.0, źródło: [Portal Otwartych Danych GZM](https://otwartedane.metropoliagzm.pl) –
 każdy portal pokazuje atrybucję w stopce.

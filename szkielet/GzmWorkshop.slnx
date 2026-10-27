@@ -6,10 +6,6 @@
     <Project Path="tests/GzmApp.Specs/GzmApp.Specs.csproj" />
   </Folder>
   <Folder Name="/tools/">
-    <Project Path="tools/Cards/Cards.csproj" />
-    <Project Path="tools/CodeRules/CodeRules.csproj" />
-    <Project Path="tools/Expect/Expect.csproj" />
-    <Project Path="tools/Fetch/Fetch.csproj" />
     <Project Path="tools/Spectree/Spectree.csproj" />
     <Project Path="tools/Spectree.Generator/Spectree.Generator.csproj" />
   </Folder>
