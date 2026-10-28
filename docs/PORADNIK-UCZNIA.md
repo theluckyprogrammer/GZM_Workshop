@@ -2,7 +2,7 @@
 
 Nie musicie umieć debugować – ten poradnik pokazuje krok po kroku, gdzie zobaczyć zmiany,
 jak podejrzeć dane i co zrobić, gdy coś nie działa. Wszystko robicie w VS Code i przeglądarce Edge.
-Zaglądajcie tu za każdym razem, gdy pauza w `karta.md` odsyła do poradnika.
+Zaglądajcie tu, jeśli potrzebujecie pomocy z uruchomieniem aplikacji lub narzędziami.
 
 ## Spis treści
 
