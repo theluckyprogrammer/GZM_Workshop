@@ -8,6 +8,7 @@
         ("/W4", "Propozycja 4 – mapa na cały ekran"),
         ("/W5", "Propozycja 5 – serwis urzędowy"),
     };
+    var onVariant = variants.Any(v => string.Equals(v.Url, current, StringComparison.OrdinalIgnoreCase));
 }
 <style>
     .propozycje {
@@ -16,22 +17,30 @@
         background: #111; color: #fff; border-radius: 999px; box-shadow: 0 6px 24px rgba(0,0,0,.3);
         font: 500 13px/1.2 system-ui, "Segoe UI", sans-serif;
     }
+    .propozycje.is-pulse {
+        box-shadow: 0 0 0 6px rgba(255, 214, 10, .45), 0 6px 24px rgba(0,0,0,.3);
+        animation: propozycje-pulse 1.4s ease-in-out infinite;
+    }
+    @@keyframes propozycje-pulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(255, 214, 10, .35), 0 6px 24px rgba(0,0,0,.3); }
+        50% { box-shadow: 0 0 0 10px rgba(255, 214, 10, .15), 0 6px 24px rgba(0,0,0,.3); }
+    }
     .propozycje label { margin: 0; white-space: nowrap; opacity: .75; }
     .propozycje select {
         appearance: auto; border: 0; border-radius: 999px; padding: 6px 10px;
         background: #fff; color: #111; font: inherit; cursor: pointer;
     }
 </style>
-<div class="propozycje">
+<div class="propozycje @(onVariant ? null : "is-pulse")">
     <label for="propozycja-wybor">Wygląd strony:</label>
-    <select id="propozycja-wybor" onchange="location.href = this.value + location.search">
-        @if (!variants.Any(v => v.Url == current))
+    <select id="propozycja-wybor" onchange="if (this.value) location.href = this.value + location.search">
+        @if (!onVariant)
         {
-            <option value="/" selected>Wersja pierwotna</option>
+            <option value="" selected disabled>Wybierz propozycję…</option>
         }
         @foreach (var v in variants)
         {
-            <option value="@v.Url" selected="@(v.Url == current)">@v.Label</option>
+            <option value="@v.Url" selected="@(string.Equals(v.Url, current, StringComparison.OrdinalIgnoreCase))">@v.Label</option>
         }
     </select>
 </div>

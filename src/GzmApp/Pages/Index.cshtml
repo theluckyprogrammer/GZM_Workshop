@@ -1,128 +1,81 @@
 @page
 @model IndexModel
-@using GzmApp.Data
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @{
-    ViewData["Title"] = "RowerStat";
-    var filtr = Model.Filtr switch
-    {
-        ListFilter.Deficit => "deficyt",
-        ListFilter.Surplus => "nadwyzka",
-        _ => "wszystkie",
-    };
+    Layout = null;
+    var antiforgeryToken = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
 }
-
-@section HeaderSearch {
-    <div class="header-search">
-        <input type="search" name="q" id="szukaj" class="input" value="@Model.Fraza"
-               placeholder="Szukaj gminy…" autocomplete="off"
-               hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms"
-               hx-include="[name=filtr]" hx-target="#wyniki">
-        <input type="hidden" name="filtr" id="filtr" value="@filtr">
-    </div>
-}
-
-<div class="atlas">
-
-    <section class="atlas-map" id="sekcja-mapa" aria-label="Mapa GZM">
-        @await Html.PartialAsync("_Mapa", Model)
-    </section>
-
-    <section class="atlas-table" id="sekcja-gminy">
-        <div class="table-bar">
-            <h2 class="table-title">Gminy</h2>
-            <div class="filter-bar" role="group" aria-label="Filtr listy">
-                <button type="button" class="filter-btn @(filtr == "wszystkie" ? "is-active" : null)" data-filtr="wszystkie">Wszystkie</button>
-                <button type="button" class="filter-btn @(filtr == "deficyt" ? "is-active" : null)" data-filtr="deficyt">Deficyt</button>
-                <button type="button" class="filter-btn @(filtr == "nadwyzka" ? "is-active" : null)" data-filtr="nadwyzka">Nadwyżka</button>
-            </div>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RowerStat – wybierz wygląd</title>
+    <style>
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; }
+        body {
+            font: 500 18px/1.4 system-ui, "Segoe UI", sans-serif;
+            color: #111;
+            background: #f4f4f2;
+            display: grid;
+            place-items: center;
+            padding: 24px 24px 100px;
+        }
+        .chooser {
+            text-align: center;
+            max-width: 28rem;
+        }
+        .chooser h1 {
+            margin: 0 0 12px;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -.02em;
+        }
+        .chooser p {
+            margin: 0;
+            color: #444;
+            font-size: 1.05rem;
+        }
+        .hint {
+            margin-top: 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: #111;
+        }
+        .hint-text {
+            font-size: .95rem;
+            font-weight: 600;
+        }
+        .hint-arrow {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: #ffe566;
+            display: grid; place-items: center;
+            font-size: 1.4rem;
+            line-height: 1;
+            box-shadow: 0 0 0 6px rgba(255, 214, 10, .35);
+            animation: bounce 1.2s ease-in-out infinite;
+        }
+        @@keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+        #data-attribution { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    </style>
+</head>
+<body hx-headers:inherited='{"RequestVerificationToken":"@antiforgeryToken"}'>
+    <partial name="_Propozycje" />
+    <main class="chooser">
+        <h1>RowerStat</h1>
+        <p>Proszę wybrać wersję strony.</p>
+        <div class="hint" aria-hidden="true">
+            <span class="hint-text">tu na dole ↓</span>
+            <span class="hint-arrow">↓</span>
         </div>
-        <div class="table-head" aria-hidden="true">
-            <span>Gmina</span>
-            <span>Dostępne</span>
-            <span>Wymagane</span>
-            <span>Pokrycie</span>
-            <span>Status</span>
-        </div>
-        <div class="table-scroll" id="wyniki">
-            @await Html.PartialAsync("_Lista", Model.Lista)
-        </div>
-    </section>
-
-    <aside class="atlas-side">
-        <div class="side-metrics" aria-label="Podsumowanie">
-            <div class="metric" id="statystyka">
-                <span class="metric-label">Dostępne</span>
-                <span class="metric-value" data-stat-value>@Model.StatystykaTekst</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Deficyt</span>
-                <span class="metric-value is-bad">@Model.Deficyt</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Gminy</span>
-                <span class="metric-value">@Model.Mapa.Count</span>
-            </div>
-            <div class="metric metric-wide">
-                <span class="metric-label">Pokrycie</span>
-                <span class="metric-value">@Model.PokrycieProcent%</span>
-                <span class="metric-bar" aria-hidden="true"><span style="width:@Math.Min(100, Model.PokrycieProcent)%"></span></span>
-                <span class="metric-hint">@Model.StatystykaTekst / @Model.WymaganeTekst</span>
-            </div>
-        </div>
-
-        <div class="side-block" id="mapa-detail">
-            @await Html.PartialAsync("_MapDetail", Model.Podglad)
-        </div>
-
-        <div class="side-block" id="sekcja-ranking">
-            <h2 class="side-label">Największe braki</h2>
-            @if (Model.RankingDeficytow.Count == 0)
-            {
-                <p class="side-empty">Brak gmin z deficytem.</p>
-            }
-            else
-            {
-                <ul class="gap-list">
-                    @foreach (var r in Model.RankingDeficytow)
-                    {
-                        var gap = r.AvailableBikes - r.RequiredBikes;
-                        <li>
-                            <button type="button" class="gap-item" data-commune="@r.Commune">
-                                <span>@r.Commune</span>
-                                <strong>@gap</strong>
-                            </button>
-                        </li>
-                    }
-                </ul>
-            }
-        </div>
-
-        <section class="side-block insight-pane" id="sekcja-info">
-            <div class="insight-head">
-                <h2 class="side-label">Wnioski</h2>
-                <div class="ai-actions">
-                    <span id="analiza-czeka" class="htmx-indicator ai-wait">
-                        <span class="spinner" aria-hidden="true"></span>
-                    </span>
-                    <button type="button" class="btn btn-dark"
-                            hx-get="?handler=Analizuj" hx-include="[name=q]" hx-target="#analiza"
-                            hx-indicator="#analiza-czeka" hx-disable="this">Analizuj</button>
-                </div>
-            </div>
-            <div class="insight-body" id="analiza">
-                <p class="insight-empty">Analiza bieżącej listy na podstawie danych w bazie.</p>
-            </div>
-        </section>
-    </aside>
-
-</div>
-
-@section Styles {
-    <link rel="stylesheet" href="~/lib/leaflet/leaflet.css" />
-}
-
-@section Scripts {
-    <script src="~/lib/leaflet/leaflet.js"></script>
-    <script src="~/js/map.js" asp-append-version="true"></script>
-    <script src="~/js/app.js" asp-append-version="true"></script>
-}
+    </main>
+    <span id="data-attribution"></span>
+</body>
+</html>
