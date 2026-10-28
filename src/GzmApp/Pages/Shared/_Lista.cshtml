@@ -1,26 +1,23 @@
 @model GzmApp.Data.RecordList
 <p id="licznik" class="count">Wyników: @Model.Count</p>
-<ul id="lista" class="rows">
-    @foreach (var r in Model.Items)
-    {
-        var deficyt = r.AvailableBikes < r.RequiredBikes;
-        var procent = r.RequiredBikes > 0 ? Math.Min(100, (int)Math.Round(r.AvailableBikes * 100.0 / r.RequiredBikes)) : 100;
-        <li class="row" data-record-id="@r.RecordId"
-            hx-get="?handler=Mapa&gmina=@Uri.EscapeDataString(r.Commune)"
-            hx-target="#mapa-podglad" hx-swap="innerHTML">
-            <div class="row-main">
-                <span class="row-no">Nr @r.SourceRow:</span>
-                <span class="tytul row-name">@r.Commune</span>
-                @if (deficyt)
-                {
-                    <span class="pill pill-bad">deficyt</span>
-                }
-            </div>
-            <div class="row-nums">
-                <span>dostępne <b>@r.AvailableBikes</b></span>
-                <span>wymagane <b>@r.RequiredBikes</b></span>
-                <span class="bar @(deficyt ? "is-bad" : string.Empty)"><span style="width:@(procent)%"></span></span>
-            </div>
-        </li>
-    }
-</ul>
+@if (Model.Items.Count == 0)
+{
+    <p class="list-empty">Brak gmin dla tych kryteriów.</p>
+}
+else
+{
+    <ul id="lista" class="rows">
+        @foreach (var r in Model.Items)
+        {
+            var deficyt = r.AvailableBikes < r.RequiredBikes;
+            var procent = r.RequiredBikes > 0 ? Math.Min(100, (int)Math.Round(r.AvailableBikes * 100.0 / r.RequiredBikes)) : 100;
+            <li class="row" data-record-id="@r.RecordId" data-commune="@r.Commune" tabindex="0" role="button">
+                <span class="row-name"><span class="row-no">@r.SourceRow</span> <span class="tytul">@r.Commune</span></span>
+                <span class="row-num">@r.AvailableBikes</span>
+                <span class="row-num">@r.RequiredBikes</span>
+                <span class="bar @(deficyt ? "is-bad" : string.Empty)" title="Pokrycie @procent%"><span style="width:@(procent)%"></span></span>
+                <span class="status @(deficyt ? "is-bad" : "is-ok")">@(deficyt ? "Deficyt" : "OK")</span>
+            </li>
+        }
+    </ul>
+}

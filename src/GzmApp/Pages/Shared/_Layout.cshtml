@@ -9,6 +9,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] – GZM otwarte dane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@600;700&display=swap" rel="stylesheet" />
     <script>
         (function () {
             var saved = localStorage.getItem("motyw") || "light";
@@ -17,45 +20,38 @@
     </script>
     <link rel="stylesheet" href="~/lib/tabler/1.6.1/css/tabler.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
     <script src="~/lib/htmx/4.0.0/htmx.min.js"></script>
 </head>
-<body class="app-body" hx-headers:inherited='{"RequestVerificationToken":"@antiforgeryToken"}'>
-    <aside class="sidebar">
-        <nav class="side-menu" aria-label="Menu">
-            <div class="side-title">Menu</div>
-            <a asp-area="" asp-page="/Index">Strona główna</a>
-            <a href="/#sekcja-gminy">Gminy</a>
-            <a href="/#sekcja-info">Analiza AI</a>
-            <a href="/#sekcja-mapa">Mapa</a>
-        </nav>
-        @await RenderSectionAsync("Sidebar", required: false)
-        <div class="side-foot">
-            <span id="data-attribution">@Configuration["DataAttribution"]</span>
+<body class="app-shell" hx-headers:inherited='{"RequestVerificationToken":"@antiforgeryToken"}'>
+<partial name="_Propozycje" />
+    <header class="app-header">
+        <a class="brand" asp-area="" asp-page="/Index">
+            <span class="brand-name">RowerStat</span>
+            <span class="brand-meta">GZM</span>
+        </a>
+        @await RenderSectionAsync("HeaderSearch", required: false)
+        <div class="header-actions">
+            <button id="motyw" class="icon-btn" type="button" title="Zmień motyw" aria-label="Zmień motyw">◐</button>
+            <partial name="_LoginPartial" />
         </div>
-    </aside>
+    </header>
 
-    <div class="main">
-        <header class="topbar">
-            <div class="topbar-inner">
-                <a class="brand" asp-area="" asp-page="/Index">RowerStat <span>GZM · dane otwarte</span></a>
-                @await RenderSectionAsync("Topbar", required: false)
-                <div class="topbar-actions">
-                    <button id="motyw" class="icon-btn" type="button" title="Zmień motyw jasny/ciemny">◐</button>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </header>
+    <main class="app-main">
+        @RenderBody()
+    </main>
 
-        <main class="workspace">
-            @RenderBody()
-        </main>
-    </div>
+    <footer class="app-foot">
+        <span id="data-attribution">@Configuration["DataAttribution"]</span>
+    </footer>
 
     <script src="~/lib/tabler/1.6.1/js/tabler.min.js"></script>
     <script>
         (function () {
             var root = document.documentElement;
-            document.getElementById("motyw").addEventListener("click", function () {
+            var btn = document.getElementById("motyw");
+            if (!btn) return;
+            btn.addEventListener("click", function () {
                 var next = root.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
                 root.setAttribute("data-bs-theme", next);
                 localStorage.setItem("motyw", next);

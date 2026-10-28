@@ -1,0 +1,40 @@
+@model GzmApp.Data.MapPodglad?
+@{
+    var m = Model;
+}
+@if (m is null)
+{
+    <div class="map-detail is-empty">
+        <p class="map-detail-hint">Wybierz gminę na mapie, w tabeli albo na wykresie braków.</p>
+    </div>
+}
+else
+{
+    var deficyt = m.AvailableBikes < m.RequiredBikes;
+    var roznica = m.AvailableBikes - m.RequiredBikes;
+    var procent = m.RequiredBikes > 0 ? (int)Math.Round(m.AvailableBikes * 100.0 / m.RequiredBikes) : 100;
+    var zdanie = deficyt
+        ? $"Brakuje {Math.Abs(roznica)} szt. – gmina ma {procent}% wymaganej liczby rowerów."
+        : $"Rowerów wystarcza – gmina ma {procent}% wymaganej liczby.";
+    <div class="map-detail @(deficyt ? "is-bad" : "is-ok")" data-commune="@m.Commune">
+        <div class="map-detail-top">
+            <strong class="map-detail-name">@m.Commune</strong>
+            <span class="status @(deficyt ? "is-bad" : "is-ok")">@(deficyt ? "Deficyt" : "Wystarcza")</span>
+        </div>
+        <p class="map-detail-text">@zdanie</p>
+        <dl class="map-detail-grid">
+            <div>
+                <dt>Dostępne</dt>
+                <dd>@m.AvailableBikes</dd>
+            </div>
+            <div>
+                <dt>Wymagane</dt>
+                <dd>@m.RequiredBikes</dd>
+            </div>
+            <div>
+                <dt>Różnica</dt>
+                <dd class="@(roznica < 0 ? "is-bad" : "is-ok")">@(roznica > 0 ? $"+{roznica}" : roznica < 0 ? $"−{Math.Abs(roznica)}" : "0")</dd>
+            </div>
+        </dl>
+    </div>
+}

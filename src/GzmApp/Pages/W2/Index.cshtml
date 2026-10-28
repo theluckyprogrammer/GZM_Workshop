@@ -1,0 +1,237 @@
+@page
+@model GzmApp.Pages.IndexModel
+@using GzmApp.Data
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@inject IConfiguration Configuration
+@functions {
+    private static string Bikes(int n)
+    {
+        var a = Math.Abs(n);
+        if (a == 1) return "rower";
+        var r10 = a % 10;
+        var r100 = a % 100;
+        return r10 >= 2 && r10 <= 4 && (r100 < 12 || r100 > 14) ? "rowery" : "rowerów";
+    }
+
+    private static string Verb(int n)
+    {
+        var r10 = n % 10;
+        var r100 = n % 100;
+        return n != 1 && r10 >= 2 && r10 <= 4 && (r100 < 12 || r100 > 14) ? "mają" : "ma";
+    }
+}
+@{
+    Layout = null;
+    var antiforgeryToken = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
+
+    var total = Model.Mapa.Count;
+    var deficits = Model.Deficyt;
+    var okCount = Math.Max(0, total - deficits);
+    var coverage = Model.PokrycieProcent;
+    var coverageBar = Math.Clamp(coverage, 0, 100);
+    var worst = Model.RankingDeficytow.FirstOrDefault();
+    var maxGap = Model.RankingDeficytow.Count > 0 ? Model.RankingDeficytow.Max(r => -r.Gap) : 1;
+    var day = Model.Lista.Items.FirstOrDefault()?.Day;
+    var byline = string.IsNullOrWhiteSpace(day)
+        ? "Opracowanie: RowerStat na podstawie otwartych danych GZM"
+        : $"Opracowanie: RowerStat na podstawie otwartych danych GZM · stan na {day}";
+
+    var headline = total == 0
+        ? "Brak danych o rowerach w gminach GZM"
+        : deficits == 0
+            ? "Wszystkie gminy GZM mają wystarczająco rowerów"
+            : $"{deficits} z {total} gmin GZM {Verb(deficits)} za mało rowerów";
+
+    var dek = coverage >= 100
+        ? $"W całej metropolii dostępnych jest {Model.StatystykaTekst} rowerów przy {Model.WymaganeTekst} wymaganych – to {coverage}% potrzeb. Nadwyżka w skali GZM nie rozkłada się jednak równo."
+        : $"W całej metropolii dostępnych jest {Model.StatystykaTekst} rowerów przy {Model.WymaganeTekst} wymaganych – to tylko {coverage}% potrzeb.";
+    var dekWorst = worst is null
+        ? "Każda gmina ma co najmniej tyle rowerów, ile wymaga norma."
+        : $"Największy brak notuje {worst.Commune}: {Math.Abs(worst.Gap)} {Bikes(worst.Gap)} poniżej normy.";
+
+    var filtr = Model.Filtr switch
+    {
+        ListFilter.Deficit => "deficyt",
+        ListFilter.Surplus => "nadwyzka",
+        _ => "wszystkie",
+    };
+}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RowerStat – rowery publiczne w gminach GZM</title>
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="~/w2/site.css" asp-append-version="true" />
+</head>
+<body hx-headers:inherited='{"RequestVerificationToken":"@antiforgeryToken"}'>
+<partial name="_Propozycje" />
+
+<header class="masthead">
+    <div class="masthead-inner">
+        <a class="brand" href="?">
+            <span class="brand-name">RowerStat</span>
+            <span class="brand-sub">Otwarte dane Metropolii GZM</span>
+        </a>
+        <nav class="sections" aria-label="Sekcje">
+            <a href="#sekcja-mapa">Mapa</a>
+            <a href="#sekcja-braki">Braki</a>
+            <a href="#sekcja-gminy">Gminy</a>
+            <a href="#sekcja-wnioski">Wnioski</a>
+        </nav>
+        <div class="account">
+            <partial name="_LoginPartial" />
+        </div>
+    </div>
+</header>
+
+<main>
+    <article>
+        <header class="story-head measure">
+            <p class="kicker">Rowery publiczne · Metropolia GZM</p>
+            <h1 class="headline">@headline</h1>
+            <p class="dek">@dek @dekWorst</p>
+            <p class="byline">@byline</p>
+        </header>
+
+        <section id="statystyka" class="figures wide-md" aria-label="Najważniejsze liczby">
+            <div class="figure">
+                <span class="figure-value" data-stat-value>@Model.StatystykaTekst</span>
+                <span class="figure-label">dostępnych rowerów w całej GZM</span>
+            </div>
+            <div class="figure">
+                <span class="figure-value is-bad">@deficits</span>
+                <span class="figure-label">gmin z deficytem rowerów</span>
+            </div>
+            <div class="figure">
+                <span class="figure-value">@total</span>
+                <span class="figure-label">gmin w zestawieniu</span>
+            </div>
+            <div class="figure">
+                <span class="figure-value">@coverage<small>%</small></span>
+                <span class="figure-label">pokrycia potrzeb</span>
+                <span class="meter" role="img" aria-label="Pokrycie @coverage%"><span style="width:@(coverageBar)%"></span></span>
+                <span class="figure-note">@Model.StatystykaTekst / @Model.WymaganeTekst wymaganych</span>
+            </div>
+        </section>
+
+        <section id="sekcja-mapa" class="block wide">
+            <div class="section-head measure-left">
+                <h2>Gdzie brakuje rowerów</h2>
+                <p class="section-dek">Każdy punkt to jedna gmina. Czerwone oznaczają mniej rowerów, niż wymaga norma. Kliknij punkt, wiersz tabeli lub pasek na wykresie, aby zobaczyć szczegóły.</p>
+            </div>
+            <div class="map-figure"
+                 id="mapa-root"
+                 data-points="@Model.PunktyMapyJson"
+                 data-center-lat="@GzmMap.CenterLat.ToString(inv)"
+                 data-center-lon="@GzmMap.CenterLon.ToString(inv)"
+                 data-min-lat="@GzmMap.MinLat.ToString(inv)"
+                 data-min-lon="@GzmMap.MinLon.ToString(inv)"
+                 data-max-lat="@GzmMap.MaxLat.ToString(inv)"
+                 data-max-lon="@GzmMap.MaxLon.ToString(inv)"
+                 data-selected="@(Model.Podglad?.Commune ?? "")">
+                <div id="map" class="map-canvas" role="img" aria-label="Mapa gmin GZM"></div>
+                <aside class="map-aside">
+                    <p class="aside-label">Wybrana gmina</p>
+                    <div id="mapa-detail">
+                        @await Html.PartialAsync("_MapDetail", Model.Podglad)
+                    </div>
+                    <div class="map-legend" aria-label="Legenda">
+                        <p class="aside-label">Legenda</p>
+                        <span class="legend-item"><i class="dot is-bad" aria-hidden="true"></i> Deficyt <b>@deficits</b></span>
+                        <span class="legend-item"><i class="dot is-ok" aria-hidden="true"></i> Wystarcza <b>@okCount</b></span>
+                        <span class="map-count">Na mapie: @Model.PunktyMapy.Count gmin</span>
+                    </div>
+                </aside>
+            </div>
+            <p class="source-line">Źródło: portal otwartych danych Metropolii GZM. Podkład mapy: © autorzy OpenStreetMap.</p>
+        </section>
+
+        <section id="sekcja-braki" class="block measure">
+            <h2>Największe braki</h2>
+            <p class="section-dek">Brakujące rowery w gminach z największym deficytem (dostępne minus wymagane).</p>
+            @if (Model.RankingDeficytow.Count == 0)
+            {
+                <p class="empty-note">Żadna gmina nie ma deficytu rowerów.</p>
+            }
+            else
+            {
+                <ol class="gap-chart">
+                    @foreach (var r in Model.RankingDeficytow)
+                    {
+                        var width = (int)Math.Round(-r.Gap * 100.0 / maxGap);
+                        <li>
+                            <button type="button" class="gap-item" data-commune="@r.Commune" title="Pokaż na mapie">
+                                <span class="gap-name">
+                                    <span class="gap-commune">@r.Commune</span>
+                                    <span class="gap-meta">@r.AvailableBikes z @r.RequiredBikes wymaganych</span>
+                                </span>
+                                <span class="gap-track"><span class="gap-bar" style="width:@(width)%"></span></span>
+                                <span class="gap-value">−@Math.Abs(r.Gap)</span>
+                            </button>
+                        </li>
+                    }
+                </ol>
+            }
+        </section>
+
+        <section id="sekcja-gminy" class="block measure-wide">
+            <h2>Wszystkie gminy</h2>
+            <p class="section-dek">Wyszukaj gminę albo zawęź listę do gmin z deficytem lub nadwyżką.</p>
+            <div class="toolbar">
+                <label class="search">
+                    <span class="visually-hidden">Szukaj gminy</span>
+                    <input type="search" name="q" id="szukaj" placeholder="Szukaj gminy…" autocomplete="off"
+                           value="@Model.Fraza"
+                           hx-get="?handler=Szukaj"
+                           hx-trigger="keyup changed delay:300ms"
+                           hx-include="[name=filtr]"
+                           hx-target="#wyniki" />
+                </label>
+                <input type="hidden" name="filtr" id="filtr" value="@filtr" />
+                <div class="filters" role="group" aria-label="Filtr listy">
+                    <button type="button" class="filter-btn @(filtr == "wszystkie" ? "is-active" : "")" data-filtr="wszystkie">Wszystkie</button>
+                    <button type="button" class="filter-btn @(filtr == "deficyt" ? "is-active" : "")" data-filtr="deficyt">Deficyt</button>
+                    <button type="button" class="filter-btn @(filtr == "nadwyzka" ? "is-active" : "")" data-filtr="nadwyzka">Nadwyżka</button>
+                </div>
+            </div>
+            <div id="wyniki">
+                <partial name="_Lista" model="Model.Lista" />
+            </div>
+        </section>
+
+        <section id="sekcja-wnioski" class="block measure">
+            <h2>Wnioski</h2>
+            <p class="section-dek">Krótkie omówienie przygotowane przez model językowy na podstawie danych z bazy. Uwzględnia frazę wpisaną w wyszukiwarce.</p>
+            <div class="ai-actions">
+                <button type="button" class="btn-primary"
+                        hx-get="?handler=Analizuj"
+                        hx-include="[name=q]"
+                        hx-target="#analiza"
+                        hx-indicator="#analiza-czeka"
+                        hx-disable="this">Analizuj</button>
+                <span id="analiza-czeka" class="htmx-indicator"><i class="spinner" aria-hidden="true"></i> Analizuję dane…</span>
+            </div>
+            <div id="analiza" aria-live="polite">
+                <p class="empty-note">Kliknij „Analizuj”, aby wygenerować omówienie. Liczby zawsze sprawdź w tabeli powyżej.</p>
+            </div>
+        </section>
+    </article>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <span class="footer-brand">RowerStat</span>
+        <p>Dane: <span id="data-attribution">@Configuration["DataAttribution"]</span></p>
+        <p>Podkład mapy © OpenStreetMap. Analiza tekstowa generowana przez model AI – może zawierać błędy.</p>
+    </div>
+</footer>
+
+<script src="~/lib/htmx/4.0.0/htmx.min.js"></script>
+<script src="~/lib/leaflet/leaflet.js"></script>
+<script src="~/w2/map.js" asp-append-version="true"></script>
+<script src="~/js/app.js" asp-append-version="true"></script>
+</body>
+</html>

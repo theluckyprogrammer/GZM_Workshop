@@ -1,0 +1,43 @@
+@model GzmApp.Data.RecordList
+@{
+    var pl = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
+}
+<p id="licznik" class="count">Wyników: @Model.Count</p>
+@if (Model.Items.Count == 0)
+{
+    <div class="list-empty">
+        <p><strong>Brak gmin dla tych kryteriów.</strong></p>
+        <p>Sprawdź pisownię albo wybierz filtr „Wszystkie”.</p>
+    </div>
+}
+else
+{
+    <div class="data-table">
+        <div class="data-head" aria-hidden="true">
+            <span>Gmina</span>
+            <span class="num">Dostępne</span>
+            <span class="num">Wymagane</span>
+            <span>Pokrycie</span>
+            <span>Stan</span>
+        </div>
+        <ul id="lista" class="rows" aria-label="Gminy – wybierz wiersz, aby pokazać gminę na mapie">
+            @foreach (var r in Model.Items)
+            {
+                var deficyt = r.AvailableBikes < r.RequiredBikes;
+                var procent = r.RequiredBikes > 0 ? (int)Math.Round(r.AvailableBikes * 100.0 / r.RequiredBikes) : 100;
+                var szerokosc = Math.Clamp(procent, 0, 100);
+                <li class="row @(deficyt ? "is-deficit" : "")" data-record-id="@r.RecordId" data-commune="@r.Commune" tabindex="0" role="button"
+                    aria-label="@r.Commune: dostępne @r.AvailableBikes, wymagane @r.RequiredBikes, @(deficyt ? "deficyt" : "wystarcza")">
+                    <span class="cell cell-name"><span class="tytul">@r.Commune</span></span>
+                    <span class="cell num"><span class="cell-label">Dostępne</span>@r.AvailableBikes.ToString("N0", pl)</span>
+                    <span class="cell num"><span class="cell-label">Wymagane</span>@r.RequiredBikes.ToString("N0", pl)</span>
+                    <span class="cell cell-bar">
+                        <span class="bar @(deficyt ? "is-bad" : "")" title="Pokrycie @procent%"><span style="width:@(szerokosc)%"></span></span>
+                        <span class="bar-value">@procent%</span>
+                    </span>
+                    <span class="cell"><span class="status @(deficyt ? "is-bad" : "is-ok")">@(deficyt ? "Deficyt" : "OK")</span></span>
+                </li>
+            }
+        </ul>
+    </div>
+}

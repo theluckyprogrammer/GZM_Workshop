@@ -26,7 +26,7 @@ public sealed class AiAnalyzer(IChatClient chat, IOptions<Sol6Options> options, 
 
     public async Task<AiAnalysis> AnalyzeAsync(string? q, CancellationToken ct = default)
     {
-        var records = await repository.SearchAsync(q, 20, ct);
+        var records = await repository.SearchAsync(q, 20, ct: ct);
         var prompt = Task + "\n\nRekordy:\n" + string.Join("\n", records.Items.Select(Line));
         var messages = new List<ChatMessage>
         {

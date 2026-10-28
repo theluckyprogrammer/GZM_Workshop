@@ -1,0 +1,15 @@
+@model GzmApp.Ai.AiAnalysis
+<article class="ai" data-ai>
+    <div class="ai-head">
+        <h3 class="ai-title">Podsumowanie</h3>
+        <span class="ai-model">Model: @Model.Model</span>
+    </div>
+    <div class="ai-body ai-text">@Model.Text</div>
+    <div class="ai-foot">
+        <p>Wygenerowano z @Model.RecordCount rekordów z bazy. Sprawdź liczby w danych.</p>
+        <details>
+            <summary>Prompt</summary>
+            <pre>@Model.Prompt</pre>
+        </details>
+    </div>
+</article>

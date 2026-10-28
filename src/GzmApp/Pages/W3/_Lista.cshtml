@@ -1,0 +1,33 @@
+@model GzmApp.Data.RecordList
+<div class="list-head">
+    <p id="licznik" class="count">Wyników: @Model.Count</p>
+    <span class="col-h" aria-hidden="true">Dost.</span>
+    <span class="col-h" aria-hidden="true">Wym.</span>
+</div>
+@if (Model.Items.Count == 0)
+{
+    <p class="list-empty">Brak gmin dla tych kryteriów. Zmień frazę albo filtr.</p>
+}
+else
+{
+    <ul id="lista" class="route">
+        @foreach (var r in Model.Items)
+        {
+            var deficyt = r.AvailableBikes < r.RequiredBikes;
+            var procent = r.RequiredBikes > 0 ? Math.Min(100, (int)Math.Round(r.AvailableBikes * 100.0 / r.RequiredBikes)) : 100;
+            <li class="row @(deficyt ? "is-bad" : "is-ok")" data-record-id="@r.RecordId" data-commune="@r.Commune" tabindex="0" role="button">
+                <span class="stop" aria-hidden="true"></span>
+                <span class="row-no">@r.SourceRow</span>
+                <span class="row-main">
+                    <span class="tytul" title="@r.Commune">@r.Commune</span>
+                    <span class="row-sub">
+                        <span class="bar" title="Pokrycie @procent%"><span style="width:@(procent)%"></span></span>
+                        <span class="status @(deficyt ? "is-bad" : "is-ok")">@(deficyt ? "Deficyt" : "OK")</span>
+                    </span>
+                </span>
+                <span class="row-num" title="Dostępne">@r.AvailableBikes</span>
+                <span class="row-num is-req" title="Wymagane">@r.RequiredBikes</span>
+            </li>
+        }
+    </ul>
+}

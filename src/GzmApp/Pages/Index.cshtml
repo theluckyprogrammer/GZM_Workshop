@@ -3,75 +3,126 @@
 @using GzmApp.Data
 @{
     ViewData["Title"] = "RowerStat";
-
-    var mapa = Model.Mapa;
+    var filtr = Model.Filtr switch
+    {
+        ListFilter.Deficit => "deficyt",
+        ListFilter.Surplus => "nadwyzka",
+        _ => "wszystkie",
+    };
 }
 
-@section Sidebar {
-    <div class="side-stats">
-        <div id="statystyka" class="stat">
-            <div class="stat-label">Dostępne rowery</div>
-            <div class="stat-value" data-stat-value>@Model.StatystykaTekst</div>
-            <div class="stat-hint">suma ze wszystkich gmin</div>
-        </div>
-        <div class="stat">
-            <div class="stat-label">Gminy z deficytem</div>
-            <div class="stat-value is-bad">@Model.Deficyt</div>
-            <div class="stat-hint">dostępnych mniej niż wymaganych</div>
-        </div>
-        <div class="stat">
-            <div class="stat-label">Gminy w bazie</div>
-            <div class="stat-value">@mapa.Count</div>
-        </div>
+@section HeaderSearch {
+    <div class="header-search">
+        <input type="search" name="q" id="szukaj" class="input" value="@Model.Fraza"
+               placeholder="Szukaj gminy…" autocomplete="off"
+               hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms"
+               hx-include="[name=filtr]" hx-target="#wyniki">
+        <input type="hidden" name="filtr" id="filtr" value="@filtr">
     </div>
 }
 
-@section Topbar {
-    <div class="topsearch">
-        <input type="search" name="q" class="input" placeholder="Szukaj gminy…" autocomplete="off"
-               hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms" hx-target="#wyniki">
-    </div>
-}
+<div class="atlas">
 
-<div class="board">
+    <section class="atlas-map" id="sekcja-mapa" aria-label="Mapa GZM">
+        @await Html.PartialAsync("_Mapa", Model)
+    </section>
 
-    <section class="board-list" id="sekcja-gminy">
-        <div class="board-head">
-            <h2 class="board-title">Gminy</h2>
-            <span class="board-sub">najwyżej 20 wyników</span>
+    <section class="atlas-table" id="sekcja-gminy">
+        <div class="table-bar">
+            <h2 class="table-title">Gminy</h2>
+            <div class="filter-bar" role="group" aria-label="Filtr listy">
+                <button type="button" class="filter-btn @(filtr == "wszystkie" ? "is-active" : null)" data-filtr="wszystkie">Wszystkie</button>
+                <button type="button" class="filter-btn @(filtr == "deficyt" ? "is-active" : null)" data-filtr="deficyt">Deficyt</button>
+                <button type="button" class="filter-btn @(filtr == "nadwyzka" ? "is-active" : null)" data-filtr="nadwyzka">Nadwyżka</button>
+            </div>
         </div>
-        <div class="board-scroll" id="wyniki">
+        <div class="table-head" aria-hidden="true">
+            <span>Gmina</span>
+            <span>Dostępne</span>
+            <span>Wymagane</span>
+            <span>Pokrycie</span>
+            <span>Status</span>
+        </div>
+        <div class="table-scroll" id="wyniki">
             @await Html.PartialAsync("_Lista", Model.Lista)
         </div>
     </section>
 
-    <div class="board-side">
+    <aside class="atlas-side">
+        <div class="side-metrics" aria-label="Podsumowanie">
+            <div class="metric" id="statystyka">
+                <span class="metric-label">Dostępne</span>
+                <span class="metric-value" data-stat-value>@Model.StatystykaTekst</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Deficyt</span>
+                <span class="metric-value is-bad">@Model.Deficyt</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Gminy</span>
+                <span class="metric-value">@Model.Mapa.Count</span>
+            </div>
+            <div class="metric metric-wide">
+                <span class="metric-label">Pokrycie</span>
+                <span class="metric-value">@Model.PokrycieProcent%</span>
+                <span class="metric-bar" aria-hidden="true"><span style="width:@Math.Min(100, Model.PokrycieProcent)%"></span></span>
+                <span class="metric-hint">@Model.StatystykaTekst / @Model.WymaganeTekst</span>
+            </div>
+        </div>
 
-        <section class="board-info" id="sekcja-info">
-            <div class="board-head">
-                <h2 class="board-title">Analiza AI</h2>
+        <div class="side-block" id="mapa-detail">
+            @await Html.PartialAsync("_MapDetail", Model.Podglad)
+        </div>
+
+        <div class="side-block" id="sekcja-ranking">
+            <h2 class="side-label">Największe braki</h2>
+            @if (Model.RankingDeficytow.Count == 0)
+            {
+                <p class="side-empty">Brak gmin z deficytem.</p>
+            }
+            else
+            {
+                <ul class="gap-list">
+                    @foreach (var r in Model.RankingDeficytow)
+                    {
+                        var gap = r.AvailableBikes - r.RequiredBikes;
+                        <li>
+                            <button type="button" class="gap-item" data-commune="@r.Commune">
+                                <span>@r.Commune</span>
+                                <strong>@gap</strong>
+                            </button>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+        <section class="side-block insight-pane" id="sekcja-info">
+            <div class="insight-head">
+                <h2 class="side-label">Wnioski</h2>
                 <div class="ai-actions">
                     <span id="analiza-czeka" class="htmx-indicator ai-wait">
-                        <span class="spinner" aria-hidden="true"></span> Analizuję…
+                        <span class="spinner" aria-hidden="true"></span>
                     </span>
                     <button type="button" class="btn btn-dark"
                             hx-get="?handler=Analizuj" hx-include="[name=q]" hx-target="#analiza"
-                            hx-indicator="#analiza-czeka" hx-disable="this">Analizuj z AI</button>
+                            hx-indicator="#analiza-czeka" hx-disable="this">Analizuj</button>
                 </div>
             </div>
-            <div class="board-scroll ai-slot" id="analiza"></div>
-        </section>
-
-        <section class="board-map" id="sekcja-mapa">
-            <div class="board-head">
-                <h2 class="board-title">Mapa</h2>
-                <span class="board-sub">kliknij gminę na liście</span>
-            </div>
-            <div class="map-slot" id="mapa-podglad">
-                @await Html.PartialAsync("_Mapa", (MapPodglad?)null)
+            <div class="insight-body" id="analiza">
+                <p class="insight-empty">Analiza bieżącej listy na podstawie danych w bazie.</p>
             </div>
         </section>
-
-    </div>
+    </aside>
 
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.css" />
+}
+
+@section Scripts {
+    <script src="~/lib/leaflet/leaflet.js"></script>
+    <script src="~/js/map.js" asp-append-version="true"></script>
+    <script src="~/js/app.js" asp-append-version="true"></script>
+}

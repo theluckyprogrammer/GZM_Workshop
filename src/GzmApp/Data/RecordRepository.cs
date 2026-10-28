@@ -26,13 +26,26 @@ public sealed class MapRecord
     public int AvailableBikes { get; init; }
 
     public int RequiredBikes { get; init; }
+
+    public int Gap => AvailableBikes - RequiredBikes;
+
+    public bool IsDeficit => AvailableBikes < RequiredBikes;
+}
+
+public enum ListFilter
+{
+    All,
+    Deficit,
+    Surplus,
 }
 
 public interface IRecordRepository
 {
-    Task<RecordList> SearchAsync(string? q, int take, CancellationToken ct = default);
+    Task<RecordList> SearchAsync(string? q, int take, ListFilter filter = ListFilter.All, CancellationToken ct = default);
 
     Task<long?> SumAvailableAsync(CancellationToken ct = default);
+
+    Task<long?> SumRequiredAsync(CancellationToken ct = default);
 
     Task<IReadOnlyList<MapRecord>> MapAsync(CancellationToken ct = default);
 
@@ -44,30 +57,38 @@ public interface IRecordRepository
 // Reads the BikeAvailability table: search by the phrase (decision 1 – field Commune) and the statistic tile.
 public sealed class RecordRepository(SqlRunner sql) : IRecordRepository
 {
-    private const string SearchSql = """
-        SELECT [RecordId], [SourceRow], [Day], [Commune], [AvailableBikes], [RequiredBikes], [Exceeded]
-        FROM [BikeAvailability]
-        WHERE plain(CAST([Commune] AS TEXT)) LIKE '%' || plain(@q) || '%'
-        ORDER BY [SourceRow]
-        LIMIT @take
-        """;
-
-    private const string CountSql = """
-        SELECT COUNT(*)
-        FROM [BikeAvailability]
-        WHERE plain(CAST([Commune] AS TEXT)) LIKE '%' || plain(@q) || '%'
-        """;
-
-    public async Task<RecordList> SearchAsync(string? q, int take, CancellationToken ct = default)
+    public async Task<RecordList> SearchAsync(string? q, int take, ListFilter filter = ListFilter.All, CancellationToken ct = default)
     {
+        var where = BuildWhere(filter);
+        var order = filter == ListFilter.Deficit
+            ? "ORDER BY ([AvailableBikes] * 1.0 / NULLIF([RequiredBikes], 0)) ASC, [Commune]"
+            : "ORDER BY [SourceRow]";
+
+        var searchSql = $"""
+            SELECT [RecordId], [SourceRow], [Day], [Commune], [AvailableBikes], [RequiredBikes], [Exceeded]
+            FROM [BikeAvailability]
+            WHERE {where}
+            {order}
+            LIMIT @take
+            """;
+
+        var countSql = $"""
+            SELECT COUNT(*)
+            FROM [BikeAvailability]
+            WHERE {where}
+            """;
+
         var param = new { q = q ?? string.Empty, take };
-        var items = await sql.QueryAsync<RecordRow>(SearchSql, param, ct);
-        var count = await sql.ExecuteScalarAsync<int>(CountSql, new { q = q ?? string.Empty }, ct);
+        var items = await sql.QueryAsync<RecordRow>(searchSql, param, ct);
+        var count = await sql.ExecuteScalarAsync<int>(countSql, new { q = q ?? string.Empty }, ct);
         return new RecordList(count, items);
     }
 
     public Task<long?> SumAvailableAsync(CancellationToken ct = default) =>
         sql.ExecuteScalarAsync<long?>("SELECT SUM([AvailableBikes]) FROM [BikeAvailability]", ct: ct);
+
+    public Task<long?> SumRequiredAsync(CancellationToken ct = default) =>
+        sql.ExecuteScalarAsync<long?>("SELECT SUM([RequiredBikes]) FROM [BikeAvailability]", ct: ct);
 
     public Task<IReadOnlyList<MapRecord>> MapAsync(CancellationToken ct = default) =>
         sql.QueryAsync<MapRecord>(
@@ -89,5 +110,16 @@ public sealed class RecordRepository(SqlRunner sql) : IRecordRepository
             """,
             new { commune }, ct);
         return rows.FirstOrDefault();
+    }
+
+    private static string BuildWhere(ListFilter filter)
+    {
+        var phrase = "plain(CAST([Commune] AS TEXT)) LIKE '%' || plain(@q) || '%'";
+        return filter switch
+        {
+            ListFilter.Deficit => $"{phrase} AND [AvailableBikes] < [RequiredBikes]",
+            ListFilter.Surplus => $"{phrase} AND [AvailableBikes] >= [RequiredBikes]",
+            _ => phrase,
+        };
     }
 }

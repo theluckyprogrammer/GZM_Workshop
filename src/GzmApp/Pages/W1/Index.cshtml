@@ -1,0 +1,189 @@
+@page
+@model GzmApp.Pages.IndexModel
+@using GzmApp.Data
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@inject IConfiguration Configuration
+@{
+    Layout = null;
+    var antiforgeryToken = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
+    var pl = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
+
+    var filtrValue = Model.Filtr switch
+    {
+        ListFilter.Deficit => "deficyt",
+        ListFilter.Surplus => "nadwyzka",
+        _ => "wszystkie",
+    };
+    var filtry = new[] { ("wszystkie", "Wszystkie"), ("deficyt", "Deficyt"), ("nadwyzka", "Nadwyżka") };
+
+    var pokrycie = Model.PokrycieProcent;
+    var skala = Math.Max(100, pokrycie);
+    var meterFill = (int)Math.Round(pokrycie * 100.0 / skala);
+    var meterTick = (int)Math.Round(10000.0 / skala);
+
+    var gminy = Model.Mapa.Count;
+    var wystarcza = gminy - Model.Deficyt;
+    var maxGap = Math.Max(1, Model.RankingDeficytow.Count == 0 ? 1 : Model.RankingDeficytow.Max(r => Math.Abs(r.Gap)));
+}
+<!DOCTYPE html>
+<html lang="pl" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RowerStat — rowery publiczne w gminach GZM</title>
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="~/w1/site.css" asp-append-version="true" />
+</head>
+<body hx-headers:inherited='{"RequestVerificationToken":"@antiforgeryToken"}'>
+<partial name="_Propozycje" />
+    <div class="page">
+        <header class="masthead">
+            <a class="brand" href="/W1">RowerStat</a>
+            <p class="brand-sub">Dostępność rowerów publicznych w&nbsp;@gminy gminach Metropolii GZM. Zestawienie na podstawie otwartych danych.</p>
+            <nav class="account" aria-label="Konto">
+                <partial name="_LoginPartial" />
+            </nav>
+        </header>
+
+        <section id="statystyka" class="figures" aria-label="Najważniejsze liczby">
+            <div class="fig">
+                <p class="fig-label">Dostępne rowery</p>
+                <p class="fig-value"><span data-stat-value>@Model.StatystykaTekst</span></p>
+                <p class="fig-note">suma we wszystkich gminach</p>
+            </div>
+            <div class="fig">
+                <p class="fig-label">Pokrycie zapotrzebowania</p>
+                <p class="fig-value">@pokrycie<span class="fig-unit">%</span></p>
+                <div class="meter" role="img" aria-label="Pokrycie @pokrycie%">
+                    <span class="meter-fill" style="width:@(meterFill)%"></span>
+                    <span class="meter-tick" style="left:@(meterTick)%" title="100%"></span>
+                </div>
+                <p class="fig-note"><span class="num">@Model.StatystykaTekst</span> / <span class="num">@Model.WymaganeTekst</span> wymaganych</p>
+            </div>
+            <div class="fig fig-bad">
+                <p class="fig-label">Gminy z deficytem</p>
+                <p class="fig-value">@Model.Deficyt</p>
+                <p class="fig-note">z @gminy — dostępnych mniej niż wymaganych</p>
+            </div>
+            <div class="fig">
+                <p class="fig-label">Gminy w zestawieniu</p>
+                <p class="fig-value">@gminy</p>
+                <p class="fig-note">@wystarcza z wystarczającą liczbą rowerów</p>
+            </div>
+        </section>
+
+        <main class="board">
+            <section class="col-list" aria-labelledby="h-gminy">
+                <h2 class="sec" id="h-gminy"><span class="sec-no">01</span>Gminy</h2>
+                <div class="list-body">
+                    <div class="search">
+                        <label class="search-label" for="szukaj">Szukaj gminy</label>
+                        <input type="search" name="q" id="szukaj" placeholder="Szukaj gminy…" autocomplete="off"
+                               value="@Model.Fraza"
+                               hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms"
+                               hx-include="[name=filtr]" hx-target="#wyniki" />
+                        <input type="hidden" name="filtr" id="filtr" value="@filtrValue" />
+                    </div>
+                    <div class="filters" role="group" aria-label="Filtr listy">
+                        @foreach (var (value, label) in filtry)
+                        {
+                            <button type="button" class="filter-btn @(value == filtrValue ? "is-active" : "")" data-filtr="@value">@label</button>
+                        }
+                    </div>
+                    <div class="list-head" aria-hidden="true">
+                        <span>Nr</span><span>Gmina</span><span>Dostępne / wymagane</span>
+                    </div>
+                    <div id="wyniki" class="results">
+                        @await Html.PartialAsync("_Lista", Model.Lista)
+                    </div>
+                </div>
+            </section>
+
+            <section class="col-map" aria-labelledby="h-mapa">
+                <h2 class="sec" id="h-mapa"><span class="sec-no">02</span>Mapa<span class="sec-aside">Kliknij punkt albo wiersz listy</span></h2>
+                <div class="map-shell"
+                     id="mapa-root"
+                     data-points="@Model.PunktyMapyJson"
+                     data-center-lat="@GzmMap.CenterLat.ToString(inv)"
+                     data-center-lon="@GzmMap.CenterLon.ToString(inv)"
+                     data-min-lat="@GzmMap.MinLat.ToString(inv)"
+                     data-min-lon="@GzmMap.MinLon.ToString(inv)"
+                     data-max-lat="@GzmMap.MaxLat.ToString(inv)"
+                     data-max-lon="@GzmMap.MaxLon.ToString(inv)"
+                     data-selected="@(Model.Podglad?.Commune ?? "")">
+                    <div id="map" class="map-canvas" role="region" aria-label="Mapa gmin GZM"></div>
+                    <div class="map-legend" aria-label="Legenda">
+                        <span class="legend-item"><i class="dot is-bad" aria-hidden="true"></i>Deficyt <span class="num">@Model.Deficyt</span></span>
+                        <span class="legend-item"><i class="dot is-ok" aria-hidden="true"></i>Wystarcza <span class="num">@wystarcza</span></span>
+                        <span class="map-count"><span class="num">@Model.PunktyMapy.Count</span> gmin na mapie</span>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="col-side">
+                <section aria-labelledby="h-detal">
+                    <h2 class="sec" id="h-detal"><span class="sec-no">03</span>Wybrana gmina</h2>
+                    <div id="mapa-detail">
+                        @await Html.PartialAsync("_MapDetail", Model.Podglad)
+                    </div>
+                </section>
+
+                <section class="gaps" aria-labelledby="h-braki">
+                    <h2 class="sec" id="h-braki"><span class="sec-no">04</span>Największe braki</h2>
+                    @if (Model.RankingDeficytow.Count == 0)
+                    {
+                        <p class="muted">Żadna gmina nie ma deficytu rowerów.</p>
+                    }
+                    else
+                    {
+                        <ol class="gap-list">
+                            @for (var i = 0; i < Model.RankingDeficytow.Count; i++)
+                            {
+                                var r = Model.RankingDeficytow[i];
+                                var w = (int)Math.Round(Math.Abs(r.Gap) * 100.0 / maxGap);
+                                <li>
+                                    <button type="button" class="gap-item" data-commune="@r.Commune">
+                                        <span class="gap-rank">@(i + 1)</span>
+                                        <span class="gap-name">@r.Commune</span>
+                                        <span class="gap-value">@("−" + Math.Abs(r.Gap).ToString("N0", pl))</span>
+                                        <span class="gap-bar" aria-hidden="true"><span style="width:@(w)%"></span></span>
+                                        <span class="gap-meta">@r.AvailableBikes.ToString("N0", pl) z @r.RequiredBikes.ToString("N0", pl) wymaganych</span>
+                                    </button>
+                                </li>
+                            }
+                        </ol>
+                    }
+                </section>
+            </aside>
+
+            <section class="col-ai" aria-labelledby="h-ai">
+                <div class="ai-intro">
+                    <h2 class="sec" id="h-ai"><span class="sec-no">05</span>Analiza</h2>
+                    <p class="muted">Model językowy opisuje dane z bazy. Uwzględnia frazę wpisaną w wyszukiwarce.</p>
+                    <div class="ai-actions">
+                        <button type="button" class="action-btn"
+                                hx-get="?handler=Analizuj" hx-include="[name=q]" hx-target="#analiza"
+                                hx-indicator="#analiza-czeka" hx-disable="this">Analizuj</button>
+                        <span id="analiza-czeka" class="htmx-indicator" role="status">Trwa analiza…</span>
+                    </div>
+                </div>
+                <div id="analiza" class="ai-out" aria-live="polite">
+                    <p class="ai-empty">Nie ma jeszcze analizy. Naciśnij „Analizuj”, aby otrzymać krótkie podsumowanie danych.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="colophon">
+            <p class="colophon-src">Źródło danych: <span id="data-attribution">@Configuration["DataAttribution"]</span></p>
+            <p>Pokrycie = rowery dostępne ÷ rowery wymagane. Podkład mapy © OpenStreetMap.</p>
+            <p class="colophon-end">RowerStat · Metropolia GZM</p>
+        </footer>
+    </div>
+
+    <script src="~/lib/htmx/4.0.0/htmx.min.js"></script>
+    <script src="~/lib/leaflet/leaflet.js"></script>
+    <script src="~/js/map.js" asp-append-version="true"></script>
+    <script src="~/js/app.js" asp-append-version="true"></script>
+</body>
+</html>

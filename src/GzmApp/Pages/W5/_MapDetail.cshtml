@@ -1,0 +1,38 @@
+@model GzmApp.Data.MapPodglad?
+@{
+    var m = Model;
+    var pl = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
+}
+@if (m is null)
+{
+    <div class="map-detail is-empty">
+        <p class="map-detail-hint">Wybierz gminę w tabeli albo kliknij punkt na mapie.</p>
+    </div>
+}
+else
+{
+    var deficyt = m.AvailableBikes < m.RequiredBikes;
+    var roznica = m.AvailableBikes - m.RequiredBikes;
+    var procent = m.RequiredBikes > 0 ? (int)Math.Round(m.AvailableBikes * 100.0 / m.RequiredBikes) : 100;
+    <div class="map-detail @(deficyt ? "is-bad" : "is-ok")" data-commune="@m.Commune">
+        <div class="map-detail-top">
+            <strong class="map-detail-name">@m.Commune</strong>
+            <span class="status @(deficyt ? "is-bad" : "is-ok")">@(deficyt ? "Deficyt" : "Wystarcza")</span>
+        </div>
+        <dl class="map-detail-grid">
+            <div>
+                <dt>Dostępne</dt>
+                <dd>@m.AvailableBikes.ToString("N0", pl)</dd>
+            </div>
+            <div>
+                <dt>Wymagane</dt>
+                <dd>@m.RequiredBikes.ToString("N0", pl)</dd>
+            </div>
+            <div>
+                <dt>Różnica</dt>
+                <dd class="@(roznica < 0 ? "is-bad" : "is-ok")">@(roznica > 0 ? "+" + roznica.ToString("N0", pl) : roznica.ToString("N0", pl))</dd>
+            </div>
+        </dl>
+        <p class="map-detail-note">Pokrycie zapotrzebowania: <strong>@procent%</strong></p>
+    </div>
+}

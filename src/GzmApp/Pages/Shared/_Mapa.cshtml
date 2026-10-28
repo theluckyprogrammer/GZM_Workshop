@@ -1,29 +1,23 @@
-@model GzmApp.Data.MapPodglad?
-@using System.Globalization
-@using GzmApp.Data
+@model GzmApp.Pages.IndexModel
 @{
-    var m = Model;
-    var isOverview = m is null;
-    var lat = isOverview ? GzmMap.CenterLat : m!.Lat;
-    var lon = isOverview ? GzmMap.CenterLon : m!.Lon;
-    var marker = isOverview ? string.Empty : $"&marker={lat.ToString(CultureInfo.InvariantCulture)},{lon.ToString(CultureInfo.InvariantCulture)}";
-    var src = isOverview
-        ? FormattableString.Invariant($"https://www.openstreetmap.org/export/embed.html?bbox={GzmMap.MinLon},{GzmMap.MinLat},{GzmMap.MaxLon},{GzmMap.MaxLat}&layer=mapnik")
-        : FormattableString.Invariant($"https://www.openstreetmap.org/export/embed.html?bbox={lon - 0.045},{lat - 0.032},{lon + 0.045},{lat + 0.032}&layer=mapnik{marker}");
+    var pointsJson = Model.PunktyMapyJson;
+    var start = Model.Podglad;
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
 }
-<div class="map-body">
-    <iframe class="map-frame" src="@src" title="Mapa GZM" loading="lazy"></iframe>
-    <div class="map-caption">
-        @if (m is null)
-        {
-            <span class="muted">Cała metropolia. Kliknij gminę na liście, aby przybliżyć mapę.</span>
-        }
-        else
-        {
-            var deficyt = m.AvailableBikes < m.RequiredBikes;
-            <strong>@m.Commune</strong>
-            <span class="muted">dostępne <b>@m.AvailableBikes</b> · wymagane <b>@m.RequiredBikes</b></span>
-            <span class="pill @(deficyt ? "pill-bad" : "pill-ok")">@(deficyt ? "deficyt" : "wystarcza")</span>
-        }
+<div class="map-shell"
+     id="mapa-root"
+     data-points="@pointsJson"
+     data-center-lat="@GzmApp.Data.GzmMap.CenterLat.ToString(inv)"
+     data-center-lon="@GzmApp.Data.GzmMap.CenterLon.ToString(inv)"
+     data-min-lat="@GzmApp.Data.GzmMap.MinLat.ToString(inv)"
+     data-min-lon="@GzmApp.Data.GzmMap.MinLon.ToString(inv)"
+     data-max-lat="@GzmApp.Data.GzmMap.MaxLat.ToString(inv)"
+     data-max-lon="@GzmApp.Data.GzmMap.MaxLon.ToString(inv)"
+     data-selected="@(start?.Commune ?? "")">
+    <div id="map" class="map-canvas" role="img" aria-label="Mapa gmin GZM"></div>
+    <div class="map-legend" aria-label="Legenda">
+        <span class="legend-item"><i class="dot is-bad" aria-hidden="true"></i> Deficyt</span>
+        <span class="legend-item"><i class="dot is-ok" aria-hidden="true"></i> Wystarcza</span>
+        <span class="map-count">@Model.PunktyMapy.Count gmin</span>
     </div>
 </div>
