@@ -35,7 +35,7 @@ Odpowiadaj po polsku, prostym językiem – pracujesz z uczniami, którzy nie pr
 - Każdy krok ma plik specyfikacji `scenarios/sNN/spec/sNN-NNN-*.md` (krok 0 też: `sNN-000-dane.md`). Przeczytaj go, zanim napiszesz kod: „Co się dzieje” opisuje krok, a „Reguły” mówią, co dokładnie ma działać.
 - Każda ponumerowana reguła to jeden test w `tests/GzmApp.Specs` (nazwa testu = zdanie reguły). Pliki testów (`tests/GzmApp.Specs/Specs/*.cs`) pisze przy kompilacji narzędzie `tools/Spectree.Generator` – nie edytuj ich ręcznie; zmiana zdania w specyfikacji sama zaktualizuje test przy następnym buildzie. Krok jest gotowy, gdy wszystkie jego testy są zielone.
 - Zrób to, co mówią reguły i prompt – nie mniej i nie więcej.
-- Nie zmieniaj specyfikacji, testów ani narzędzi (`scenarios/`, `tests/`, `tools/`). Czerwony test naprawiasz w kodzie aplikacji, nigdy w teście.
+- Nie zmieniaj specyfikacji, testów ani narzędzi (`scenarios/`, `tests/`, `tools/`), z wyjątkiem przeniesienia niezmienionego pliku specyfikacji kroku dodatkowego, jeśli prosi o to jego prompt. Czerwony test naprawiasz w kodzie aplikacji, nigdy w teście.
 - Sprawdzenie kroku: `dotnet test tests/GzmApp.Specs --filter Capability=<capability z nagłówka pliku>`. Komunikat czerwonego testu mówi po polsku, czego brakuje.
 
 ## Decyzje pary – proponuj i pytaj
