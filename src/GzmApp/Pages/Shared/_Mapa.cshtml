@@ -1,0 +1,29 @@
+@model GzmApp.Data.MapPodglad?
+@using System.Globalization
+@using GzmApp.Data
+@{
+    var m = Model;
+    var isOverview = m is null;
+    var lat = isOverview ? GzmMap.CenterLat : m!.Lat;
+    var lon = isOverview ? GzmMap.CenterLon : m!.Lon;
+    var marker = isOverview ? string.Empty : $"&marker={lat.ToString(CultureInfo.InvariantCulture)},{lon.ToString(CultureInfo.InvariantCulture)}";
+    var src = isOverview
+        ? FormattableString.Invariant($"https://www.openstreetmap.org/export/embed.html?bbox={GzmMap.MinLon},{GzmMap.MinLat},{GzmMap.MaxLon},{GzmMap.MaxLat}&layer=mapnik")
+        : FormattableString.Invariant($"https://www.openstreetmap.org/export/embed.html?bbox={lon - 0.045},{lat - 0.032},{lon + 0.045},{lat + 0.032}&layer=mapnik{marker}");
+}
+<div class="map-body">
+    <iframe class="map-frame" src="@src" title="Mapa GZM" loading="lazy"></iframe>
+    <div class="map-caption">
+        @if (m is null)
+        {
+            <span class="muted">Cała metropolia. Kliknij gminę na liście, aby przybliżyć mapę.</span>
+        }
+        else
+        {
+            var deficyt = m.AvailableBikes < m.RequiredBikes;
+            <strong>@m.Commune</strong>
+            <span class="muted">dostępne <b>@m.AvailableBikes</b> · wymagane <b>@m.RequiredBikes</b></span>
+            <span class="pill @(deficyt ? "pill-bad" : "pill-ok")">@(deficyt ? "deficyt" : "wystarcza")</span>
+        }
+    </div>
+</div>

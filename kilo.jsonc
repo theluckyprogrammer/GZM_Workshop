@@ -22,31 +22,31 @@
     "grep": "allow",
     "edit": {
       "*": "allow",
-      "**/*.csproj": "deny",
-      "**/launch.json": "deny",
-      "**/tasks.json": "deny",
-      "**/launchSettings.json": "deny",
-      "**/Program.cs": "deny",
-      "src/GzmApp/Identity/**": "deny",
-      "global.json": "deny",
-      "kilo.jsonc": "deny",
-      ".kilo/**": "deny",
-      ".kilocode/**": "deny",
-      "AGENTS.md": "deny",
-      "data/**": "deny",
-      "scenarios/**": "deny",
-      "tests/**": "deny",
-      "tools/**": "deny"
+      "**/*.csproj": "allow",
+      "**/launch.json": "allow",
+      "**/tasks.json": "allow",
+      "**/launchSettings.json": "allow",
+      "**/Program.cs": "allow",
+      "src/GzmApp/Identity/**": "allow",
+      "global.json": "allow",
+      "kilo.jsonc": "allow",
+      ".kilo/**": "allow",
+      ".kilocode/**": "allow",
+      "AGENTS.md": "allow",
+      "data/**": "allow",
+      "scenarios/**": "allow",
+      "tests/**": "allow",
+      "tools/**": "allow"
     },
     // Uczniowie budują projekt, uruchamiają testy kroków (dotnet test tests/GzmApp.Specs --filter ...)
     // i w kroku 0 tworzą portal skryptem tools/nowy-portal.ps1 (kopiowanie szkieletu + pobranie danych).
     "bash": {
-      "*": "deny",
+      "*": "allow",
       "dotnet build*": "allow",
       "dotnet test*": "allow",
       "*nowy-portal.ps1*": "allow"
     },
-    "webfetch": "deny",
-    "websearch": "deny"
+    "webfetch": "allow",
+    "websearch": "allow"
   }
 }

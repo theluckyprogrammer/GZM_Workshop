@@ -1,0 +1,77 @@
+@page
+@model IndexModel
+@using GzmApp.Data
+@{
+    ViewData["Title"] = "RowerStat";
+
+    var mapa = Model.Mapa;
+}
+
+@section Sidebar {
+    <div class="side-stats">
+        <div id="statystyka" class="stat">
+            <div class="stat-label">Dostępne rowery</div>
+            <div class="stat-value" data-stat-value>@Model.StatystykaTekst</div>
+            <div class="stat-hint">suma ze wszystkich gmin</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Gminy z deficytem</div>
+            <div class="stat-value is-bad">@Model.Deficyt</div>
+            <div class="stat-hint">dostępnych mniej niż wymaganych</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Gminy w bazie</div>
+            <div class="stat-value">@mapa.Count</div>
+        </div>
+    </div>
+}
+
+@section Topbar {
+    <div class="topsearch">
+        <input type="search" name="q" class="input" placeholder="Szukaj gminy…" autocomplete="off"
+               hx-get="?handler=Szukaj" hx-trigger="keyup changed delay:300ms" hx-target="#wyniki">
+    </div>
+}
+
+<div class="board">
+
+    <section class="board-list" id="sekcja-gminy">
+        <div class="board-head">
+            <h2 class="board-title">Gminy</h2>
+            <span class="board-sub">najwyżej 20 wyników</span>
+        </div>
+        <div class="board-scroll" id="wyniki">
+            @await Html.PartialAsync("_Lista", Model.Lista)
+        </div>
+    </section>
+
+    <div class="board-side">
+
+        <section class="board-info" id="sekcja-info">
+            <div class="board-head">
+                <h2 class="board-title">Analiza AI</h2>
+                <div class="ai-actions">
+                    <span id="analiza-czeka" class="htmx-indicator ai-wait">
+                        <span class="spinner" aria-hidden="true"></span> Analizuję…
+                    </span>
+                    <button type="button" class="btn btn-dark"
+                            hx-get="?handler=Analizuj" hx-include="[name=q]" hx-target="#analiza"
+                            hx-indicator="#analiza-czeka" hx-disable="this">Analizuj z AI</button>
+                </div>
+            </div>
+            <div class="board-scroll ai-slot" id="analiza"></div>
+        </section>
+
+        <section class="board-map" id="sekcja-mapa">
+            <div class="board-head">
+                <h2 class="board-title">Mapa</h2>
+                <span class="board-sub">kliknij gminę na liście</span>
+            </div>
+            <div class="map-slot" id="mapa-podglad">
+                @await Html.PartialAsync("_Mapa", (MapPodglad?)null)
+            </div>
+        </section>
+
+    </div>
+
+</div>
