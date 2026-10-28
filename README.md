@@ -10,7 +10,7 @@ otwartych danych Metropolii GZM. Kod pisze Kilo Code (AI) – Wy nim sterujecie.
 3. Zaczynacie od **kroku 0** w `karta.md`: pierwszy prompt tworzy szkielet aplikacji
    i pobiera dane z portalu GZM. Potem budujecie portal krok po kroku: dane w bazie → wyszukiwarka →
    strona → analiza AI.
-4. W pauzach pytacie Kilo o propozycje decyzji – każda decyzja trafia do `LOG-DECYZJI.md`.
+4. W każdym kroku: wklejacie prompt, uruchamiacie aplikację (F5), oglądacie efekt i przechodzicie dalej. Na koniec pokazujecie gotowy portal z wyszukiwarką, statystyką i analizą AI. Do logowania rejestrujecie własny adres e-mail i hasło.
 
 Repozytorium na starcie jest czyste: `src/` i `tests/` powstają dopiero w kroku 0 (ze `szkielet/`),
 a dane pobiera się prosto z otwartedane.metropoliagzm.pl.
