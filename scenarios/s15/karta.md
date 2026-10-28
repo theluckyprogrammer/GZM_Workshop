@@ -8,44 +8,20 @@
 
 ## Jak pracujecie
 
-1. **Pilot** kopiuje prompt do Kilo Code i akceptuje zmiany. **Nawigator** sprawdza aplikację w przeglądarce. Po każdym kroku zamieniacie się rolami.
-2. Zaczynacie od **kroku 0**: pierwszy prompt (w sekcji „Prompty – krok po kroku” niżej) tworzy szkielet aplikacji i pobiera dane. Skrypt przenosi Was też na Wasz własny branch (nie pracujecie na `main`). Potem budujecie funkcję za funkcją – w każdym kroku nowa część portalu.
-3. Pracujecie jak zawodowcy: najpierw **specyfikacja** (`spec/` obok tej karty – każde zdanie w „Reguły” to jeden test), potem **testy**, na końcu **kod**. Krok jest gotowy, gdy jego testy są zielone. Ikona kolby w VS Code pokazuje je na żywo.
-4. Po każdym prompcie uruchomcie aplikację i wypróbujcie nową funkcję w przeglądarce. Specyfikacje zawierają gotowe reguły.
-5. Uruchamianie aplikacji opisuje `docs/PORADNIK-UCZNIA.md`.
-6. Skończyliście? Na końcu tej karty („Gotowe! Co dalej?”) jest opcjonalny krok z ulubionymi.
+1. **Zrób prompt:** wklej do Kilo Code cały blok tekstu z kroku 0 i zaakceptuj zmiany. Tak samo pracuj w kolejnych krokach.
+2. **Zobacz, co powstało:** po każdym prompcie uruchom aplikację klawiszem F5 i sprawdź ją w przeglądarce. Potem przejdź do następnego kroku. W finale poświęć więcej czasu na pokaz gotowego portalu.
 
-**Logowanie do portalu:** kliknijcie „Rejestracja”, podajcie własny adres e-mail i ustawcie hasło; potem zalogujcie się tym kontem.
-
-**Klawisze:** F5 – start aplikacji · Shift+F5 – stop · F12 – narzędzia przeglądarki (zakładka Network) · Ctrl+Shift+P – paleta poleceń VS Code.
-
-**Co jest w folderze `scenarios/s15/`:**
-
-- `karta.md` – ta karta: opis scenariusza, zasady pracy i prompty dla AI (od kroku 0).
-- `spec/` – reguły opisujące, co ma działać; testy sprawdzają te reguły.
-- `checkpoints.md` – przykłady i wskazówki dotyczące danych.
-- `mapping.json` – techniczne ustawienia scenariusza i danych.
-
-**Czerwone flagi AI – kiedy nie ufać kodowi.** Jeśli w kodzie od Kilo zobaczycie którąś z tych rzeczy, zatrzymajcie się i poproście o poprawkę:
-
-- React, Vite albo npm,
-- Entity Framework Core w danych (poza logowaniem),
-- `htmx.logAll()` (w HTMX 4 tego nie ma),
-- skrypt z unpkg albo CDN bez wersji,
-- `float` dla pieniędzy lub pomiarów,
-- `DateTime.Parse` bez kultury,
-- klucz AI wpisany w kod albo w `appsettings.json`,
-- `Html.Raw` z odpowiedzią modelu.
-
-**Utknęliście?** Zawołajcie prowadzącego – pomoże Wam wrócić na właściwy krok tej karty (najczęściej: port, baza albo klucz Kilo). Wasz portal zostaje, pracujecie dalej.
+Jeśli potrzebujecie pomocy z uruchomieniem, zajrzyjcie do `docs/PORADNIK-UCZNIA.md`.
 
 ## Prompty – krok po kroku
 
-Pilot kopiuje **cały blok promptu** do Kilo Code; po każdym kroku uruchomcie aplikację klawiszem **F5** i klikajcie w przeglądarce (http://localhost:5080).
+W każdym kroku: **wklej prompt → zobacz efekt w aplikacji → przejdź dalej**. Aplikacja otwiera się pod adresem http://localhost:5080.
 
 ## Krok 0 – powstaje Wasz portal (szkielet i dane)
 
-Pierwszy prompt stawia fundament: aplikację (serwer, strona startowa, logowanie, baza) i plik z danymi „Katowice: uczniowskie kluby sportowe” pobrany prosto z portalu otwartedane.metropoliagzm.pl. Wy jeszcze niczego nie budujecie – najpierw sprawdzacie fundament.
+**Zrób prompt:** wklej poniższy blok do Kilo Code.
+
+Ten krok tworzy aplikację i plik z danymi „Katowice: uczniowskie kluby sportowe” pobrany z portalu GZM.
 
 ~~~~text
 CEL
@@ -71,11 +47,13 @@ ZASADY
 Nie zmieniaj plików poza: niczym – w tym kroku wszystko tworzy skrypt. Nie dodawaj pakietów.
 ~~~~
 
-### ⏸ Pauza – sprawdźcie aplikację
+### Zobacz, co powstało
 
 Uruchomcie aplikację (F5). Kliknijcie „Rejestracja”, podajcie własny adres e-mail i hasło, a potem sprawdźcie, czy możecie się zalogować i wylogować.
 
 ## Krok 1 – dane z pliku do bazy
+
+**Zrób prompt:** wklej poniższy blok do Kilo Code.
 
 ~~~~text
 CEL
@@ -129,11 +107,13 @@ ZASADY
 Nie zmieniaj plików poza: `db/s15_create.sql`, `src/GzmApp/Data/CsvImporter.cs`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
-### ⏸ Pauza – sprawdźcie aplikację
+### Zobacz, co powstało
 
 Uruchomcie aplikację (F5) i otwórzcie stronę główną. Dane są już w bazie; wyszukiwarka pojawi się w kolejnych krokach.
 
 ## Krok 2 – wyszukiwarka (endpoint)
+
+**Zrób prompt:** wklej poniższy blok do Kilo Code.
 
 ~~~~text
 CEL
@@ -163,11 +143,13 @@ ZASADY
 Nie zmieniaj plików poza: `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
-### ⏸ Pauza – sprawdźcie aplikację
+### Zobacz, co powstało
 
 Uruchomcie aplikację (F5). Otwórzcie w przeglądarce `http://localhost:5080/?handler=Szukaj&q=` z dopisanym słowem z danych i zobaczcie wyniki; pole wyszukiwania pojawi się w następnym kroku.
 
 ## Krok 3 – strona z wyszukiwarką i kafelkiem (HTMX)
+
+**Zrób prompt:** wklej poniższy blok do Kilo Code.
 
 ~~~~text
 CEL
@@ -218,11 +200,13 @@ ZASADY
 Nie zmieniaj plików poza: `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/appsettings.json`. Nie dodawaj pakietów.
 ~~~~
 
-### ⏸ Pauza – sprawdźcie aplikację
+### Zobacz, co powstało
 
 Uruchomcie aplikację (F5). Wpiszcie frazę w wyszukiwarce, zobaczcie wyniki i kafelek ze statystyką.
 
-## Krok 4 – analiza AI
+## Krok 4 – finał: analiza AI i pokaz portalu
+
+**Zrób prompt:** wklej poniższy blok do Kilo Code.
 
 ~~~~text
 CEL
@@ -262,13 +246,13 @@ ZASADY
 Nie zmieniaj plików poza: `src/GzmApp/Ai/AiAnalyzer.cs`, `src/GzmApp/Pages/Index.cshtml`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Analiza.cshtml`, `src/GzmApp/Data/RecordRepository.cs`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
-### ⏸ Pauza – sprawdźcie aplikację
+### Finał – pokażcie gotowy portal
 
-Uruchomcie aplikację (F5). Wpiszcie frazę i kliknijcie „✨ Analizuj z AI”, aby zobaczyć analizę wyników.
+Uruchomcie aplikację (F5). Wyszukajcie dwa różne hasła i zobaczcie, jak zmienia się lista; obejrzyjcie kafelek ze statystyką. Kliknijcie „✨ Analizuj z AI”, porównajcie odpowiedź z wynikami i otwórzcie „Co poszło do modelu?”. Na koniec pokażcie gotowy portal drugiej osobie: wyszukiwanie, statystykę i analizę AI.
 
-## Gotowe! Co dalej?
+## Dla chętnych – ulubione
 
-Macie portal z wyszukiwarką i analizą AI. Jeśli chcecie dodać ulubione, wklejcie poniższy opcjonalny prompt do Kilo Code.
+Jeśli chcecie dodać ulubione, **zróbcie prompt:** wklejcie poniższy blok do Kilo Code.
 
 ~~~~text
 CEL
@@ -312,6 +296,6 @@ ZASADY
 Nie zmieniaj plików poza: `scenarios/s15/spec/dodatkowe/s15-005-zapisz-ulubione.md` (przeniesienie), `scenarios/s15/spec/s15-005-zapisz-ulubione.md` (przeniesienie), `db/900_favorites.sql`, `src/GzmApp/Data/FavoritesRepository.cs`, `src/GzmApp/Pages/Index.cshtml.cs`, `src/GzmApp/Pages/Shared/_Lista.cshtml`, `src/GzmApp/Pages/Shared/_Gwiazdka.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml`, `src/GzmApp/Pages/Ulubione.cshtml.cs`, `src/GzmApp/Pages/Shared/_Layout.cshtml`, `src/GzmApp/AppServices.cs`. Nie dodawaj pakietów.
 ~~~~
 
-### ⏸ Pauza – sprawdźcie ulubione
+### Zobacz, co powstało
 
 Uruchomcie aplikację (F5), zalogujcie się własnym adresem e-mail (jeśli nie macie konta, kliknijcie „Rejestracja”). Kliknijcie ☆ przy rekordzie, potem „Moje ulubione” i sprawdźcie, czy rekord tam jest.
